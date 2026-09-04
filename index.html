@@ -135,6 +135,22 @@ p{margin:0 0 1rem}
 .nav-cta{display:flex;gap:8px;align-items:center;margin-left:12px;padding-left:14px;border-left:1px solid var(--line);flex:0 0 auto}
 .nav-cta .btn,.nav-cta .btn:hover{padding:.62em 1.05em;font-size:clamp(.8rem,.6rem + .3vw,.88rem);color:var(--_fg)}
 .nav-cta .btn::after{display:none}
+.nav-cta .btn .nav-icon{width:15px;height:15px;flex:0 0 auto}
+
+/* account chip trên header khi đã đăng nhập */
+.acct-chip{
+  display:inline-flex;align-items:center;gap:8px;padding:.28em .95em .28em .28em;
+  border-radius:999px;background:#fff;border:1.5px solid var(--line);
+  color:var(--ink)!important;font-weight:700;font-size:.85rem;text-decoration:none;transition:.2s;white-space:nowrap;
+}
+.acct-chip:hover{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050)}
+.acct-chip .chip-avatar{
+  width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  font-weight:800;font-size:.7rem;letter-spacing:-.02em;color:#fff;
+  background:linear-gradient(140deg,var(--vnpt-blue-600),var(--vnpt-blue-900));
+}
+.acct-chip .chip-name{max-width:118px;overflow:hidden;text-overflow:ellipsis}
+.acct-chip .chip-caret{width:7px;height:7px;border-right:2px solid var(--ink-soft);border-bottom:2px solid var(--ink-soft);transform:rotate(45deg);margin-left:-2px;flex:0 0 auto}
 
 .has-sub{position:relative}
 .has-sub > a::before{content:"";position:absolute;left:0;right:0;top:100%;height:14px}
@@ -175,6 +191,8 @@ body.nav-open .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45
   .submenu a{font-size:.86rem;color:var(--ink-soft)}
   .nav-cta{margin:14px 0 0;padding:0;border:0;flex-direction:column;align-items:stretch}
   .nav-cta .btn{width:100%}
+  .acct-chip{width:100%}
+  .acct-chip .chip-name{max-width:none;flex:1}
   .hamburger{display:block}
 }
 @media (max-width:420px){
@@ -701,10 +719,26 @@ function contractsForUser(u){
   return allContracts().filter(c => !c.account || c.account===u.id || normId(c.email)===normId(u.id) || c.phone===u.id);
 }
 
+function initialsOf(name){
+  const words = String(name||'').trim().split(/\s+/).filter(Boolean);
+  if(!words.length) return '?';
+  return (words[0][0] + (words.length>1?words[words.length-1][0]:'')).toUpperCase();
+}
 function syncAuthBtn(){
   const b=$('#authBtn'); if(!b) return;
-  if(Auth.user){ b.textContent='Tài khoản của tôi'; b.href='#/tai-khoan'; }
-  else{ b.textContent='Đăng nhập'; b.href='#/dang-nhap'; }
+  if(Auth.user){
+    b.href='#/tai-khoan';
+    b.className='acct-chip';
+    b.innerHTML = `<span class="chip-avatar">${initialsOf(Auth.user.name)}</span>
+      <span class="chip-name">${esc(Auth.user.name||'Tài khoản')}</span>
+      <span class="chip-caret" aria-hidden="true"></span>`;
+  }else{
+    b.href='#/dang-nhap';
+    b.className='btn sm';
+    b.innerHTML = `<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </svg> Đăng nhập`;
+  }
 }
 
 /* ---------- Seed dữ liệu demo (chạy 1 lần) ---------- */
