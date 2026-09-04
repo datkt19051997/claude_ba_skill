@@ -313,6 +313,36 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--vnpt-blue-6
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.spinner{animation-duration:2s}}
 
+/* product detail — quyền lợi bảo hiểm hiện đại */
+.tagline{color:var(--ink-soft);font-size:1.02rem;max-width:64ch;margin-top:8px}
+.benefit-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.benefit-card{border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;background:linear-gradient(180deg,#fff,var(--vnpt-blue-050) 260%);transition:.2s}
+.benefit-card:hover{border-color:var(--vnpt-blue-500);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.benefit-card .b-icon{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;background:var(--vnpt-blue-100);margin-bottom:12px}
+.benefit-card h4{margin:0 0 6px;font-size:1rem;color:var(--vnpt-blue-900)}
+.benefit-card p{margin:0;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
+.benefit-card .b-stat{display:inline-block;margin-top:12px;padding:.35em .85em;border-radius:999px;background:var(--vnpt-blue-100);color:var(--vnpt-blue-800);font-weight:800;font-size:.79rem}
+
+.kv-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kv-card{border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;background:var(--vnpt-blue-050)}
+.kv-card .kv-label{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--vnpt-blue-700)}
+.kv-card .kv-value{margin-top:6px;font-size:.9rem;color:var(--ink);line-height:1.55}
+.kv-card.highlight{background:linear-gradient(135deg,var(--vnpt-blue-700),var(--vnpt-blue-900));border-color:transparent}
+.kv-card.highlight .kv-label{color:#bfe0fb}
+.kv-card.highlight .kv-value{color:#fff;font-weight:700}
+
+.legal-alert{display:flex;gap:12px;align-items:flex-start;border:1px solid #fbdca0;background:#fff8ea;border-radius:var(--radius-md);padding:16px}
+.legal-alert .la-icon{font-size:1.25rem;flex:0 0 auto;line-height:1.4}
+.legal-alert p{margin:0;font-size:.87rem;color:#7a4a00;line-height:1.55}
+
+.excl-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.excl-list li{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--ink-soft);line-height:1.5}
+.excl-list li::before{content:"✕";flex:0 0 auto;width:20px;height:20px;border-radius:6px;background:#fdecec;color:var(--vnpt-red);display:grid;place-items:center;font-size:.66rem;font-weight:800;margin-top:1px}
+
+.step-list{list-style:none;padding:0;margin:0;display:grid;gap:12px;counter-reset:st}
+.step-list li{display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--ink-soft);line-height:1.5}
+.step-list li::before{counter-increment:st;content:counter(st);flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--vnpt-blue-700);color:#fff;display:grid;place-items:center;font-size:.75rem;font-weight:800}
+
 /* table */
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
 table.data{width:100%;border-collapse:collapse;min-width:560px}
@@ -737,8 +767,33 @@ const PRODUCTS = [
   {slug:'tnds-xe-may', group:'xe', flow:'moto', name:'Bảo hiểm Bắt buộc TNDS xe mô tô, xe máy',
    short:'Bắt buộc theo quy định. Bồi thường thiệt hại về người và tài sản của bên thứ ba.',
    from:66000, cover:'Người 150 tr/vụ · Tài sản 50 tr/vụ', icon:'🏍️', status:'open',
-   benefits:['Trách nhiệm với người thứ ba: tối đa 150 triệu đồng/người/vụ','Trách nhiệm về tài sản: tối đa 50 triệu đồng/vụ','Hiệu lực toàn quốc, xử lý bồi thường 24/7','Tùy chọn nâng cấp mức trách nhiệm cho lái, phụ xe và người ngồi trên xe (Gói Tiêu chuẩn / Nâng cao)'],
-   exclusions:['Hành động cố ý gây thiệt hại của chủ xe, lái xe','Lái xe không có giấy phép hợp lệ, nồng độ cồn vượt mức','Xe đua, thử nghiệm, đi vào đường cấm'],
+   exclusions:[
+     'Cố ý gây tai nạn hoặc cố ý bỏ trốn sau khi gây tai nạn',
+     'Người lái xe không đủ điều kiện điều khiển xe theo quy định của pháp luật',
+     'Điều khiển xe khi có nồng độ cồn, sử dụng ma túy hoặc chất kích thích bị cấm theo quy định',
+     'Thiệt hại đối với tiền, vàng, bạc, đá quý, giấy tờ có giá và một số tài sản đặc biệt khác',
+     'Thiệt hại do chiến tranh, khủng bố hoặc động đất',
+   ],
+   detail:{
+     tagline:'Bảo hiểm Bắt buộc trách nhiệm dân sự cho mô tô, xe máy theo đúng quy định pháp luật.',
+     highlights:[
+       {icon:'🧑‍🤝‍🧑', title:'Thiệt hại về người',
+        desc:'Chi trả bồi thường cho người bị thương hoặc tử vong do tai nạn do mô tô, xe máy gây ra.',
+        stat:'Đến 150 triệu đồng/người/vụ'},
+       {icon:'🏠', title:'Thiệt hại về tài sản',
+        desc:'Chi trả bồi thường thiệt hại về tài sản của bên thứ ba do mô tô, xe máy gây ra.',
+        stat:'Đến 50 triệu đồng/vụ'},
+       {icon:'🪑', title:'BH tai nạn người ngồi trên xe',
+        desc:'Chi trả quyền lợi bảo hiểm cho người ngồi trên xe khi bị tai nạn trong thời hạn bảo hiểm theo quy tắc và điều khoản của sản phẩm.',
+        stat:'Đến 10 triệu đồng/người'},
+     ],
+     legalNote:'Theo Nghị định 168/2024/NĐ-CP, người điều khiển mô tô, xe máy khi tham gia giao thông không có Giấy chứng nhận bảo hiểm bắt buộc TNDS còn hiệu lực có thể bị phạt từ 200.000 đồng đến 300.000 đồng.',
+     incidentSteps:[
+       'Thực hiện các biện pháp cần thiết để cứu người, bảo vệ tài sản và hiện trường.',
+       'Thông báo cho cơ quan Công an hoặc chính quyền địa phương gần nhất.',
+       'Gọi 1900 54 54 58 để được VNPT Bảo hiểm hướng dẫn và hỗ trợ.',
+     ],
+   },
    packages:[
      {id:'basic',name:'Gói cơ bản',price:66000,
       cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'Không có'}},
@@ -751,8 +806,33 @@ const PRODUCTS = [
   {slug:'tnds-o-to', group:'xe', flow:'oto', name:'Bảo hiểm Bắt buộc TNDS xe ô tô',
    short:'Bắt buộc theo quy định. Mức trách nhiệm cao với người và tài sản bên thứ ba.',
    from:437000, cover:'Người 150 tr/người/vụ · Tài sản 100 tr/vụ', icon:'🚙', status:'open',
-   benefits:['Trách nhiệm với người thứ ba: tối đa 150 triệu đồng/người/vụ','Trách nhiệm về tài sản: tối đa 100 triệu đồng/vụ','Kèm tùy chọn Tai nạn lái – phụ xe'],
-   exclusions:['Thiệt hại do hao mòn tự nhiên','Lái xe không đủ điều kiện điều khiển phương tiện','Thiệt hại với tài sản đặc biệt (vàng, đá quý, giấy tờ có giá)'],
+   exclusions:[
+     'Cố ý gây tai nạn hoặc cố ý bỏ trốn sau khi gây tai nạn',
+     'Người lái xe không đủ điều kiện điều khiển xe theo quy định của pháp luật',
+     'Điều khiển xe khi có nồng độ cồn, sử dụng ma túy hoặc chất kích thích bị cấm theo quy định',
+     'Thiệt hại đối với tiền, vàng, bạc, đá quý, giấy tờ có giá và một số tài sản đặc biệt khác',
+     'Thiệt hại do chiến tranh, khủng bố hoặc động đất',
+   ],
+   detail:{
+     tagline:'Bảo hiểm Bắt buộc trách nhiệm dân sự dành cho xe ô tô theo đúng quy định pháp luật.',
+     highlights:[
+       {icon:'🧑‍🤝‍🧑', title:'Thiệt hại về người',
+        desc:'Chi trả bồi thường cho người bị thương hoặc tử vong do tai nạn do xe ô tô gây ra, bao gồm bên thứ ba và hành khách trên xe theo quy định.',
+        stat:'Đến 150 triệu đồng/người/vụ'},
+       {icon:'🏠', title:'Thiệt hại về tài sản',
+        desc:'Chi trả bồi thường thiệt hại về tài sản của bên thứ ba do xe ô tô gây ra.',
+        stat:'Đến 100 triệu đồng/vụ'},
+       {icon:'🧑‍✈️', title:'BH tai nạn lái, phụ xe & người ngồi trên xe',
+        desc:'Chi trả quyền lợi bảo hiểm khi lái xe, phụ xe hoặc người ngồi trên xe bị thương hoặc tử vong do tai nạn trong thời hạn bảo hiểm theo quy tắc và điều khoản của sản phẩm.',
+        stat:'Đến 20 triệu đồng/người'},
+     ],
+     legalNote:'Theo Nghị định 168/2024/NĐ-CP, người điều khiển ô tô tham gia giao thông không có Giấy chứng nhận bảo hiểm bắt buộc TNDS còn hiệu lực có thể bị phạt từ 400.000 đồng đến 600.000 đồng.',
+     incidentSteps:[
+       'Thực hiện các biện pháp cần thiết để cứu người, bảo vệ tài sản và hiện trường.',
+       'Thông báo cho cơ quan Công an hoặc chính quyền địa phương gần nhất.',
+       'Gọi 1900 54 54 58 để được VNPT Bảo hiểm hướng dẫn và hỗ trợ.',
+     ],
+   },
    packages:[{id:'basic',name:'Gói cơ bản (bắt buộc)',price:437000},{id:'plus',name:'Cơ bản + Tai nạn lái phụ xe',price:557000},{id:'pro',name:'Toàn diện + phụ phí',price:690000}]},
 
   {slug:'vat-chat-o-to', group:'xe', flow:'none', name:'Bảo hiểm Thiệt hại vật chất xe ô tô',
@@ -773,8 +853,35 @@ const PRODUCTS = [
   {slug:'tai-nan-ho-su-dung-dien', group:'con-nguoi', flow:'dien', name:'Bảo hiểm Tai nạn Hộ sử dụng điện',
    short:'Bảo vệ chủ hộ và các thành viên trước rủi ro tai nạn liên quan sử dụng điện sinh hoạt.',
    from:120000, cover:'Chi trả tới 35 – 100 triệu đồng/người', icon:'⚡', status:'open',
-   benefits:['Tử vong / thương tật do tai nạn điện sinh hoạt','Chi phí y tế điều trị do tai nạn','Bảo vệ cả hộ gia đình theo danh sách thành viên'],
-   exclusions:['Vi phạm quy định an toàn điện đã được cảnh báo','Hành vi cố ý','Sự kiện xảy ra ngoài lãnh thổ Việt Nam'],
+   exclusions:[
+     'Người được bảo hiểm cố ý gây tai nạn',
+     'Cố ý vi phạm quy định an toàn sử dụng điện',
+     'Tai nạn xảy ra khi sử dụng rượu, bia, ma túy hoặc chất kích thích tương tự',
+     'Tai nạn do hậu quả gián tiếp của điện (chập điện, cháy, nổ...)',
+     'Thương tật hoặc tử vong không phải do dòng điện trực tiếp gây ra',
+   ],
+   detail:{
+     tagline:'Bảo vệ hộ gia đình trước các rủi ro xảy ra do tai nạn điện trong sinh hoạt hàng ngày.',
+     highlights:[
+       {icon:'💀', title:'Tử vong do tai nạn điện',
+        desc:'Chi trả 100% số tiền bảo hiểm ghi trong hợp đồng.'},
+       {icon:'🩹', title:'Thương tật tạm thời do tai nạn điện',
+        desc:'Chi trả theo chi phí thực tế hợp lý, tối đa theo Bảng tỷ lệ trả tiền bảo hiểm thương tật của Bộ Tài chính so với Số tiền bảo hiểm.'},
+       {icon:'♿', title:'Thương tật vĩnh viễn do tai nạn điện',
+        desc:'Chi trả theo Bảng tỷ lệ trả tiền bảo hiểm thương tật của Bộ Tài chính so với Số tiền bảo hiểm.'},
+     ],
+     infoBoxes:[
+       {label:'Đối tượng bảo hiểm', value:'Tất cả các thành viên có cùng thông tin cư trú với Chủ hộ gia đình / Bên mua bảo hiểm theo quy định của pháp luật.'},
+       {label:'Phạm vi bảo hiểm', value:'Những tai nạn xảy ra đối với Người được bảo hiểm do ảnh hưởng trực tiếp của dòng điện trong lãnh thổ Việt Nam.'},
+       {label:'Số tiền bảo hiểm', value:'Từ 35 triệu – 100 triệu đồng/người/vụ theo gói lựa chọn.', highlight:true},
+     ],
+     responsibilities:[
+       'Cung cấp thông tin trung thực, đầy đủ theo quy định.',
+       'Thực hiện nghiêm chỉnh chế độ an toàn khi sử dụng điện.',
+       'Khi xảy ra rủi ro, thực hiện biện pháp cần thiết để cứu chữa nạn nhân.',
+       'Thông báo ngay cho VNPT Bảo hiểm hoặc không chậm quá 30 ngày kể từ khi xảy ra tai nạn điện.',
+     ],
+   },
    packages:[{id:'g35',name:'Gói 35 triệu',price:120000},{id:'g50',name:'Gói 50 triệu',price:170000},{id:'g100',name:'Gói 100 triệu',price:320000}]},
 ];
 const findProduct = slug => PRODUCTS.find(p=>p.slug===slug);
@@ -1111,10 +1218,12 @@ function pageProduct(params){
         <a href="#/lien-he" class="btn">Nhận thông báo</a>
       </div></div></section>`;
   }
+  const d = p.detail;
   return `
   <div class="page-head"><div class="container">
     <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham">Sản phẩm</a> / ${p.name}</div>
     <h1>${p.name}</h1>
+    ${d?.tagline?`<p class="tagline">${d.tagline}</p>`:''}
     <div class="pill-row">
       <span class="tag">${GROUPS.find(g=>g.id===p.group).name}</span>
       <span class="tag ok">Đang mở bán</span>
@@ -1125,11 +1234,41 @@ function pageProduct(params){
       <div>
         <div class="card pad">
           <h3>Quyền lợi &amp; phạm vi bảo hiểm</h3>
-          <ul class="muted">${p.benefits.map(b=>`<li>${b}</li>`).join('')}</ul>
+          ${d?.highlights ? `
+          <div class="benefit-grid">
+            ${d.highlights.map(h=>`<div class="benefit-card">
+              <div class="b-icon">${h.icon}</div>
+              <h4>${h.title}</h4>
+              <p>${h.desc}</p>
+              ${h.stat?`<span class="b-stat">${h.stat}</span>`:''}
+            </div>`).join('')}
+          </div>` : `<ul class="muted">${p.benefits.map(b=>`<li>${b}</li>`).join('')}</ul>`}
+          ${d?.infoBoxes?`
+          <div class="kv-grid" style="margin-top:18px">
+            ${d.infoBoxes.map(k=>`<div class="kv-card${k.highlight?' highlight':''}">
+              <div class="kv-label">${k.label}</div>
+              <div class="kv-value">${k.value}</div>
+            </div>`).join('')}
+          </div>`:''}
+          ${d?.legalNote?`
+          <div class="legal-alert" style="margin-top:18px">
+            <span class="la-icon">⚠️</span>
+            <p><strong>Lưu ý pháp lý:</strong> ${d.legalNote}</p>
+          </div>`:''}
         </div>
+        ${d?.incidentSteps?`
+        <div class="card pad" style="margin-top:18px">
+          <h3>Khi xảy ra tai nạn</h3>
+          <ol class="step-list">${d.incidentSteps.map(s=>`<li>${s}</li>`).join('')}</ol>
+        </div>`:''}
+        ${d?.responsibilities?`
+        <div class="card pad" style="margin-top:18px">
+          <h3>Trách nhiệm của người được bảo hiểm</h3>
+          <ol class="step-list">${d.responsibilities.map(s=>`<li>${s}</li>`).join('')}</ol>
+        </div>`:''}
         <div class="card pad" style="margin-top:18px">
           <h3>Điều khoản loại trừ</h3>
-          <ul class="muted">${p.exclusions.map(b=>`<li>${b}</li>`).join('')}</ul>
+          <ul class="excl-list">${p.exclusions.map(b=>`<li>${b}</li>`).join('')}</ul>
         </div>
         <div class="card pad" style="margin-top:18px">
           <h3>Biểu phí tham khảo</h3>
@@ -1148,7 +1287,7 @@ function pageProduct(params){
       <div>
         <div class="card pad summary-box">
           <div style="font-size:2.4rem">${p.icon}</div>
-          <p class="muted" style="font-size:.9rem">${p.short}</p>
+          <p class="muted" style="font-size:.9rem">${d?.tagline||p.short}</p>
           <div class="price" style="font-weight:800;color:var(--vnpt-blue-dark);font-size:1.2rem">Phí từ ${money(p.from)}<span class="muted" style="font-weight:600">/năm</span></div>
           <div class="muted" style="font-size:.85rem;margin:6px 0 14px">${p.cover}</div>
           <a href="#/mua?slug=${p.slug}" class="btn green block">Mua ngay</a>
