@@ -2093,7 +2093,7 @@ pageLogin.after=function(){
     Accounts.put(acc);
     Auth.login({id:acc.id, name:acc.name}, $('#lg-remember').checked);
     toast('Đăng nhập thành công. Xin chào ' + acc.name + '!','ok');
-    location.hash = form.dataset.next || '#/tai-khoan';
+    location.hash = form.dataset.next || '#/';
   });
 };
 
