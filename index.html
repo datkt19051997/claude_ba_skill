@@ -566,7 +566,6 @@ table.data tr:last-child td{border-bottom:0}
       <a href="#/san-pham?nhom=xe">TNDS xe máy</a>
       <a href="#/san-pham?nhom=xe">TNDS ô tô</a>
       <a href="#/san-pham?nhom=xe">Vật chất xe</a>
-      <a href="#/san-pham?nhom=con-nguoi">An tâm toàn diện</a>
       <a href="#/san-pham?nhom=con-nguoi">Tai nạn hộ sử dụng điện</a>
     </div>
     <div>
@@ -731,10 +730,10 @@ function seedDemo(){
      productName:'Bảo hiểm Bắt buộc TNDS xe mô tô, xe máy',packageName:'Gói cơ bản (bắt buộc)',insurer:'AAA',
      owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-09-05',end:'2027-09-04',
      amount:65340,payMethod:'—',status:'pending',contractNo:'BH260903901'},
-    {orderNo:'DH260610777',createdAt:'2026-06-10T08:30:00',account:DEMO,productSlug:'an-tam-toan-dien',
-     productName:'Bảo hiểm An tâm toàn diện',packageName:'Gói Nâng cao',insurer:'BIC',
+    {orderNo:'DH260610777',createdAt:'2026-06-10T08:30:00',account:DEMO,productSlug:'tai-nan-ho-su-dung-dien',
+     productName:'Bảo hiểm Tai nạn Hộ sử dụng điện',packageName:'Gói 100 triệu',insurer:'BIC',
      owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-06-11',end:'2027-06-10',
-     amount:514800,payMethod:'Thẻ nội địa & tài khoản NH',status:'cancelled',contractNo:'BH260610777'}
+     amount:352000,payMethod:'Thẻ nội địa & tài khoản NH',status:'cancelled',contractNo:'BH260610777'}
   ];
   Orders.save(orders);
 
@@ -745,9 +744,9 @@ function seedDemo(){
     {contractNo:'BH260720133',account:DEMO,product:'Bảo hiểm Tai nạn Hộ sử dụng điện',package:'Gói 50 triệu',
      insurer:'AAA',owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-07-21',end:'2027-07-20',
      pay:168300,status:'Còn hiệu lực',plate:''},
-    {contractNo:'BH260610777',account:DEMO,product:'Bảo hiểm An tâm toàn diện',package:'Gói Nâng cao',
+    {contractNo:'BH260610777',account:DEMO,product:'Bảo hiểm Tai nạn Hộ sử dụng điện',package:'Gói 100 triệu',
      insurer:'BIC',owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-06-11',end:'2027-06-10',
-     pay:514800,status:'Đã hủy',plate:''}
+     pay:352000,status:'Đã hủy',plate:''}
   ];
   saveContracts(contracts);
   LS.set('bh_seeded','2');
@@ -842,13 +841,6 @@ const PRODUCTS = [
   {slug:'vat-chat-xe-may', group:'xe', flow:'none', name:'Bảo hiểm Vật chất xe máy',
    short:'Bồi thường thiệt hại vật chất, mất cắp bộ phận cho xe máy.',
    from:0, cover:'Theo cấu hình', icon:'🛵', status:'soon', benefits:[],exclusions:[],packages:[]},
-
-  {slug:'an-tam-toan-dien', group:'con-nguoi', flow:'none', name:'Bảo hiểm An tâm toàn diện',
-   short:'Bảo vệ sức khỏe, tai nạn và trợ cấp viện phí cho cá nhân, gia đình.',
-   from:300000, cover:'Theo cấu hình gói', icon:'🩺', status:'open',
-   benefits:['Chi phí y tế do tai nạn','Trợ cấp nằm viện','Tử vong / thương tật vĩnh viễn do tai nạn'],
-   exclusions:['Bệnh có sẵn chưa khai báo','Điều trị thẩm mỹ, nha khoa tự chọn','Rủi ro chiến tranh, khủng bố'],
-   packages:[{id:'g1',name:'Gói Cơ bản',price:300000},{id:'g2',name:'Gói Nâng cao',price:520000},{id:'g3',name:'Gói Gia đình',price:900000}]},
 
   {slug:'tai-nan-ho-su-dung-dien', group:'con-nguoi', flow:'dien', name:'Bảo hiểm Tai nạn Hộ sử dụng điện',
    short:'Bảo vệ chủ hộ và các thành viên trước rủi ro tai nạn liên quan sử dụng điện sinh hoạt.',
@@ -2699,7 +2691,6 @@ function pageDocs(){
     {name:'Quy tắc bảo hiểm bắt buộc TNDS chủ xe cơ giới',group:'xe',type:'Quy tắc'},
     {name:'Biểu phí bảo hiểm TNDS xe mô tô, xe máy',group:'xe',type:'Biểu phí'},
     {name:'Biểu phí bảo hiểm TNDS xe ô tô',group:'xe',type:'Biểu phí'},
-    {name:'Quy tắc bảo hiểm An tâm toàn diện',group:'con-nguoi',type:'Quy tắc'},
     {name:'Quy tắc bảo hiểm Tai nạn hộ sử dụng điện',group:'con-nguoi',type:'Quy tắc'},
     {name:'Hướng dẫn yêu cầu bồi thường',group:'all',type:'Hướng dẫn'},
   ];
