@@ -1282,10 +1282,49 @@ function pageProduct(params){
   </div></section>`;
 }
 
+/* ---- Guard: yêu cầu đăng nhập trước khi mua / cảnh báo hợp đồng còn hiệu lực ---- */
+const DUP_CONFIRMED = new Set(); // slug đã được KH xác nhận "vẫn muốn mua thêm" trong phiên này
+function findActiveContract(p){
+  return contractsForUser(Auth.user).find(c => c.product===p.name && c.status==='Còn hiệu lực' && c.end>=todayISO());
+}
+function gateShell(p, icon, title, bodyHtml, actionsHtml){
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham-chi-tiet?slug=${p.slug}">${p.name}</a> / Mua bảo hiểm</div>
+    <h1>Chọn gói &amp; điền thông tin</h1>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="card pad center" style="max-width:520px;margin-inline:auto">
+      <div style="font-size:2.6rem">${icon}</div>
+      <h3>${title}</h3>
+      <p class="muted">${bodyHtml}</p>
+      ${actionsHtml}
+    </div>
+  </div></section>`;
+}
+function renderLoginRequired(p){
+  const next = encodeURIComponent('#/mua?slug='+p.slug);
+  return gateShell(p, '🔒', 'Vui lòng đăng nhập để tiếp tục',
+    `Bạn cần đăng nhập tài khoản để mua <strong>${esc(p.name)}</strong>.`,
+    `<a href="#/dang-nhap?next=${next}" class="btn green block">Đăng nhập ngay</a>
+     <a href="#/san-pham-chi-tiet?slug=${p.slug}" class="btn ghost block" style="margin-top:8px">Quay lại trang sản phẩm</a>`);
+}
+function renderDupConfirm(p, dup){
+  return gateShell(p, '⚠️', 'Bạn đang có hợp đồng còn hiệu lực',
+    `Hợp đồng <strong>${esc(dup.contractNo)}</strong> (${esc(p.name)}) của bạn còn hiệu lực đến <strong>${viDate(dup.end)}</strong>. Bạn có chắc muốn tiếp tục mua thêm?`,
+    `<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+       <a href="#/san-pham-chi-tiet?slug=${p.slug}" class="btn ghost">Hủy</a>
+       <button type="button" class="btn green" id="dupGoOn">Tiếp tục mua</button>
+     </div>`);
+}
+
 /* ---- UC-BUY-01 (1.1/1.2/1.3): Wizard chọn gói & điền thông tin ---- */
 function pageBuy(params){
   const p = findProduct(params.slug);
   if(!p || p.status!=='open') return page404();
+  if(!Auth.user) return renderLoginRequired(p);
+  const dup = findActiveContract(p);
+  if(dup && !DUP_CONFIRMED.has(p.slug)) return renderDupConfirm(p, dup);
   if(!ORDER || ORDER.product.slug!==p.slug) newOrder(p);
   return `
   <div class="page-head"><div class="container">
@@ -1314,6 +1353,28 @@ function pageBuy(params){
 }
 pageBuy.after=function(params){
   const p = findProduct(params.slug);
+  if(!Auth.user){
+    const next = encodeURIComponent('#/mua?slug='+p.slug);
+    modal(`<h3>Yêu cầu đăng nhập</h3>
+      <p class="muted">Bạn cần đăng nhập trước khi mua bảo hiểm <strong>${esc(p.name)}</strong>.</p>
+      <div class="modal-actions">
+        <button class="btn ghost" onclick="closeModal()">Để sau</button>
+        <button class="btn green" onclick="closeModal();location.hash='#/dang-nhap?next=${next}'">Đăng nhập ngay</button>
+      </div>`);
+    return;
+  }
+  const dup = findActiveContract(p);
+  if(dup && !DUP_CONFIRMED.has(p.slug)){
+    modal(`<h3>Bạn đang có hợp đồng còn hiệu lực</h3>
+      <p class="muted">Hợp đồng <strong>${esc(dup.contractNo)}</strong> (${esc(p.name)}) của bạn còn hiệu lực đến <strong>${viDate(dup.end)}</strong>. Bạn có chắc muốn tiếp tục mua thêm?</p>
+      <div class="modal-actions">
+        <button class="btn ghost" onclick="closeModal();location.hash='#/san-pham-chi-tiet?slug=${p.slug}'">Hủy</button>
+        <button class="btn green" id="dupModalGoOn">Tiếp tục mua</button>
+      </div>`);
+    $('#dupModalGoOn')?.addEventListener('click',()=>{ DUP_CONFIRMED.add(p.slug); closeModal(); render(); });
+    $('#dupGoOn')?.addEventListener('click',()=>{ DUP_CONFIRMED.add(p.slug); render(); });
+    return;
+  }
   const o = ORDER;
   let step = 1;
   const host=$('#buyStep');
