@@ -1171,7 +1171,7 @@ function pageBuy(params){
   </div></div>
   <section class="section"><div class="container">
     <div class="wizard-bar" id="wbar">
-      <div class="wstep on" data-s="1"><span class="n">1</span> Thông tin sản phẩm</div>
+      <div class="wstep on" data-s="1"><span class="n">1</span> Chọn gói bảo hiểm</div>
       <div class="wstep" data-s="2"><span class="n">2</span> Thông tin mua bảo hiểm</div>
       <div class="wstep" data-s="3"><span class="n">3</span> Thanh toán</div>
     </div>
@@ -1262,7 +1262,7 @@ pageBuy.after=function(params){
     $('#btnNext').textContent = step===3?'Thanh toán':'Tiếp theo →';
   }
 
-  /* ----- STEP 1 : Thông tin sản phẩm ----- */
+  /* ----- STEP 1 : Chọn gói bảo hiểm ----- */
   function renderStep1(){
     const terms = p.flow==='dien'?[1]:[1,2,3];
     const otoTypes = {
@@ -1270,7 +1270,7 @@ pageBuy.after=function(params){
       'kd':['Ô tô KD vận tải','Ô tô chở hàng (xe tải)','Bán tải, pickup','Đầu kéo']
     };
     host.innerHTML = `
-      <h3>Bước 1 · Thông tin sản phẩm</h3>
+      <h3>Bước 1 · Chọn gói bảo hiểm</h3>
       <div class="field">
         <label>Thời hạn bảo hiểm <span class="req">*</span></label>
         ${p.flow==='dien'
