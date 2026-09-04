@@ -583,7 +583,6 @@ table.data tr:last-child td{border-bottom:0}
       <h4>Sản phẩm</h4>
       <a href="#/san-pham?nhom=xe">TNDS xe máy</a>
       <a href="#/san-pham?nhom=xe">TNDS ô tô</a>
-      <a href="#/san-pham?nhom=xe">Vật chất xe</a>
       <a href="#/san-pham?nhom=con-nguoi">Tai nạn hộ sử dụng điện</a>
     </div>
     <div>
@@ -867,14 +866,6 @@ const PRODUCTS = [
      ],
    },
    packages:[{id:'basic',name:'Gói cơ bản (bắt buộc)',price:437000},{id:'plus',name:'Cơ bản + Tai nạn lái phụ xe',price:557000},{id:'pro',name:'Toàn diện + phụ phí',price:690000}]},
-
-  {slug:'vat-chat-o-to', group:'xe', flow:'none', name:'Bảo hiểm Thiệt hại vật chất xe ô tô',
-   short:'Bồi thường thiệt hại vật chất cho chính chiếc xe của bạn.',
-   from:0, cover:'Đang cập nhật', icon:'🔧', status:'soon', benefits:[],exclusions:[],packages:[]},
-
-  {slug:'vat-chat-xe-may', group:'xe', flow:'none', name:'Bảo hiểm Vật chất xe máy',
-   short:'Bồi thường thiệt hại vật chất, mất cắp bộ phận cho xe máy.',
-   from:0, cover:'Theo cấu hình', icon:'🛵', status:'soon', benefits:[],exclusions:[],packages:[]},
 
   {slug:'tai-nan-ho-su-dung-dien', group:'con-nguoi', flow:'dien', name:'Bảo hiểm Tai nạn Hộ sử dụng điện',
    short:'Bảo vệ chủ hộ và các thành viên trước rủi ro tai nạn liên quan sử dụng điện sinh hoạt.',
