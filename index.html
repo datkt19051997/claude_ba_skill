@@ -278,13 +278,14 @@ input:focus,select:focus,textarea:focus{outline:0;border-color:var(--vnpt-blue-6
 .disc dd{color:var(--vnpt-red)}
 
 /* radio cards */
-.radio-cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.radio-cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
 .radio-cards label{border:1.5px solid var(--line);border-radius:var(--radius-md);padding:16px;cursor:pointer;display:block;transition:.2s}
 .radio-cards label:hover{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050);transform:translateY(-2px)}
 .radio-cards input{display:none}
 .radio-cards label:has(input:checked){border-color:var(--vnpt-blue-700);background:var(--vnpt-blue-100);box-shadow:var(--shadow-sm)}
 .rc-body strong{display:block;color:var(--ink)}
 .rc-body .rc-price{font-weight:800;color:var(--vnpt-blue-900);margin-top:4px}
+.rc-body .rc-cover{list-style:none;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed var(--line);display:grid;gap:4px;font-size:.79rem;color:var(--ink-soft)}
 
 /* insurer logo select */
 .logo-select{display:flex;gap:10px;flex-wrap:wrap}
@@ -717,9 +718,16 @@ const PRODUCTS = [
   {slug:'tnds-xe-may', group:'xe', flow:'moto', name:'Bảo hiểm Bắt buộc TNDS xe mô tô, xe máy',
    short:'Bắt buộc theo quy định. Bồi thường thiệt hại về người và tài sản của bên thứ ba.',
    from:66000, cover:'Người 150 tr/vụ · Tài sản 50 tr/vụ', icon:'🏍️', status:'open',
-   benefits:['Trách nhiệm với người thứ ba: tối đa 150 triệu đồng/người/vụ','Trách nhiệm về tài sản: tối đa 50 triệu đồng/vụ','Hiệu lực toàn quốc, xử lý bồi thường 24/7'],
+   benefits:['Trách nhiệm với người thứ ba: tối đa 150 triệu đồng/người/vụ','Trách nhiệm về tài sản: tối đa 50 triệu đồng/vụ','Hiệu lực toàn quốc, xử lý bồi thường 24/7','Tùy chọn nâng cấp mức trách nhiệm cho lái, phụ xe và người ngồi trên xe (Gói Tiêu chuẩn / Nâng cao)'],
    exclusions:['Hành động cố ý gây thiệt hại của chủ xe, lái xe','Lái xe không có giấy phép hợp lệ, nồng độ cồn vượt mức','Xe đua, thử nghiệm, đi vào đường cấm'],
-   packages:[{id:'basic',name:'Gói cơ bản (bắt buộc)',price:66000},{id:'plus',name:'Cơ bản + Tai nạn người ngồi',price:86000}]},
+   packages:[
+     {id:'basic',name:'Gói cơ bản',price:66000,
+      cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'Không có'}},
+     {id:'tieuchuan',name:'Gói tiêu chuẩn',price:76000,
+      cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'5 tr.đ/người'}},
+     {id:'nangcao',name:'Gói nâng cao',price:86000,
+      cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'10 tr.đ/người'}},
+   ]},
 
   {slug:'tnds-o-to', group:'xe', flow:'oto', name:'Bảo hiểm Bắt buộc TNDS xe ô tô',
    short:'Bắt buộc theo quy định. Mức trách nhiệm cao với người và tài sản bên thứ ba.',
@@ -1102,8 +1110,8 @@ function pageProduct(params){
           <h3>Biểu phí tham khảo</h3>
           <p class="muted">Phí từ <strong>${money(p.from)}</strong>/năm, thay đổi theo cấu hình đối tượng bảo hiểm.</p>
           <div class="table-wrap"><table class="data">
-            <thead><tr><th>Gói bảo hiểm</th><th>Phí / năm</th></tr></thead>
-            <tbody>${p.packages.map(pk=>`<tr><td>${pk.name}</td><td>${money(pk.price)}</td></tr>`).join('')}</tbody>
+            <thead><tr><th>Gói bảo hiểm</th>${p.packages.some(pk=>pk.cover)?'<th>Người</th><th>Tài sản</th><th>Lái, phụ xe &amp; người ngồi trên xe</th>':''}<th>Phí / năm</th></tr></thead>
+            <tbody>${p.packages.map(pk=>`<tr><td>${pk.name}</td>${p.packages.some(x=>x.cover)?`<td>${pk.cover?.nguoi||'-'}</td><td>${pk.cover?.taisan||'-'}</td><td>${pk.cover?.laiphu||'-'}</td>`:''}<td>${money(pk.price)}</td></tr>`).join('')}</tbody>
           </table></div>
         </div>
         <div class="card pad" style="margin-top:18px">
@@ -1250,7 +1258,12 @@ pageBuy.after=function(params){
         <label>Gói bảo hiểm <span class="req">*</span></label>
         <div class="radio-cards" id="b-pkg">
           ${p.packages.map(pk=>`<label><input type="radio" name="pkg" value="${pk.id}" ${pk.id===o.package?'checked':''}>
-            <div class="rc-body"><strong>${pk.name}</strong><span class="rc-price">${money(pk.price)}/năm</span></div></label>`).join('')}
+            <div class="rc-body"><strong>${pk.name}</strong><span class="rc-price">${money(pk.price)}/năm</span>
+            ${pk.cover?`<ul class="rc-cover">
+              <li>Người: ${pk.cover.nguoi}</li>
+              <li>Tài sản: ${pk.cover.taisan}</li>
+              <li>Lái, phụ xe &amp; người ngồi trên xe: ${pk.cover.laiphu}</li>
+            </ul>`:''}</div></label>`).join('')}
         </div>
       </div>
       <div class="field">
