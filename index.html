@@ -830,7 +830,6 @@ const ROUTES = {
   '/gioi-thieu'  : pageAbout,
   '/san-pham'    : pageCatalog,
   '/san-pham-chi-tiet' : pageProduct,
-  '/bao-phi'     : pageQuote,
   '/mua'         : pageBuy,
   '/thanh-toan'  : pagePayment,
   '/ket-qua'     : pageResult,
@@ -946,7 +945,7 @@ function pageHome(){
         <p class="muted">Toàn bộ quy trình thực hiện trực tuyến, nhận GCN điện tử ngay sau khi thanh toán.</p>
       </div>
       <div class="steps3" style="margin-top:34px">
-        <div class="step"><h3>Tìm hiểu &amp; báo phí</h3><p class="muted mb0">Chọn sản phẩm, nhập thông tin đối tượng bảo hiểm để xem mức phí tham khảo.</p></div>
+        <div class="step"><h3>Tìm hiểu sản phẩm</h3><p class="muted mb0">Chọn sản phẩm phù hợp với nhu cầu bảo vệ của bạn.</p></div>
         <div class="step"><h3>Chọn gói &amp; điền thông tin</h3><p class="muted mb0">Chọn gói phù hợp, nhập thông tin người mua và đối tượng được bảo hiểm.</p></div>
         <div class="step"><h3>Xác nhận &amp; thanh toán</h3><p class="muted mb0">Áp mã giảm giá, xuất hóa đơn (tùy chọn), thanh toán VNPAY, nhận GCN qua Email/Zalo.</p></div>
       </div>
@@ -990,7 +989,7 @@ function prodCard(p){
       <div class="actions">
         <a href="#/san-pham-chi-tiet?slug=${p.slug}" class="btn ghost sm">Xem chi tiết</a>
         ${p.status==='open' && p.flow!=='none'
-          ? `<a href="#/bao-phi?slug=${p.slug}" class="btn green sm">Mua ngay</a>`
+          ? `<a href="#/mua?slug=${p.slug}" class="btn green sm">Mua ngay</a>`
           : `<button class="btn sm" disabled>Sắp ra mắt</button>`}
       </div>
     </div>
@@ -1119,132 +1118,13 @@ function pageProduct(params){
           <p class="muted" style="font-size:.9rem">${p.short}</p>
           <div class="price" style="font-weight:800;color:var(--vnpt-blue-dark);font-size:1.2rem">Phí từ ${money(p.from)}<span class="muted" style="font-weight:600">/năm</span></div>
           <div class="muted" style="font-size:.85rem;margin:6px 0 14px">${p.cover}</div>
-          <a href="#/bao-phi?slug=${p.slug}" class="btn green block">Mua ngay / Tính phí</a>
+          <a href="#/mua?slug=${p.slug}" class="btn green block">Mua ngay</a>
           <a href="#/lien-he" class="btn ghost block" style="margin-top:8px">Tư vấn</a>
         </div>
       </div>
     </div>
   </div></section>`;
 }
-
-/* ---- UC-PROD-03 : Nhập thông tin & xem báo phí (Bước 1) ---- */
-function pageQuote(params){
-  const p = findProduct(params.slug);
-  if(!p || p.status!=='open') return page404();
-  const cfgByFlow = {
-    moto:`<div class="field" data-required data-label="Loại xe" data-msg="Vui lòng chọn Loại xe">
-        <label>Loại xe <span class="req">*</span></label>
-        <select id="q-vtype"><option value="">-- Chọn loại xe --</option>
-          <option>Xe trên 50cc</option><option>Xe dưới 50cc</option><option>Xe máy điện</option></select>
-        <div class="err-msg"></div></div>`,
-    oto:`<div class="field" data-required data-label="Mục đích sử dụng">
-        <label>Mục đích sử dụng <span class="req">*</span></label>
-        <select id="q-purpose"><option value="khong-kd">Không kinh doanh</option><option value="kd">Có kinh doanh</option></select>
-        <div class="err-msg"></div></div>
-      <div class="field" data-required data-label="Số chỗ ngồi">
-        <label>Số chỗ ngồi <span class="req">*</span></label>
-        <input id="q-seats" type="number" min="1" max="99" placeholder="VD: 5">
-        <div class="hint">Chỉ số nguyên &gt; 0.</div><div class="err-msg"></div></div>`,
-    dien:`<div class="field">
-        <label>Số thành viên hộ dự kiến tham gia</label>
-        <input id="q-members" type="number" min="1" value="1">
-        <div class="hint">Có thể bổ sung danh sách thành viên ở bước sau.</div></div>`,
-  };
-  return `
-  <div class="page-head"><div class="container">
-    <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham-chi-tiet?slug=${p.slug}">${p.name}</a> / Báo phí</div>
-    <h1>Bước 1 · Nhập thông tin &amp; xem báo phí</h1>
-    <div class="wizard-bar" style="margin-top:14px;margin-bottom:0">
-      <div class="wstep on"><span class="n">1</span> Tìm hiểu &amp; báo phí</div>
-      <div class="wstep"><span class="n">2</span> Chọn gói &amp; điền thông tin</div>
-      <div class="wstep"><span class="n">3</span> Xác nhận &amp; thanh toán</div>
-    </div>
-  </div></div>
-  <section class="section"><div class="container">
-    <div class="layout-2">
-      <form class="card pad" id="quoteForm" novalidate>
-        <h3>${p.name}</h3>
-        ${cfgByFlow[p.flow]||''}
-        <div class="field">
-          <label>Thời hạn bảo hiểm <span class="req">*</span></label>
-          <div class="btn-group" id="q-term" data-val="1">
-            ${(p.flow==='dien'?[1]:[1,2,3]).map(y=>`<button type="button" data-y="${y}" class="${y===1?'on':''}">${y} năm</button>`).join('')}
-          </div>
-          ${p.flow==='dien'?'<div class="hint">Thời hạn bảo hiểm là 1 năm tính từ ngày bắt đầu.</div>':''}
-        </div>
-        <div class="form-grid">
-          <div class="field" data-required data-label="Ngày hiệu lực dự kiến">
-            <label>Ngày hiệu lực dự kiến <span class="req">*</span></label>
-            <input type="date" id="q-start" min="${todayISO()}" value="${params.date||todayISO()}">
-            <div class="hint">Ngày hiệu lực phải từ hôm nay trở đi.</div>
-            <div class="err-msg">Ngày hiệu lực phải từ hôm nay.</div>
-          </div>
-          <div class="field">
-            <label>Ngày kết thúc (tự tính)</label>
-            <input type="text" id="q-end" readonly value="${viDate(addYears(params.date||todayISO(),1))}">
-          </div>
-        </div>
-        <div class="field">
-          <label>Thông tin bổ sung (tùy chọn)</label>
-          <input type="text" id="q-extra" placeholder="VD: dung tích xe, giá trị tài sản...">
-        </div>
-        <button type="submit" class="btn green">Xem phí &amp; Tiếp tục →</button>
-      </form>
-
-      <div>
-        <div class="card pad summary-box">
-          <h3>Phí bảo hiểm tham khảo</h3>
-          <div id="q-result" class="muted">Nhập thông tin và bấm <strong>Xem phí</strong> để hệ thống tính mức phí.</div>
-          <div class="hint" style="margin-top:12px">Phí do hệ thống tự tính theo biểu phí sản phẩm (BR-01), không sửa tay.</div>
-        </div>
-      </div>
-    </div>
-  </div></section>`;
-}
-pageQuote.after=function(params){
-  const p = findProduct(params.slug);
-  const term=$('#q-term');
-  const recalcEnd=()=>{
-    const y=+term.dataset.val;
-    $('#q-end').value = viDate(addYears($('#q-start').value||todayISO(), y));
-  };
-  $$('#q-term button').forEach(b=>b.addEventListener('click',()=>{
-    $$('#q-term button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on'); term.dataset.val=b.dataset.y; recalcEnd();
-    if(!$('#q-result').dataset.done) return; showQuote();
-  }));
-  $('#q-start').addEventListener('change',recalcEnd);
-
-  function showQuote(){
-    const o = newOrder(p);
-    o.term = +term.dataset.val;
-    o.startDate = $('#q-start').value;
-    o.vehicleType = $('#q-vtype')?.value || '';
-    o.purpose = $('#q-purpose')?.value || 'khong-kd';
-    o.seats = $('#q-seats')?.value || '';
-    const f = calcFees();
-    $('#q-result').dataset.done='1';
-    $('#q-result').innerHTML = `
-      <div style="font-size:1.9rem;font-weight:800;color:var(--vnpt-blue-dark)">${money(f.gross)}</div>
-      <div class="muted" style="font-size:.85rem">Đã gồm VAT · Gói: ${p.packages[0].name} · ${o.term} năm</div>
-      <dl style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:14px 0;font-size:.88rem">
-        <dt class="muted">Phí chưa VAT</dt><dd style="text-align:right">${money(f.base)}</dd>
-        <dt class="muted">VAT 10%</dt><dd style="text-align:right">${money(f.vat)}</dd>
-      </dl>
-      <a href="#/mua?slug=${p.slug}" class="btn green block" id="q-continue">Tiếp tục / Mua →</a>`;
-    $('#q-continue').addEventListener('click',()=>{
-      o.term=+term.dataset.val; o.startDate=$('#q-start').value;
-    });
-  }
-  $('#quoteForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    if(!validateForm($('#quoteForm'))){ toast('Vui lòng kiểm tra lại thông tin.','err'); return; }
-    const d=$('#q-start').value;
-    if(!d || d<todayISO()){ setErr($('#q-start').closest('.field'),'Ngày hiệu lực phải từ hôm nay.'); return; }
-    showQuote();
-    toast('Đã tính phí theo biểu phí sản phẩm.','ok');
-  });
-};
 
 /* ---- UC-BUY-01 (1.1/1.2/1.3): Wizard chọn gói & điền thông tin ---- */
 function pageBuy(params){
@@ -1254,11 +1134,10 @@ function pageBuy(params){
   return `
   <div class="page-head"><div class="container">
     <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham-chi-tiet?slug=${p.slug}">${p.name}</a> / Mua bảo hiểm</div>
-    <h1>Bước 2 · Chọn gói &amp; điền thông tin</h1>
+    <h1>Chọn gói &amp; điền thông tin</h1>
   </div></div>
   <section class="section"><div class="container">
     <div class="wizard-bar" id="wbar">
-      <div class="wstep done"><span class="n">✓</span> Báo phí</div>
       <div class="wstep on" data-s="1"><span class="n">1</span> Thông tin sản phẩm</div>
       <div class="wstep" data-s="2"><span class="n">2</span> Thông tin mua bảo hiểm</div>
       <div class="wstep" data-s="3"><span class="n">3</span> Thanh toán</div>
@@ -1316,7 +1195,7 @@ pageBuy.after=function(params){
       el.classList.toggle('done',s<step);
       $('.n',el).textContent = s<step?'✓':s;
     });
-    $('#btnPrev').textContent = step===1?'< Về báo phí':'< Quay lại';
+    $('#btnPrev').textContent = step===1?'< Về trang sản phẩm':'< Quay lại';
     $('#btnNext').textContent = step===3?'Thanh toán':'Tiếp theo →';
   }
 
@@ -1666,7 +1545,7 @@ pageBuy.after=function(params){
     paint();
   }
   function goPrev(){
-    if(step===1){ location.hash = `#/bao-phi?slug=${p.slug}`; return; }
+    if(step===1){ location.hash = `#/san-pham-chi-tiet?slug=${p.slug}`; return; }
     step--; paint();
   }
   function paint(){
@@ -2106,7 +1985,7 @@ function orderCardHtml(o){
     actions = `<button class="btn green sm" onclick="toast('Đang tải GCN-${o.contractNo}.pdf','ok')">⬇ Tải GCN</button>
                <a class="btn ghost sm" href="#/hop-dong?no=${o.contractNo}">Xem hợp đồng</a>`;
   }else if(o.status==='cancelled'){
-    actions = `<a class="btn ghost sm" href="#/bao-phi?slug=${o.productSlug}">Mua lại</a>`;
+    actions = `<a class="btn ghost sm" href="#/mua?slug=${o.productSlug}">Mua lại</a>`;
   }
   return `<div class="order-card">
     <div class="oc-h">
