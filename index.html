@@ -1271,14 +1271,6 @@ function pageProduct(params){
           <ul class="excl-list">${p.exclusions.map(b=>`<li>${b}</li>`).join('')}</ul>
         </div>
         <div class="card pad" style="margin-top:18px">
-          <h3>Biểu phí tham khảo</h3>
-          <p class="muted">Phí từ <strong>${money(p.from)}</strong>/năm, thay đổi theo cấu hình đối tượng bảo hiểm.</p>
-          <div class="table-wrap"><table class="data">
-            <thead><tr><th>Gói bảo hiểm</th>${p.packages.some(pk=>pk.cover)?'<th>Người</th><th>Tài sản</th><th>Lái, phụ xe &amp; người ngồi trên xe</th>':''}<th>Phí / năm</th></tr></thead>
-            <tbody>${p.packages.map(pk=>`<tr><td>${pk.name}</td>${p.packages.some(x=>x.cover)?`<td>${pk.cover?.nguoi||'-'}</td><td>${pk.cover?.taisan||'-'}</td><td>${pk.cover?.laiphu||'-'}</td>`:''}<td>${money(pk.price)}</td></tr>`).join('')}</tbody>
-          </table></div>
-        </div>
-        <div class="card pad" style="margin-top:18px">
           <h3>Tài liệu &amp; Quy tắc</h3>
           <p class="muted">Quy tắc, điều khoản sản phẩm (PDF).</p>
           <button class="btn ghost sm" onclick="toast('Mô phỏng: đang tải Quy-tac-${p.slug}.pdf','ok')">⬇ Tải Quy tắc bảo hiểm (.pdf)</button>
