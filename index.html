@@ -1,0 +1,2932 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0d5596" />
+<title>VNPT Bảo hiểm Online – Prototype (URD BHTM v1.0)</title>
+<style>
+/* ===================================================================
+   VNPT BẢO HIỂM ONLINE – prototype
+   Style theo mẫu passv_landing_page_flow (design system PASSV / VNPT)
+   =================================================================== */
+:root{
+  --font-ui:"Segoe UI","Noto Sans",Arial,Helvetica,sans-serif;
+  --font-emoji:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
+
+  --vnpt-blue-900:#062b52;
+  --vnpt-blue-800:#0a3d70;
+  --vnpt-blue-700:#0d5596;
+  --vnpt-blue-600:#0f6bb8;
+  --vnpt-blue-500:#1487d9;
+  --vnpt-blue-100:#e6f2fb;
+  --vnpt-blue-050:#f3f9fd;
+  --accent-orange:#ff8a1e;
+
+  --ink:#0b2540;
+  --ink-soft:#4b6178;
+  --white:#ffffff;
+  --line:#dde9f3;
+
+  /* alias cho markup cũ */
+  --vnpt-blue:var(--vnpt-blue-600);
+  --vnpt-blue-dark:var(--vnpt-blue-700);
+  --vnpt-cyan:var(--vnpt-blue-500);
+  --vnpt-green:var(--accent-orange);
+  --vnpt-green-dark:#e5771a;
+  --vnpt-red:#ef4444;
+  --bg:var(--white);
+  --card:var(--white);
+
+  --radius:14px;
+  --radius-lg:20px;
+  --radius-md:14px;
+  --radius-sm:10px;
+  --shadow-sm:0 4px 14px -6px rgba(10,61,112,.15);
+  --shadow-md:0 10px 30px -12px rgba(10,61,112,.18);
+  --shadow-lg:0 24px 50px -18px rgba(10,61,112,.30);
+  --maxw:1180px;
+  --header-h:76px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;font-family:var(--font-ui);color:var(--ink);background:var(--white);
+  line-height:1.6;font-size:clamp(14px,.9rem + .12vw,15.5px);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img,svg{max-width:100%;display:block}
+a{color:var(--vnpt-blue-700);text-decoration:none}
+a:hover{text-decoration:none}
+h1,h2,h3,h4{line-height:1.15;margin:0 0 .5em;color:var(--vnpt-blue-900);font-weight:800;letter-spacing:-.01em}
+h1{font-size:clamp(1.9rem,1.3rem + 2.4vw,3.1rem)}
+h2{font-size:clamp(1.5rem,1.1rem + 1.7vw,2.25rem)}
+h3{font-size:clamp(1.1rem,.98rem + .5vw,1.35rem)}
+p{margin:0 0 1rem}
+.container{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(18px,4vw,24px)}
+.section{padding-block:clamp(40px,6vw,64px)}
+.section:nth-of-type(even){background:var(--vnpt-blue-050)}
+.muted{color:var(--ink-soft)}
+.center{text-align:center}
+.mt0{margin-top:0}.mb0{margin-bottom:0}
+.grid{display:grid;gap:clamp(16px,2.4vw,24px)}
+.hide{display:none!important}
+
+/* eyebrow / tag pill */
+.tag{
+  display:inline-flex;align-items:center;gap:8px;font-size:.74rem;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;padding:.4em .9em;border-radius:999px;background:var(--vnpt-blue-100);color:var(--vnpt-blue-700);
+}
+.tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-orange);flex:0 0 auto}
+.tag.soon{background:#fff1e2;color:#b26a00}
+.tag.ok{background:#e7f7f0;color:#0f9d63}
+.tag.ok::before{background:#10b981}
+.tag.warn{background:#fdecec;color:#d13b3b}
+.tag.warn::before{background:#ef4444}
+.tag.wait{background:#eef2f7;color:#5b6b7b}
+.tag.wait::before{background:#94a3b8}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* ================= BUTTONS ================= */
+.btn{
+  --_bg:var(--vnpt-blue-600);--_fg:#fff;
+  display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+  font:inherit;font-weight:700;cursor:pointer;line-height:1;
+  padding:.85em 1.6em;border-radius:999px;border:1.5px solid transparent;
+  background:var(--_bg);color:var(--_fg);
+  box-shadow:0 10px 24px -8px rgba(15,107,184,.55);
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease;text-decoration:none;white-space:nowrap;
+}
+.btn:hover{transform:translateY(-2px);text-decoration:none;background:var(--vnpt-blue-700)}
+.btn:active{transform:translateY(0)}
+.btn.green{--_bg:var(--accent-orange);--_fg:#fff;box-shadow:0 10px 24px -8px rgba(255,138,30,.55)}
+.btn.green:hover{background:var(--vnpt-green-dark)}
+.btn.ghost{--_bg:transparent;--_fg:var(--vnpt-blue-700);border-color:var(--vnpt-blue-600);box-shadow:none}
+.btn.ghost:hover{background:var(--vnpt-blue-050)}
+.btn.light{--_bg:rgba(255,255,255,.14);--_fg:#fff;border-color:rgba(255,255,255,.5);box-shadow:none}
+.btn.light:hover{background:rgba(255,255,255,.24)}
+.btn.sm{padding:.6em 1.15em;font-size:.85rem;box-shadow:none}
+.btn.block{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ================= HEADER ================= */
+.site-header{position:sticky;top:0;z-index:1200;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(6,43,82,.02)}
+
+.navbar{display:flex;align-items:center;gap:clamp(16px,3vw,44px);min-height:var(--header-h);flex-wrap:nowrap}
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto;font-weight:800;color:var(--vnpt-blue-800)}
+.brand svg{height:34px;width:auto}
+.brand small{display:block;font-size:.62rem;color:var(--ink-soft);font-weight:700;letter-spacing:.09em;border-left:1px solid var(--line);padding-left:10px}
+
+/* menu group: links + actions, one row, no wrap */
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;flex-wrap:nowrap;white-space:nowrap}
+.nav-links > a,.nav-links .has-sub > a{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:.55em .72em;color:var(--ink-soft);font-weight:600;font-size:clamp(.82rem,.6rem + .3vw,.92rem);
+  border-radius:9px;position:relative;transition:color .2s,background .2s;
+}
+.nav-links > a::after,.nav-links .has-sub > a::after{
+  content:"";position:absolute;left:.72em;right:.72em;bottom:-2px;height:2.5px;border-radius:2px;background:var(--vnpt-blue-700);
+  transform:scaleX(0);transform-origin:right;transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.nav-links > a:hover,.nav-links .has-sub > a:hover{color:var(--vnpt-blue-700);background:var(--vnpt-blue-050)}
+.nav-links > a.active,.nav-links .has-sub > a.active{color:var(--vnpt-blue-700)}
+.nav-links > a.active::after,.nav-links .has-sub > a.active::after{transform:scaleX(1);transform-origin:left}
+
+.nav-cta{display:flex;gap:8px;align-items:center;margin-left:12px;padding-left:14px;border-left:1px solid var(--line);flex:0 0 auto}
+.nav-cta .btn,.nav-cta .btn:hover{padding:.62em 1.05em;font-size:clamp(.8rem,.6rem + .3vw,.88rem);color:var(--_fg)}
+.nav-cta .btn::after{display:none}
+.nav-cta .btn .nav-icon{width:15px;height:15px;flex:0 0 auto}
+
+/* account chip trên header khi đã đăng nhập */
+.acct-chip{
+  display:inline-flex;align-items:center;gap:8px;padding:.28em .95em .28em .28em;
+  border-radius:999px;background:#fff;border:1.5px solid var(--line);
+  color:var(--ink)!important;font-weight:700;font-size:.85rem;text-decoration:none;transition:.2s;white-space:nowrap;
+}
+.acct-chip:hover{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050)}
+.acct-chip .chip-avatar{
+  width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  font-weight:800;font-size:.7rem;letter-spacing:-.02em;color:#fff;
+  background:linear-gradient(140deg,var(--vnpt-blue-600),var(--vnpt-blue-900));
+}
+.acct-chip .chip-name{max-width:118px;overflow:hidden;text-overflow:ellipsis}
+.acct-chip .chip-caret{width:7px;height:7px;border-right:2px solid var(--ink-soft);border-bottom:2px solid var(--ink-soft);transform:rotate(45deg);margin-left:-2px;flex:0 0 auto}
+
+.has-sub{position:relative}
+.has-sub > a::before{content:"";position:absolute;left:0;right:0;top:100%;height:14px}
+.has-sub > a .caret{width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-1px);transition:transform .25s;opacity:.7}
+.has-sub:hover > a .caret{transform:rotate(225deg) translateY(2px)}
+.submenu{
+  position:absolute;top:calc(100% + 10px);left:50%;transform:translate(-50%,8px);min-width:250px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius-md);box-shadow:var(--shadow-lg);padding:8px;
+  opacity:0;visibility:hidden;transition:opacity .2s ease,transform .2s ease;
+}
+.has-sub:hover .submenu,.has-sub:focus-within .submenu{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.submenu::before{content:"";position:absolute;top:-6px;left:50%;width:12px;height:12px;background:#fff;border-left:1px solid var(--line);border-top:1px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+.submenu a{display:block;padding:.62em .8em;border-radius:8px;font-weight:600;font-size:.88rem;color:var(--ink);white-space:nowrap}
+.submenu a::after{display:none}
+.submenu a:hover{background:var(--vnpt-blue-050);color:var(--vnpt-blue-800)}
+
+.hamburger{margin-left:auto;display:none;background:none;border:0;cursor:pointer;padding:9px;border-radius:10px}
+.hamburger:hover{background:var(--vnpt-blue-050)}
+.hamburger span{display:block;width:24px;height:2px;background:var(--vnpt-blue-900);margin:5px 0;border-radius:2px;transition:.25s}
+body.nav-open .hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+body.nav-open .hamburger span:nth-child(2){opacity:0}
+body.nav-open .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+@media (max-width:1200px){
+  .navbar{gap:16px}
+  .nav-links{
+    position:fixed;inset:var(--header-h) 0 auto 0;background:#fff;flex-direction:column;
+    align-items:stretch;gap:2px;padding:12px clamp(18px,4vw,24px) 24px;box-shadow:var(--shadow-lg);
+    transform:translateY(-130%);transition:transform .3s ease;max-height:calc(100dvh - var(--header-h));overflow:auto;white-space:normal;
+  }
+  body.nav-open .nav-links{transform:translateY(0)}
+  .nav-links > a,.nav-links .has-sub > a{padding:.95em .6em;border-bottom:1px solid var(--line);border-radius:0;font-size:.95rem}
+  .nav-links > a::after,.nav-links .has-sub > a::after{display:none}
+  .has-sub > a .caret{margin-left:auto}
+  .has-sub:hover > a .caret{transform:rotate(45deg)}
+  .submenu{position:static;opacity:1;visibility:visible;transform:none;display:block;box-shadow:none;border:0;border-radius:0;padding:0 0 0 14px;min-width:0}
+  .submenu::before{display:none}
+  .submenu a{font-size:.86rem;color:var(--ink-soft)}
+  .nav-cta{margin:14px 0 0;padding:0;border:0;flex-direction:column;align-items:stretch}
+  .nav-cta .btn{width:100%}
+  .acct-chip{width:100%}
+  .acct-chip .chip-name{max-width:none;flex:1}
+  .hamburger{display:block}
+}
+@media (max-width:420px){
+  .brand small{display:none}
+}
+
+/* ================= HERO ================= */
+.hero{
+  position:relative;color:#fff;overflow:hidden;
+  background:radial-gradient(ellipse at 20% 20%,var(--vnpt-blue-700) 0%,var(--vnpt-blue-900) 55%,#041c37 100%);
+}
+.hero::after{
+  content:"";position:absolute;right:-8%;top:-30%;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,rgba(255,138,30,.35),transparent 65%);
+}
+.hero .container{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;padding-block:clamp(48px,7vw,88px)}
+.hero .container.hero-solo{grid-template-columns:1fr;max-width:760px}
+.hero h1{color:#fff}
+.hero h1 span{color:var(--accent-orange)}
+.hero p{color:#c9dcee;font-size:clamp(1rem,.95rem + .3vw,1.1rem);max-width:50ch}
+.hero-points{list-style:none;padding:0;margin:20px 0 28px;display:grid;gap:11px}
+.hero-points li{display:flex;gap:11px;align-items:flex-start;color:#eaf4fd;font-weight:600}
+.hero-points li::before{content:"✓";display:grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--vnpt-blue-600);color:#fff;flex:0 0 auto;font-size:.78rem;font-weight:800}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+@media (max-width:900px){.hero .container{grid-template-columns:1fr;gap:30px}}
+
+/* ================= FORM CONTROLS ================= */
+input,select,textarea{
+  width:100%;font:inherit;color:var(--ink);background:#fff;
+  border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:.75em .9em;transition:border .15s,box-shadow .15s;
+}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--vnpt-blue-600);box-shadow:0 0 0 3px rgba(15,107,184,.1)}
+.field{margin-bottom:16px}
+.field > label,.lbl{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem;color:var(--ink)}
+.field .req{color:var(--vnpt-red)}
+.hint{font-size:.79rem;color:var(--ink-soft);margin-top:4px}
+.err-msg{display:none;font-size:.78rem;color:var(--vnpt-red);margin-top:3px;font-weight:600}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--vnpt-red);background:#fff8f8}
+.field.invalid input:focus,.field.invalid select:focus,.field.invalid textarea:focus{box-shadow:0 0 0 3px rgba(239,68,68,.1)}
+.field.invalid .err-msg{display:block}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;margin-bottom:14px;cursor:pointer}
+.check input{width:18px;height:18px;margin-top:2px;flex:0 0 auto;accent-color:var(--vnpt-blue-700)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+.form-grid .full{grid-column:1/-1}
+@media (max-width:640px){.form-grid{grid-template-columns:1fr}}
+.btn-group{display:flex;flex-wrap:wrap;gap:8px}
+.btn-group button{
+  flex:1 1 auto;min-width:88px;padding:.7em 1em;border:1.5px solid var(--line);background:#fff;border-radius:var(--radius-sm);
+  font:inherit;font-weight:700;cursor:pointer;color:var(--ink-soft);transition:all .2s;
+}
+.btn-group button:hover{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050)}
+.btn-group button.on{border-color:var(--vnpt-blue-700);background:var(--vnpt-blue-100);color:var(--vnpt-blue-900)}
+
+/* ================= CARDS ================= */
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+.card.pad{padding:clamp(20px,3vw,28px)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:clamp(16px,2.4vw,22px)}
+.prod-card{display:flex;flex-direction:column;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}
+.prod-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--vnpt-blue-100)}
+.prod-card .thumb{aspect-ratio:16/10;background:linear-gradient(135deg,var(--vnpt-blue-100),#d6ebf7);display:grid;place-items:center;color:var(--vnpt-blue-700);font-size:2.8rem}
+.prod-card .body{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.prod-card .body h3{margin:0;font-size:1.05rem}
+.prod-card .price{font-weight:800;color:var(--vnpt-blue-900)}
+.prod-card .price span{font-weight:600;color:var(--ink-soft);font-size:.82rem}
+.prod-card .actions{margin-top:auto;display:flex;gap:8px;padding-top:6px}
+.feature-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.feature-tabs button{
+  padding:.6em 1.2em;border-radius:999px;border:1.5px solid var(--line);background:#fff;font:inherit;font-weight:700;
+  cursor:pointer;color:var(--ink-soft);transition:all .2s;
+}
+.feature-tabs button:hover{border-color:var(--vnpt-blue-500);color:var(--vnpt-blue-700)}
+.feature-tabs button.on{background:var(--vnpt-blue-700);border-color:var(--vnpt-blue-700);color:#fff;box-shadow:var(--shadow-sm)}
+
+/* steps */
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;counter-reset:s}
+.steps3 .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:34px 28px;box-shadow:var(--shadow-sm);position:relative}
+.steps3 .step::before{counter-increment:s;content:counter(s);width:44px;height:44px;border-radius:12px;background:var(--vnpt-blue-800);color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.05rem;margin-bottom:18px}
+.steps3 .step:nth-child(2)::before{background:var(--vnpt-blue-600)}
+.steps3 .step:nth-child(3)::before{background:var(--accent-orange)}
+.steps3 .step h3{font-size:1.15rem;margin-bottom:10px}
+@media (max-width:760px){.steps3{grid-template-columns:1fr}}
+
+/* wizard progress */
+.wizard-bar{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap}
+.wizard-bar .wstep{flex:1 1 150px;padding:12px 14px;border-radius:var(--radius-sm);background:var(--vnpt-blue-050);border:1px solid var(--line);font-weight:700;font-size:.85rem;color:var(--ink-soft);display:flex;gap:8px;align-items:center}
+.wizard-bar .wstep .n{width:24px;height:24px;border-radius:7px;background:#cdd8e3;color:#fff;display:grid;place-items:center;font-size:.78rem;flex:0 0 auto;font-weight:800}
+.wizard-bar .wstep.on{background:var(--vnpt-blue-100);border-color:var(--vnpt-blue-100);color:var(--vnpt-blue-900)}
+.wizard-bar .wstep.on .n{background:var(--vnpt-blue-700)}
+.wizard-bar .wstep.done .n{background:var(--accent-orange)}
+
+.layout-2{display:grid;grid-template-columns:1fr 350px;gap:32px;align-items:start}
+@media (max-width:900px){.layout-2{grid-template-columns:1fr}}
+.summary-box{position:sticky;top:calc(var(--header-h) + 16px);border:2px solid var(--vnpt-blue-600)!important;border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+.summary-box h3{font-size:1.15rem;color:var(--vnpt-blue-900)}
+.summary-box dl{display:grid;grid-template-columns:auto 1fr;gap:9px 12px;margin:0;font-size:.88rem}
+.summary-box dt{color:var(--ink-soft)}
+.summary-box dd{margin:0;text-align:right;font-weight:700;color:var(--ink)}
+.summary-box .total{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.summary-box .total dd{color:var(--vnpt-blue-900);font-size:1.2rem;font-weight:800}
+.disc dd{color:var(--vnpt-red)}
+
+/* radio cards */
+.radio-cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.radio-cards label{border:1.5px solid var(--line);border-radius:var(--radius-md);padding:16px;cursor:pointer;display:block;transition:.2s}
+.radio-cards label:hover{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050);transform:translateY(-2px)}
+.radio-cards input{display:none}
+.radio-cards label:has(input:checked){border-color:var(--vnpt-blue-700);background:var(--vnpt-blue-100);box-shadow:var(--shadow-sm)}
+.rc-body strong{display:block;color:var(--ink)}
+.rc-body .rc-price{font-weight:800;color:var(--vnpt-blue-900);margin-top:4px}
+.rc-body .rc-cover{list-style:none;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed var(--line);display:grid;gap:4px;font-size:.79rem;color:var(--ink-soft)}
+
+/* insurer select */
+.insurer-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.insurer-grid label{cursor:pointer}
+.insurer-grid input{display:none}
+.insurer-card{
+  position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
+  border:1.5px solid var(--line);border-radius:var(--radius-md);padding:18px 12px;background:#fff;transition:.2s;height:100%;
+}
+.insurer-grid label:hover .insurer-card{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050);transform:translateY(-2px)}
+.insurer-grid label:has(input:checked) .insurer-card{border-color:var(--vnpt-blue-700);background:var(--vnpt-blue-100);box-shadow:var(--shadow-sm)}
+.insurer-logo{
+  width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;
+  font-weight:800;font-size:.78rem;letter-spacing:.02em;box-shadow:0 8px 16px -8px rgba(10,61,112,.45);
+}
+.insurer-name{font-weight:700;font-size:.83rem;color:var(--ink);line-height:1.3}
+.insurer-tick{
+  position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--vnpt-blue-700);
+  color:#fff;display:none;place-items:center;font-size:.68rem;font-weight:800;box-shadow:var(--shadow-sm);
+}
+.insurer-grid label:has(input:checked) .insurer-tick{display:grid}
+
+/* fee loading spinner */
+.spinner{width:18px;height:18px;border:2.5px solid var(--vnpt-blue-100);border-top-color:var(--vnpt-blue-600);border-radius:50%;flex:0 0 auto;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spinner{animation-duration:2s}}
+
+/* product detail — quyền lợi bảo hiểm hiện đại */
+.tagline{color:var(--ink-soft);font-size:1.02rem;max-width:64ch;margin-top:8px}
+.benefit-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.benefit-card{border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;background:linear-gradient(180deg,#fff,var(--vnpt-blue-050) 260%);transition:.2s}
+.benefit-card:hover{border-color:var(--vnpt-blue-500);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.benefit-card .b-icon{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;background:var(--vnpt-blue-100);margin-bottom:12px}
+.benefit-card h4{margin:0 0 6px;font-size:1rem;color:var(--vnpt-blue-900)}
+.benefit-card p{margin:0;font-size:.86rem;color:var(--ink-soft);line-height:1.5}
+.benefit-card .b-stat{display:inline-block;margin-top:12px;padding:.35em .85em;border-radius:999px;background:var(--vnpt-blue-100);color:var(--vnpt-blue-800);font-weight:800;font-size:.79rem}
+
+.kv-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kv-card{border:1px solid var(--line);border-radius:var(--radius-md);padding:16px;background:var(--vnpt-blue-050)}
+.kv-card .kv-label{font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--vnpt-blue-700)}
+.kv-card .kv-value{margin-top:6px;font-size:.9rem;color:var(--ink);line-height:1.55}
+.kv-card.highlight{background:linear-gradient(135deg,var(--vnpt-blue-700),var(--vnpt-blue-900));border-color:transparent}
+.kv-card.highlight .kv-label{color:#bfe0fb}
+.kv-card.highlight .kv-value{color:#fff;font-weight:700}
+
+.legal-alert{display:flex;gap:12px;align-items:flex-start;border:1px solid #fbdca0;background:#fff8ea;border-radius:var(--radius-md);padding:16px}
+.legal-alert .la-icon{font-size:1.25rem;flex:0 0 auto;line-height:1.4}
+.legal-alert p{margin:0;font-size:.87rem;color:#7a4a00;line-height:1.55}
+
+.excl-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.excl-list li{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:var(--ink-soft);line-height:1.5}
+.excl-list li::before{content:"✕";flex:0 0 auto;width:20px;height:20px;border-radius:6px;background:#fdecec;color:var(--vnpt-red);display:grid;place-items:center;font-size:.66rem;font-weight:800;margin-top:1px}
+
+.step-list{list-style:none;padding:0;margin:0;display:grid;gap:12px;counter-reset:st}
+.step-list li{display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--ink-soft);line-height:1.5}
+.step-list li::before{counter-increment:st;content:counter(st);flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--vnpt-blue-700);color:#fff;display:grid;place-items:center;font-size:.75rem;font-weight:800}
+
+/* table */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+table.data{width:100%;border-collapse:collapse;min-width:560px}
+table.data th,table.data td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:.88rem}
+table.data th{background:var(--vnpt-blue-050);color:var(--vnpt-blue-900);font-weight:700}
+table.data td:first-child{background:var(--vnpt-blue-050);color:var(--ink-soft);font-weight:500}
+table.data tr:last-child td{border-bottom:0}
+
+/* timeline */
+.timeline{list-style:none;padding:0;margin:0;position:relative}
+.timeline li{padding:0 0 22px 30px;position:relative}
+.timeline li::before{content:"";position:absolute;left:5px;top:4px;width:12px;height:12px;border-radius:50%;background:#cdd8e3}
+.timeline li::after{content:"";position:absolute;left:10px;top:16px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child::after{display:none}
+.timeline li.done::before{background:var(--accent-orange)}
+.timeline li.current::before{background:var(--vnpt-blue-700);box-shadow:0 0 0 4px rgba(13,85,150,.2)}
+.timeline small{color:var(--ink-soft)}
+
+/* section head helper */
+.page-head{background:var(--vnpt-blue-050);border-bottom:1px solid var(--line)}
+.page-head .container{padding-block:clamp(24px,4vw,44px)}
+.breadcrumb{font-size:.83rem;color:var(--ink-soft);padding-top:18px}
+.breadcrumb a{color:var(--ink-soft)}
+.breadcrumb a:hover{color:var(--vnpt-blue-700)}
+
+/* ===== TÀI KHOẢN: menu + nội dung gói trong 1 block ===== */
+.acct-shell{display:grid;grid-template-columns:252px minmax(0,1fr);background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);overflow:hidden}
+.acct-side{background:var(--vnpt-blue-050);border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;gap:4px}
+.acct-user{display:flex;gap:12px;align-items:center;padding:4px 6px 16px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.acct-avatar{width:44px;height:44px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;font-weight:800;font-size:1rem;color:#fff;background:linear-gradient(140deg,var(--vnpt-blue-600),var(--vnpt-blue-900))}
+.acct-user b{display:block;font-size:.92rem;color:var(--ink);line-height:1.3}
+.acct-user span{font-size:.76rem;color:var(--ink-soft);word-break:break-all}
+.acct-menu{display:flex;flex-direction:column;gap:2px}
+.acct-menu a{display:flex;align-items:center;gap:11px;padding:.72em .8em;border-radius:10px;font-weight:600;font-size:.9rem;color:var(--ink-soft);transition:background .15s,color .15s}
+.acct-menu a svg{width:18px;height:18px;flex:0 0 auto}
+.acct-menu a:hover{background:#fff;color:var(--vnpt-blue-700)}
+.acct-menu a.on{background:var(--vnpt-blue-700);color:#fff;box-shadow:var(--shadow-sm)}
+.acct-menu .m-badge{margin-left:auto;background:var(--accent-orange);color:#fff;font-size:.68rem;font-weight:800;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:grid;place-items:center}
+.acct-menu a.on .m-badge{background:#fff;color:var(--vnpt-blue-700)}
+.acct-side .acct-logout{margin-top:12px;display:flex;align-items:center;gap:11px;padding:.72em .8em;background:none;border:0;border-top:1px solid var(--line);border-radius:0;cursor:pointer;font:inherit;font-weight:600;font-size:.9rem;color:var(--vnpt-red);width:100%}
+.acct-logout svg{width:18px;height:18px;flex:0 0 auto}
+.acct-logout:hover{background:#fdecec;border-radius:0 0 10px 10px}
+.acct-body{padding:clamp(18px,3vw,28px);min-width:0}
+.acct-body > h2:first-child,.acct-body > h3:first-child{margin-top:0}
+.acct-body .info-grid .stat{background:var(--vnpt-blue-050);box-shadow:none}
+@media (max-width:860px){
+  .acct-shell{grid-template-columns:minmax(0,1fr)}
+  .acct-side{border-right:0;border-bottom:1px solid var(--line)}
+  .acct-user{padding-bottom:12px;margin-bottom:10px}
+  .acct-menu{flex-direction:row;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:4px;padding-bottom:4px}
+  .acct-menu a{white-space:nowrap;flex:0 0 auto}
+  .acct-logout{margin-top:10px;padding-top:10px}
+}
+
+/* legacy tab strip (kept for compatibility) */
+.acct-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px}
+.acct-tabs a{padding:.6em 1.15em;border-radius:999px;font-weight:700;font-size:.86rem;color:var(--ink-soft);background:#fff;border:1.5px solid var(--line);transition:all .2s}
+.acct-tabs a:hover{border-color:var(--vnpt-blue-500);color:var(--vnpt-blue-700)}
+.acct-tabs a.on{background:var(--vnpt-blue-700);border-color:var(--vnpt-blue-700);color:#fff;box-shadow:var(--shadow-sm)}
+.order-card{border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;background:#fff;box-shadow:var(--shadow-sm)}
+.order-card + .order-card{margin-top:14px}
+.order-card .oc-h{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.order-card .oc-no{font-size:.78rem;color:var(--ink-soft);font-weight:700;letter-spacing:.02em}
+.order-card h3{margin:.15em 0 0;font-size:1.05rem}
+.order-card .oc-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.86rem;margin:12px 0;color:var(--ink-soft)}
+.order-card .oc-meta b{color:var(--ink);font-weight:600}
+.order-card .oc-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+.order-card .oc-amt{font-weight:800;color:var(--vnpt-blue-900);font-size:1.05rem}
+.order-steps{display:flex;gap:0;margin:4px 0 2px;font-size:.72rem}
+.order-steps .os{flex:1;text-align:center;color:var(--ink-soft);position:relative;padding-top:16px}
+.order-steps .os::before{content:"";position:absolute;top:4px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:#cdd8e3}
+.order-steps .os::after{content:"";position:absolute;top:8px;left:50%;width:100%;height:2px;background:var(--line);z-index:-1}
+.order-steps .os:last-child::after{display:none}
+.order-steps .os.done{color:var(--vnpt-blue-800);font-weight:700}
+.order-steps .os.done::before{background:var(--accent-orange)}
+.order-steps .os.cancel::before{background:var(--vnpt-red)}
+
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;text-align:center;box-shadow:var(--shadow-sm)}
+.stat b{display:block;font-size:1.8rem;color:var(--vnpt-blue-900);font-weight:800}
+
+/* GCN doc */
+.gcn-doc{border:2px solid var(--vnpt-blue-600);border-radius:var(--radius-lg);padding:24px;background:linear-gradient(180deg,var(--vnpt-blue-050),#fff 30%);box-shadow:var(--shadow-md)}
+.gcn-doc .gcn-h{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--vnpt-blue-600);padding-bottom:14px;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.gcn-doc dl{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:.9rem;margin:0}
+.gcn-doc dt{color:var(--ink-soft)}
+.gcn-doc dd{margin:0;font-weight:700}
+.result-actions{display:flex;gap:10px;margin-top:20px;justify-content:center;flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 6px;-webkit-overflow-scrolling:touch}
+.result-actions .btn{flex:0 0 auto}
+@media (max-width:600px){.result-actions{justify-content:flex-start}}
+
+.article{max-width:760px}
+.article img{border-radius:var(--radius-md);margin:16px 0}
+.member-list{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.member-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:var(--radius-sm);padding:11px 14px;font-size:.9rem;background:var(--vnpt-blue-050)}
+.member-row button{background:none;border:0;color:var(--vnpt-red);cursor:pointer;font-size:1.05rem}
+.trash{background:none;border:0;color:var(--vnpt-red);cursor:pointer}
+
+.qr-mock{width:186px;height:186px;margin:0 auto;background:
+  repeating-linear-gradient(90deg,#062b52 0 8px,#fff 8px 16px),
+  repeating-linear-gradient(0deg,rgba(6,43,82,.08) 0 8px,transparent 8px 16px);
+  border:8px solid #fff;box-shadow:var(--shadow-sm);border-radius:10px}
+.pay-methods label{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;cursor:pointer;font-weight:600;transition:all .2s}
+.pay-methods label:hover{border-color:var(--vnpt-blue-500);background:var(--vnpt-blue-050)}
+.pay-methods label:has(input:checked){border-color:var(--vnpt-blue-700);background:var(--vnpt-blue-100);box-shadow:var(--shadow-sm)}
+.pay-methods input{accent-color:var(--vnpt-blue-700);width:18px;height:18px}
+
+/* footer */
+.site-footer{background:var(--vnpt-blue-900);color:#a9c4df;margin-top:0}
+.site-footer .container{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-block:56px 28px}
+.site-footer h4{color:#fff;font-size:.95rem;margin-bottom:16px;letter-spacing:.02em}
+.site-footer a{color:#a9c4df;display:block;padding:4px 0;font-size:.88rem;transition:color .2s}
+.site-footer a:hover{color:#fff}
+.site-footer .copy{border-top:1px solid rgba(255,255,255,.12);padding-block:22px;text-align:center;font-size:.8rem;color:#7fa0c2}
+@media (max-width:820px){.site-footer .container{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.site-footer .container{grid-template-columns:1fr}}
+
+/* hotline float */
+.hotline-float{position:fixed;right:16px;bottom:16px;z-index:1100;display:flex;flex-direction:column;gap:10px}
+.hotline-float a{
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--accent-orange);color:#fff;
+  box-shadow:var(--shadow-md);font-size:1.35rem;animation:pulse 2.4s ease-in-out infinite;text-decoration:none
+}
+.hotline-float a.blue{background:var(--vnpt-blue-700);color:#fff}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,138,30,.5)}50%{box-shadow:0 0 0 14px rgba(255,138,30,0)}}
+@media (prefers-reduced-motion:reduce){.hotline-float a{animation:none}}
+
+/* modal + toast */
+.modal-back{position:fixed;inset:0;background:rgba(6,43,82,.55);display:none;place-items:center;z-index:2000;padding:20px}
+.modal-back.on{display:grid}
+.modal{background:#fff;border-radius:var(--radius-lg);max-width:460px;width:100%;padding:26px;box-shadow:var(--shadow-lg);max-height:90dvh;overflow:auto}
+.modal h3{margin-top:0}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.toast-wrap{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:3000;display:flex;flex-direction:column;gap:8px;width:min(92vw,420px)}
+.toast{background:var(--vnpt-blue-900);color:#fff;padding:13px 16px;border-radius:var(--radius-sm);box-shadow:var(--shadow-md);font-size:.88rem;animation:slideUp .3s ease}
+.toast.ok{background:#0f9d63}
+.toast.err{background:#d13b3b}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.skip-link{position:absolute;left:-999px}
+.skip-link:focus{left:8px;top:8px;background:#fff;padding:8px 14px;border-radius:8px;z-index:9999}
+
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Bỏ qua tới nội dung chính</a>
+
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar" aria-label="Điều hướng chính">
+      <a href="#/" class="brand" aria-label="VNPT Bảo hiểm Online - Trang chủ">
+        <svg class="brand-logo" viewBox="0 0 116 40" role="img" aria-label="VNPT Bảo hiểm">
+          <defs>
+            <linearGradient id="vgHead" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1a8fe0"/><stop offset="1" stop-color="#0a3d70"/>
+            </linearGradient>
+          </defs>
+          <!-- huy hiệu bảo vệ -->
+          <path d="M20 2.5 L35.5 8 V20.5 C35.5 30 28.8 35.6 20 38 C11.2 35.6 4.5 30 4.5 20.5 V8 Z" fill="url(#vgHead)"/>
+          <!-- quỹ đạo (viễn thông) -->
+          <path d="M9.5 25.5 A 11.5 11.5 0 0 0 28.5 29" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2.3" stroke-linecap="round"/>
+          <!-- V = checkmark xác thực -->
+          <path d="M11 17.5 L18 26 L28.5 11.5" fill="none" stroke="#fff" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- nút tín hiệu -->
+          <circle cx="29" cy="10.8" r="3.1" fill="#ff8a1e"/>
+          <text x="46" y="27" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="800" letter-spacing=".4" fill="#062b52">VNPT</text>
+        </svg>
+        <small>BẢO HIỂM ONLINE</small>
+      </a>
+
+      <button class="hamburger" aria-label="Mở menu" aria-expanded="false" id="hbtn">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-links" id="navlinks">
+        <a href="#/gioi-thieu">Giới thiệu</a>
+        <div class="has-sub">
+          <a href="#/san-pham">Sản phẩm <i class="caret" aria-hidden="true"></i></a>
+          <div class="submenu">
+            <a href="#/san-pham?nhom=xe">Bảo hiểm Xe cơ giới</a>
+            <a href="#/san-pham?nhom=con-nguoi">Bảo hiểm Con người</a>
+            <a href="#/san-pham?nhom=du-lich">Bảo hiểm Du lịch</a>
+            <a href="#/san-pham?nhom=tai-san">Bảo hiểm Tài sản</a>
+          </div>
+        </div>
+        <a href="#/boi-thuong">Hướng dẫn bồi thường</a>
+        <a href="#/tai-lieu">Tài liệu &amp; Quy tắc</a>
+        <a href="#/cam-nang">Cẩm nang</a>
+        <a href="#/lien-he">Liên hệ</a>
+        <div class="nav-cta">
+          <a href="#/tra-cuu" class="btn ghost sm">Tra cứu HĐ</a>
+          <a href="#/dang-nhap" class="btn sm" id="authBtn">Đăng nhập</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main"><!-- rendered by router --></main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <svg viewBox="0 0 116 40" style="height:36px" role="img" aria-label="VNPT Bảo hiểm">
+        <defs>
+          <linearGradient id="vgFoot" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2a9be8"/><stop offset="1" stop-color="#0d5596"/>
+          </linearGradient>
+        </defs>
+        <path d="M20 2.5 L35.5 8 V20.5 C35.5 30 28.8 35.6 20 38 C11.2 35.6 4.5 30 4.5 20.5 V8 Z" fill="url(#vgFoot)"/>
+        <path d="M9.5 25.5 A 11.5 11.5 0 0 0 28.5 29" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="2.3" stroke-linecap="round"/>
+        <path d="M11 17.5 L18 26 L28.5 11.5" fill="none" stroke="#fff" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="29" cy="10.8" r="3.1" fill="#ff8a1e"/>
+        <text x="46" y="27" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="800" letter-spacing=".4" fill="#ffffff">VNPT</text>
+      </svg>
+      <p style="margin-top:12px;font-size:.9rem">Kênh mua bảo hiểm Online của VNPT – nhà bảo hiểm phi nhân thọ số 1 Việt Nam. Mua nhanh, nhận Giấy chứng nhận điện tử qua Email &amp; Zalo.</p>
+      <p style="font-size:.85rem">Hotline CSKH 24/7: <strong style="color:#fff">1900 54 54 58</strong><br>Hỗ trợ GCN: 028 999 66 995 (phím 8)</p>
+    </div>
+    <div>
+      <h4>Sản phẩm</h4>
+      <a href="#/san-pham?nhom=xe">TNDS xe máy</a>
+      <a href="#/san-pham?nhom=xe">TNDS ô tô</a>
+      <a href="#/san-pham?nhom=con-nguoi">Tai nạn hộ sử dụng điện</a>
+    </div>
+    <div>
+      <h4>Hỗ trợ</h4>
+      <a href="#/tra-cuu">Tra cứu hợp đồng / GCN</a>
+      <a href="#/boi-thuong">Hướng dẫn bồi thường</a>
+      <a href="#/tra-cuu-boi-thuong">Tra cứu bồi thường</a>
+      <a href="#/tai-lieu">Tài liệu &amp; Quy tắc</a>
+      <a href="#/lien-he">Liên hệ / Tư vấn</a>
+    </div>
+    <div>
+      <h4>Tài khoản</h4>
+      <a href="#/dang-nhap">Đăng nhập</a>
+      <a href="#/dang-ky">Đăng ký</a>
+      <a href="#/quen-mat-khau">Quên mật khẩu</a>
+      <a href="#/hop-dong-cua-toi">Hợp đồng của tôi</a>
+    </div>
+  </div>
+  <div class="copy">© 2026 Tổng công ty Bảo hiểm VNPT (VNPT Insurance). Prototype dựng theo URD_BHTM_Website_Ver_1.0 – chỉ phục vụ minh họa chức năng.</div>
+</footer>
+
+<div class="hotline-float">
+  <a href="#/lien-he" class="blue" title="Tư vấn trực tuyến" aria-label="Tư vấn trực tuyến">💬</a>
+  <a href="tel:19005458" title="Gọi hotline 1900 54 54 58" aria-label="Gọi hotline">📞</a>
+</div>
+
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true">
+  <div class="modal" id="modalBox"></div>
+</div>
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   VNPT BẢO HIỂM ONLINE – PROTOTYPE
+   Router + data + use-case screens theo URD BHTM Website v1.0
+   ===================================================================== */
+"use strict";
+
+/* ---------- Helpers ---------- */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const fmt = n => new Intl.NumberFormat('vi-VN').format(Math.round(n));
+const money = n => fmt(n)+' đ';
+const todayISO = ()=> new Date().toISOString().slice(0,10);
+const addYears = (iso,y)=>{const d=new Date(iso);d.setFullYear(d.getFullYear()+y);d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);};
+const viDate = iso => iso? iso.split('-').reverse().join('/') : '';
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function toast(msg,type=''){
+  const t=document.createElement('div');
+  t.className='toast '+type;t.textContent=msg;
+  $('#toastWrap').appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3200);
+}
+function modal(html){
+  $('#modalBox').innerHTML=html;
+  $('#modalBack').classList.add('on');
+}
+function closeModal(){ $('#modalBack').classList.remove('on'); }
+$('#modalBack').addEventListener('click',e=>{ if(e.target.id==='modalBack') closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ---------- Auth / Accounts / Orders (mock, localStorage) ---------- */
+const normId = s => String(s||'').trim().toLowerCase();
+const MAX_LOGIN_FAIL = 5;
+const LOCK_MINUTES = 5;
+
+function safeStore(getObj){
+  const run=(fn,d)=>{ try{ return fn(getObj()); }catch(e){ return d; } };
+  return {
+    get:k=>run(o=>o.getItem(k), null),
+    set:(k,v)=>run(o=>o.setItem(k,v)),
+    del:k=>run(o=>o.removeItem(k))
+  };
+}
+const LS = safeStore(()=>window.localStorage);
+const SS = safeStore(()=>window.sessionStorage);
+let _memUser = null; // fallback khi storage bị chặn
+
+const Auth = {
+  get user(){
+    try{ return JSON.parse(LS.get('bh_user') || SS.get('bh_user') || 'null') || _memUser; }
+    catch(e){ return _memUser; }
+  },
+  login(u, remember){
+    LS.del('bh_user'); SS.del('bh_user'); _memUser = u;
+    (remember ? LS : SS).set('bh_user', JSON.stringify(u));
+    syncAuthBtn();
+  },
+  logout(){
+    LS.del('bh_user'); SS.del('bh_user'); _memUser = null;
+    syncAuthBtn(); toast('Đã đăng xuất tài khoản.'); location.hash='#/';
+  }
+};
+
+let _memAccounts = null;
+const Accounts = {
+  all(){
+    try{ const raw=LS.get('bh_accounts'); if(raw) return JSON.parse(raw); }catch(e){}
+    return _memAccounts || {};
+  },
+  save(m){ _memAccounts=m; LS.set('bh_accounts', JSON.stringify(m)); },
+  get(id){ return this.all()[normId(id)] || null; },
+  put(acc){ const m=this.all(); m[normId(acc.id)]=acc; this.save(m); }
+};
+
+const ORDER_STATUS = {
+  pending  : {label:'Chờ thanh toán', cls:'wait'},
+  paid     : {label:'Đã thanh toán',  cls:'ok'},
+  issued   : {label:'Đã cấp GCN',     cls:'ok'},
+  cancelled: {label:'Đã hủy',         cls:'warn'}
+};
+let _memOrders = null;
+const Orders = {
+  all(){
+    try{ const raw=LS.get('bh_orders'); if(raw) return JSON.parse(raw); }catch(e){}
+    return _memOrders || [];
+  },
+  save(l){ _memOrders=l; LS.set('bh_orders', JSON.stringify(l)); },
+  add(o){ const l=this.all(); l.unshift(o); this.save(l); },
+  get(no){ return this.all().find(x=>x.orderNo===no) || null; },
+  update(no,patch){ const l=this.all(); const i=l.findIndex(x=>x.orderNo===no); if(i>=0){ l[i]={...l[i],...patch}; this.save(l); } },
+  forUser(u){
+    if(!u) return [];
+    return this.all().filter(o => o.account===u.id || normId(o.email)===normId(u.id) || o.phone===u.id);
+  }
+};
+let _memContracts = null;
+function allContracts(){ try{ const raw=LS.get('bh_contracts'); if(raw) return JSON.parse(raw); }catch(e){} return _memContracts || []; }
+function saveContracts(l){ _memContracts=l; LS.set('bh_contracts',JSON.stringify(l)); }
+function contractsForUser(u){
+  if(!u) return [];
+  return allContracts().filter(c => !c.account || c.account===u.id || normId(c.email)===normId(u.id) || c.phone===u.id);
+}
+
+function initialsOf(name){
+  const words = String(name||'').trim().split(/\s+/).filter(Boolean);
+  if(!words.length) return '?';
+  return (words[0][0] + (words.length>1?words[words.length-1][0]:'')).toUpperCase();
+}
+function syncAuthBtn(){
+  const b=$('#authBtn'); if(!b) return;
+  if(Auth.user){
+    b.href='#/tai-khoan';
+    b.className='acct-chip';
+    b.innerHTML = `<span class="chip-avatar">${initialsOf(Auth.user.name)}</span>
+      <span class="chip-name">${esc(Auth.user.name||'Tài khoản')}</span>
+      <span class="chip-caret" aria-hidden="true"></span>`;
+  }else{
+    b.href='#/dang-nhap';
+    b.className='btn sm';
+    b.innerHTML = `<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+    </svg> Đăng nhập`;
+  }
+}
+
+/* ---------- Seed dữ liệu demo (chạy 1 lần) ---------- */
+function seedDemo(){
+ try{
+  if(LS.get('bh_seeded')==='2' || _memSeeded) return;
+  _memSeeded = true;
+  const DEMO='demo@vnpt.vn';
+  const accs=Accounts.all();
+  accs[DEMO]={id:DEMO,name:'Nguyễn Văn An',pass:'Vnpt@1234',phone:'0901234567',createdAt:'2026-02-15',fail:0,lockUntil:0};
+  Accounts.save(accs);
+
+  const orders=[
+    {orderNo:'DH260815042',createdAt:'2026-08-15T09:12:00',account:DEMO,productSlug:'tnds-o-to',
+     productName:'Bảo hiểm Bắt buộc TNDS xe ô tô',packageName:'Cơ bản + Tai nạn lái phụ xe',insurer:'PVI',
+     owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-08-16',end:'2027-08-15',
+     amount:612700,payMethod:'VNPAY-QR',status:'issued',contractNo:'BH260815042'},
+    {orderNo:'DH260720133',createdAt:'2026-07-20T14:40:00',account:DEMO,productSlug:'tai-nan-ho-su-dung-dien',
+     productName:'Bảo hiểm Tai nạn Hộ sử dụng điện',packageName:'Gói 50 triệu',insurer:'AAA',
+     owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-07-21',end:'2027-07-20',
+     amount:168300,payMethod:'Ví VNPAY',status:'issued',contractNo:'BH260720133'},
+    {orderNo:'DH260903901',createdAt:'2026-09-03T20:05:00',account:DEMO,productSlug:'tnds-xe-may',
+     productName:'Bảo hiểm Bắt buộc TNDS xe mô tô, xe máy',packageName:'Gói cơ bản (bắt buộc)',insurer:'AAA',
+     owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-09-05',end:'2027-09-04',
+     amount:65340,payMethod:'—',status:'pending',contractNo:'BH260903901'},
+    {orderNo:'DH260610777',createdAt:'2026-06-10T08:30:00',account:DEMO,productSlug:'tai-nan-ho-su-dung-dien',
+     productName:'Bảo hiểm Tai nạn Hộ sử dụng điện',packageName:'Gói 100 triệu',insurer:'BIC',
+     owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-06-11',end:'2027-06-10',
+     amount:352000,payMethod:'Thẻ nội địa & tài khoản NH',status:'cancelled',contractNo:'BH260610777'}
+  ];
+  Orders.save(orders);
+
+  const contracts=[
+    {contractNo:'BH260815042',account:DEMO,product:'Bảo hiểm Bắt buộc TNDS xe ô tô',package:'Cơ bản + Tai nạn lái phụ xe',
+     insurer:'PVI',owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-08-16',end:'2027-08-15',
+     pay:612700,status:'Còn hiệu lực',plate:'30G-521.79'},
+    {contractNo:'BH260720133',account:DEMO,product:'Bảo hiểm Tai nạn Hộ sử dụng điện',package:'Gói 50 triệu',
+     insurer:'AAA',owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-07-21',end:'2027-07-20',
+     pay:168300,status:'Còn hiệu lực',plate:''},
+    {contractNo:'BH260610777',account:DEMO,product:'Bảo hiểm Tai nạn Hộ sử dụng điện',package:'Gói 100 triệu',
+     insurer:'BIC',owner:'Nguyễn Văn An',phone:'0901234567',email:DEMO,start:'2026-06-11',end:'2027-06-10',
+     pay:352000,status:'Đã hủy',plate:''}
+  ];
+  saveContracts(contracts);
+  LS.set('bh_seeded','2');
+ }catch(e){ /* localStorage bị chặn – vẫn seed vào bộ nhớ tạm */ }
+}
+let _memSeeded = false;
+seedDemo();
+
+/* ---------- Product catalog (khảo sát từ URD) ---------- */
+const GROUPS = [
+  {id:'xe',       name:'Xe cơ giới', icon:'🚗'},
+  {id:'con-nguoi',name:'Con người',  icon:'🧑‍🤝‍🧑'},
+  {id:'du-lich',  name:'Du lịch',    icon:'✈️'},
+  {id:'tai-san',  name:'Tài sản',    icon:'🏠'},
+];
+const PRODUCTS = [
+  {slug:'tnds-xe-may', group:'xe', flow:'moto', name:'Bảo hiểm Bắt buộc TNDS xe mô tô, xe máy',
+   short:'Bắt buộc theo quy định. Bồi thường thiệt hại về người và tài sản của bên thứ ba.',
+   from:66000, cover:'Người 150 tr/vụ · Tài sản 50 tr/vụ', icon:'🏍️', status:'open',
+   exclusions:[
+     'Cố ý gây tai nạn hoặc cố ý bỏ trốn sau khi gây tai nạn',
+     'Người lái xe không đủ điều kiện điều khiển xe theo quy định của pháp luật',
+     'Điều khiển xe khi có nồng độ cồn, sử dụng ma túy hoặc chất kích thích bị cấm theo quy định',
+     'Thiệt hại đối với tiền, vàng, bạc, đá quý, giấy tờ có giá và một số tài sản đặc biệt khác',
+     'Thiệt hại do chiến tranh, khủng bố hoặc động đất',
+   ],
+   detail:{
+     tagline:'Bảo hiểm Bắt buộc trách nhiệm dân sự cho mô tô, xe máy theo đúng quy định pháp luật.',
+     highlights:[
+       {icon:'🧑‍🤝‍🧑', title:'Thiệt hại về người',
+        desc:'Chi trả bồi thường cho người bị thương hoặc tử vong do tai nạn do mô tô, xe máy gây ra.',
+        stat:'Đến 150 triệu đồng/người/vụ'},
+       {icon:'🏠', title:'Thiệt hại về tài sản',
+        desc:'Chi trả bồi thường thiệt hại về tài sản của bên thứ ba do mô tô, xe máy gây ra.',
+        stat:'Đến 50 triệu đồng/vụ'},
+       {icon:'🪑', title:'BH tai nạn người ngồi trên xe',
+        desc:'Chi trả quyền lợi bảo hiểm cho người ngồi trên xe khi bị tai nạn trong thời hạn bảo hiểm theo quy tắc và điều khoản của sản phẩm.',
+        stat:'Đến 10 triệu đồng/người'},
+     ],
+     legalNote:'Theo Nghị định 168/2024/NĐ-CP, người điều khiển mô tô, xe máy khi tham gia giao thông không có Giấy chứng nhận bảo hiểm bắt buộc TNDS còn hiệu lực có thể bị phạt từ 200.000 đồng đến 300.000 đồng.',
+     incidentSteps:[
+       'Thực hiện các biện pháp cần thiết để cứu người, bảo vệ tài sản và hiện trường.',
+       'Thông báo cho cơ quan Công an hoặc chính quyền địa phương gần nhất.',
+       'Gọi 1900 54 54 58 để được VNPT Bảo hiểm hướng dẫn và hỗ trợ.',
+     ],
+   },
+   packages:[
+     {id:'basic',name:'Gói cơ bản',price:66000,
+      cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'Không có'}},
+     {id:'tieuchuan',name:'Gói tiêu chuẩn',price:76000,
+      cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'5 tr.đ/người'}},
+     {id:'nangcao',name:'Gói nâng cao',price:86000,
+      cover:{nguoi:'150 tr.đ/người/vụ',taisan:'50 tr.đ/vụ',laiphu:'10 tr.đ/người'}},
+   ]},
+
+  {slug:'tnds-o-to', group:'xe', flow:'oto', name:'Bảo hiểm Bắt buộc TNDS xe ô tô',
+   short:'Bắt buộc theo quy định. Mức trách nhiệm cao với người và tài sản bên thứ ba.',
+   from:437000, cover:'Người 150 tr/người/vụ · Tài sản 100 tr/vụ', icon:'🚙', status:'open',
+   exclusions:[
+     'Cố ý gây tai nạn hoặc cố ý bỏ trốn sau khi gây tai nạn',
+     'Người lái xe không đủ điều kiện điều khiển xe theo quy định của pháp luật',
+     'Điều khiển xe khi có nồng độ cồn, sử dụng ma túy hoặc chất kích thích bị cấm theo quy định',
+     'Thiệt hại đối với tiền, vàng, bạc, đá quý, giấy tờ có giá và một số tài sản đặc biệt khác',
+     'Thiệt hại do chiến tranh, khủng bố hoặc động đất',
+   ],
+   detail:{
+     tagline:'Bảo hiểm Bắt buộc trách nhiệm dân sự dành cho xe ô tô theo đúng quy định pháp luật.',
+     highlights:[
+       {icon:'🧑‍🤝‍🧑', title:'Thiệt hại về người',
+        desc:'Chi trả bồi thường cho người bị thương hoặc tử vong do tai nạn do xe ô tô gây ra, bao gồm bên thứ ba và hành khách trên xe theo quy định.',
+        stat:'Đến 150 triệu đồng/người/vụ'},
+       {icon:'🏠', title:'Thiệt hại về tài sản',
+        desc:'Chi trả bồi thường thiệt hại về tài sản của bên thứ ba do xe ô tô gây ra.',
+        stat:'Đến 100 triệu đồng/vụ'},
+       {icon:'🧑‍✈️', title:'BH tai nạn lái, phụ xe & người ngồi trên xe',
+        desc:'Chi trả quyền lợi bảo hiểm khi lái xe, phụ xe hoặc người ngồi trên xe bị thương hoặc tử vong do tai nạn trong thời hạn bảo hiểm theo quy tắc và điều khoản của sản phẩm.',
+        stat:'Đến 20 triệu đồng/người'},
+     ],
+     legalNote:'Theo Nghị định 168/2024/NĐ-CP, người điều khiển ô tô tham gia giao thông không có Giấy chứng nhận bảo hiểm bắt buộc TNDS còn hiệu lực có thể bị phạt từ 400.000 đồng đến 600.000 đồng.',
+     incidentSteps:[
+       'Thực hiện các biện pháp cần thiết để cứu người, bảo vệ tài sản và hiện trường.',
+       'Thông báo cho cơ quan Công an hoặc chính quyền địa phương gần nhất.',
+       'Gọi 1900 54 54 58 để được VNPT Bảo hiểm hướng dẫn và hỗ trợ.',
+     ],
+   },
+   packages:[{id:'basic',name:'Gói cơ bản (bắt buộc)',price:437000},{id:'plus',name:'Cơ bản + Tai nạn lái phụ xe',price:557000},{id:'pro',name:'Toàn diện + phụ phí',price:690000}]},
+
+  {slug:'tai-nan-ho-su-dung-dien', group:'con-nguoi', flow:'dien', name:'Bảo hiểm Tai nạn Hộ sử dụng điện',
+   short:'Bảo vệ chủ hộ và các thành viên trước rủi ro tai nạn liên quan sử dụng điện sinh hoạt.',
+   from:120000, cover:'Chi trả tới 35 – 100 triệu đồng/người', icon:'⚡', status:'open',
+   exclusions:[
+     'Người được bảo hiểm cố ý gây tai nạn',
+     'Cố ý vi phạm quy định an toàn sử dụng điện',
+     'Tai nạn xảy ra khi sử dụng rượu, bia, ma túy hoặc chất kích thích tương tự',
+     'Tai nạn do hậu quả gián tiếp của điện (chập điện, cháy, nổ...)',
+     'Thương tật hoặc tử vong không phải do dòng điện trực tiếp gây ra',
+   ],
+   detail:{
+     tagline:'Bảo vệ hộ gia đình trước các rủi ro xảy ra do tai nạn điện trong sinh hoạt hàng ngày.',
+     highlights:[
+       {icon:'💀', title:'Tử vong do tai nạn điện',
+        desc:'Chi trả 100% số tiền bảo hiểm ghi trong hợp đồng.'},
+       {icon:'🩹', title:'Thương tật tạm thời do tai nạn điện',
+        desc:'Chi trả theo chi phí thực tế hợp lý, tối đa theo Bảng tỷ lệ trả tiền bảo hiểm thương tật của Bộ Tài chính so với Số tiền bảo hiểm.'},
+       {icon:'♿', title:'Thương tật vĩnh viễn do tai nạn điện',
+        desc:'Chi trả theo Bảng tỷ lệ trả tiền bảo hiểm thương tật của Bộ Tài chính so với Số tiền bảo hiểm.'},
+     ],
+     infoBoxes:[
+       {label:'Đối tượng bảo hiểm', value:'Tất cả các thành viên có cùng thông tin cư trú với Chủ hộ gia đình / Bên mua bảo hiểm theo quy định của pháp luật.'},
+       {label:'Phạm vi bảo hiểm', value:'Những tai nạn xảy ra đối với Người được bảo hiểm do ảnh hưởng trực tiếp của dòng điện trong lãnh thổ Việt Nam.'},
+       {label:'Số tiền bảo hiểm', value:'Từ 35 triệu – 100 triệu đồng/người/vụ theo gói lựa chọn.', highlight:true},
+     ],
+     responsibilities:[
+       'Cung cấp thông tin trung thực, đầy đủ theo quy định.',
+       'Thực hiện nghiêm chỉnh chế độ an toàn khi sử dụng điện.',
+       'Khi xảy ra rủi ro, thực hiện biện pháp cần thiết để cứu chữa nạn nhân.',
+       'Thông báo ngay cho VNPT Bảo hiểm hoặc không chậm quá 30 ngày kể từ khi xảy ra tai nạn điện.',
+     ],
+   },
+   packages:[{id:'g35',name:'Gói 35 triệu',price:120000},{id:'g50',name:'Gói 50 triệu',price:170000},{id:'g100',name:'Gói 100 triệu',price:320000}]},
+];
+const findProduct = slug => PRODUCTS.find(p=>p.slug===slug);
+const INSURERS = [
+  {code:'AAA',      name:'Bảo hiểm AAA',      mono:'AAA', bg:'linear-gradient(135deg,#ff9a44,#d9530a)'},
+  {code:'PVI',      name:'Bảo hiểm PVI',      mono:'PVI', bg:'linear-gradient(135deg,#2a9be8,#0a3d70)'},
+  {code:'BIC',      name:'Bảo hiểm BIC',      mono:'BIC', bg:'linear-gradient(135deg,#22b579,#0a6b45)'},
+  {code:'PTI',      name:'Bảo hiểm PTI',      mono:'PTI', bg:'linear-gradient(135deg,#9163ec,#4c1d95)'},
+  {code:'Bảo Việt', name:'Bảo hiểm Bảo Việt', mono:'BV',  bg:'linear-gradient(135deg,#f0455a,#9f1239)'},
+];
+
+const ARTICLES = [
+  {slug:'chon-goi-tnds', title:'Cách chọn gói bảo hiểm TNDS phù hợp cho xe của bạn', topic:'Kinh nghiệm',
+   excerpt:'Phân biệt phần bắt buộc và phần tự nguyện, khi nào nên mua thêm tai nạn người ngồi trên xe.',
+   body:'<p>Bảo hiểm TNDS gồm phần <strong>bắt buộc</strong> theo quy định và phần <strong>tự nguyện</strong> mở rộng. Phần bắt buộc bồi thường cho <em>bên thứ ba</em> khi xe của bạn gây thiệt hại...</p><p>Nếu thường chở người thân, bạn nên cân nhắc thêm quyền lợi tai nạn cho người ngồi trên xe với mức phí chỉ tăng nhẹ.</p><h3>Ba lưu ý khi mua online</h3><ul><li>Kiểm tra biển kiểm soát và thông tin chủ xe trùng khớp giấy tờ.</li><li>Chọn ngày hiệu lực từ hôm nay trở đi.</li><li>Lưu Giấy chứng nhận điện tử nhận qua Email/Zalo.</li></ul>'},
+  {slug:'quy-trinh-boi-thuong', title:'Quy trình bồi thường bảo hiểm xe cơ giới từ A–Z', topic:'Hướng dẫn',
+   excerpt:'Các bước từ khi xảy ra tổn thất đến lúc nhận tiền bồi thường và bộ hồ sơ cần chuẩn bị.',
+   body:'<p>Ngay khi xảy ra sự cố, hãy <strong>thông báo cho VNPT</strong> qua hotline 1900 54 54 58 để được hướng dẫn giữ hiện trường và giám định...</p><ol><li>Thông báo tổn thất trong 5 ngày.</li><li>Chuẩn bị hồ sơ: GCN, giấy tờ xe, biên bản hiện trường, ảnh thiệt hại.</li><li>VNPT giám định và xác định mức bồi thường.</li><li>Nhận bồi thường qua tài khoản.</li></ol>'},
+  {slug:'gcn-dien-tu', title:'Giấy chứng nhận bảo hiểm điện tử có giá trị pháp lý không?', topic:'Kiến thức',
+   excerpt:'GCN điện tử được pháp luật công nhận, cách xuất trình khi CSGT kiểm tra.',
+   body:'<p>Giấy chứng nhận bảo hiểm điện tử (e-Certificate) <strong>có giá trị pháp lý tương đương bản giấy</strong>. Bạn có thể xuất trình bản điện tử trên điện thoại hoặc in ra khi cần.</p><p>GCN của VNPT được gửi qua Email và Zalo ngay sau khi thanh toán thành công, đồng thời lưu trong mục “Hợp đồng của tôi”.</p>'},
+];
+
+/* ---------- Voucher (BR-04/05) ---------- */
+const VOUCHERS = { 'VNPT10':{type:'pct',val:10,label:'Giảm 10% phí chưa VAT'}, 'ONLINE50':{type:'amt',val:50000,label:'Giảm 50.000đ'} };
+const AUTO_VOUCHER = {code:'VNPT10', ...VOUCHERS['VNPT10']}; // tự động áp 1 voucher hiệu lực
+
+/* ---------- Order state (khách vãng lai) ---------- */
+let ORDER = null;
+function newOrder(product){
+  ORDER = {
+    product, flow:product.flow,
+    term:1, startDate: todayISO(),
+    vehicleType:'', purpose:'khong-kd', seats:'', tonnage:'',
+    package: product.packages[0]?.id || '', insurer:'AAA',
+    owner:{name:'',phone:'',address:''},
+    noPlate:false, plate:'', chassis:'', engine:'',
+    emailGCN:'', wantInvoice:false,
+    invoice:{type:'Cá nhân',name:'',taxcode:'',address:'',email:''},
+    members:[],
+    payMethod:'qr', agreeTerms:false,
+    voucher:AUTO_VOUCHER,
+    contractNo:null
+  };
+  return ORDER;
+}
+function pkgPrice(){ const p=ORDER.product.packages.find(x=>x.id===ORDER.package); return p?p.price:ORDER.product.from; }
+function calcFees(){
+  const base = pkgPrice() * ORDER.term;               // phí chưa VAT
+  const vat  = base*0.10;
+  const gross = base+vat;                              // Tổng phí bảo hiểm (có VAT)
+  let discount = 0;
+  if(ORDER.voucher){
+    discount = ORDER.voucher.type==='pct' ? base*ORDER.voucher.val/100 : ORDER.voucher.val;
+  }
+  const pay = Math.max(0, gross-discount);
+  return {base,vat,gross,discount,pay};
+}
+
+/* ---------- Validation utils ---------- */
+function setErr(fieldEl,msg){
+  fieldEl.classList.add('invalid');
+  const e=$('.err-msg',fieldEl); if(e&&msg) e.textContent=msg;
+}
+function clearErr(fieldEl){ fieldEl.classList.remove('invalid'); }
+function validateForm(scope){
+  let ok=true;
+  $$('.field[data-required] input,.field[data-required] select,.field[data-required] textarea',scope).forEach(el=>{
+    const f=el.closest('.field');
+    if(f.classList.contains('hide')) return;
+    clearErr(f);
+    if(!el.value.trim()){ setErr(f, f.dataset.msg || 'Vui lòng nhập ' + (f.dataset.label||'thông tin')); ok=false; return; }
+    if(el.dataset.type==='email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)){ setErr(f,'Email không đúng định dạng (vd: abc@domain.com).'); ok=false; }
+    if(el.dataset.type==='phone' && !/^0\d{9}$/.test(el.value)){ setErr(f,'Số điện thoại không đúng định dạng (10 số, bắt đầu bằng 0).'); ok=false; }
+    if(el.dataset.type==='name' && !/^[\p{L}\s'\-]+$/u.test(el.value)){ setErr(f, (f.dataset.label||'Trường') + ' không đúng định dạng.'); ok=false; }
+    if(el.dataset.type==='taxcode' && !/^(\d{10}|\d{12}|\d{14})$/.test(el.value)){ setErr(f,'Mã số thuế không đúng định dạng (10, 12 hoặc 14 chữ số).'); ok=false; }
+  });
+  return ok;
+}
+
+/* =====================================================================
+   ROUTER
+   ===================================================================== */
+const ROUTES = {
+  '/'            : pageHome,
+  '/gioi-thieu'  : pageAbout,
+  '/san-pham'    : pageCatalog,
+  '/san-pham-chi-tiet' : pageProduct,
+  '/mua'         : pageBuy,
+  '/thanh-toan'  : pagePayment,
+  '/ket-qua'     : pageResult,
+  '/dang-nhap'   : pageLogin,
+  '/dang-ky'     : pageRegister,
+  '/quen-mat-khau': pageForgot,
+  '/tra-cuu'     : pageLookup,
+  '/tai-khoan'   : pageAccount,
+  '/tai-khoan-thong-tin' : pageProfile,
+  '/don-hang'    : pageOrders,
+  '/hop-dong-cua-toi' : pageMyContracts,
+  '/hop-dong'    : pageContractDetail,
+  '/sua-doi-hop-dong' : pageAmend,
+  '/huy-hop-dong': pageCancel,
+  '/boi-thuong'  : pageClaimGuide,
+  '/tra-cuu-boi-thuong': pageClaimTrack,
+  '/tai-lieu'    : pageDocs,
+  '/cam-nang'    : pageBlog,
+  '/bai-viet'    : pageArticle,
+  '/lien-he'     : pageContact,
+};
+function parseHash(){
+  const raw = location.hash.replace(/^#/,'') || '/';
+  const [path,qs] = raw.split('?');
+  const params = Object.fromEntries(new URLSearchParams(qs||''));
+  return {path: path.replace(/\/$/,'')||'/', params};
+}
+function render(){
+  const {path,params} = parseHash();
+  const fn = ROUTES[path] || page404;
+  const main = $('#main');
+  main.innerHTML = fn(params) || '';
+  window.scrollTo({top:0,behavior:'instant'});
+  document.body.classList.remove('nav-open');
+  $('#hbtn').setAttribute('aria-expanded','false');
+  $$('.nav-links a').forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href')==='#'+path || (path==='/' && a.getAttribute('href')==='#/'));
+  });
+  if(typeof fn.after==='function') fn.after(params);
+  syncAuthBtn();
+}
+window.addEventListener('hashchange',render);
+window.addEventListener('DOMContentLoaded',()=>{ render(); });
+
+$('#hbtn').addEventListener('click',()=>{
+  const open = document.body.classList.toggle('nav-open');
+  $('#hbtn').setAttribute('aria-expanded', open?'true':'false');
+});
+
+/* =====================================================================
+   PAGES
+   ===================================================================== */
+
+/* ---- UC-HOME-01 : Trang chủ ---- */
+function pageHome(){
+  const grpCards = GROUPS.map(g=>{
+    const items = PRODUCTS.filter(p=>p.group===g.id);
+    return `<a class="card pad" href="#/san-pham?nhom=${g.id}" style="text-decoration:none">
+      <div style="font-size:2rem">${g.icon}</div>
+      <h3 style="margin:.4em 0 .2em">${g.name}</h3>
+      <p class="muted" style="margin:0">${items.length? items.length+' sản phẩm' : 'Đang cập nhật'}</p>
+    </a>`;
+  }).join('');
+  const featured = PRODUCTS.filter(p=>p.status==='open').slice(0,3).map(prodCard).join('');
+  const arts = ARTICLES.map(a=>`
+    <a class="card pad" href="#/bai-viet?slug=${a.slug}" style="text-decoration:none">
+      <span class="tag">${a.topic}</span>
+      <h3 style="margin:.5em 0 .3em">${a.title}</h3>
+      <p class="muted" style="margin:0">${a.excerpt}</p>
+    </a>`).join('');
+
+  return `
+  <section class="hero">
+    <div class="container hero-solo">
+      <div>
+        <span class="tag" style="background:rgba(255,255,255,.2);color:#fff">Nhà bảo hiểm phi nhân thọ số 1 Việt Nam</span>
+        <h1>Mua bảo hiểm Online cùng VNPT<br><span>Nhanh – Minh bạch – An tâm</span></h1>
+        <p>Chọn sản phẩm, xem báo phí và hoàn tất thanh toán chỉ trong 3 bước. Nhận Giấy chứng nhận điện tử ngay qua Email &amp; Zalo.</p>
+        <ul class="hero-points">
+          <li>Báo phí tức thì, không cần đăng nhập</li>
+          <li>Thanh toán an toàn qua VNPT PAY / VNPAY</li>
+          <li>Nhiều ưu đãi &amp; mã giảm giá cho khách mua online</li>
+        </ul>
+        <div class="hero-actions">
+          <a href="#/san-pham" class="btn green">Xem sản phẩm &amp; báo phí</a>
+          <a href="#/tra-cuu" class="btn light">Tra cứu hợp đồng</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="center" style="max-width:640px;margin-inline:auto">
+        <h2>Nhóm sản phẩm bảo hiểm</h2>
+        <p class="muted">Lựa chọn theo nhu cầu bảo vệ cho phương tiện, con người, chuyến đi và tài sản của bạn.</p>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:26px">${grpCards}</div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff">
+    <div class="container">
+      <h2>Sản phẩm nổi bật</h2>
+      <div class="cards" style="margin-top:22px">${featured}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="center" style="max-width:620px;margin-inline:auto">
+        <h2>Mua online trong 3 bước</h2>
+        <p class="muted">Toàn bộ quy trình thực hiện trực tuyến, nhận GCN điện tử ngay sau khi thanh toán.</p>
+      </div>
+      <div class="steps3" style="margin-top:34px">
+        <div class="step"><h3>Tìm hiểu sản phẩm</h3><p class="muted mb0">Chọn sản phẩm phù hợp với nhu cầu bảo vệ của bạn.</p></div>
+        <div class="step"><h3>Chọn gói &amp; điền thông tin</h3><p class="muted mb0">Chọn gói phù hợp, nhập thông tin người mua và đối tượng được bảo hiểm.</p></div>
+        <div class="step"><h3>Xác nhận &amp; thanh toán</h3><p class="muted mb0">Áp mã giảm giá, xuất hóa đơn (tùy chọn), thanh toán VNPAY, nhận GCN qua Email/Zalo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+        <h2 style="margin:0">Cẩm nang &amp; Kiến thức bảo hiểm</h2>
+        <a href="#/cam-nang" class="btn ghost sm">Xem tất cả</a>
+      </div>
+      <div class="cards" style="margin-top:22px">${arts}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card pad" style="display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(120deg,#e8f3fb,#eaf7ff)">
+        <div>
+          <h2 style="margin:.1em 0">Cần tư vấn thêm?</h2>
+          <p class="muted mb0">Hỗ trợ mua online của VNPT · Hotline CSKH 24/7: <strong>1900 54 54 58</strong></p>
+        </div>
+        <a href="#/lien-he" class="btn">Gửi yêu cầu tư vấn</a>
+      </div>
+    </div>
+  </section>`;
+}
+function prodCard(p){
+  return `<article class="prod-card card">
+    <div class="thumb">${p.icon}</div>
+    <div class="body">
+      <div class="pill-row">
+        <span class="tag">${GROUPS.find(g=>g.id===p.group).name}</span>
+        ${p.status==='soon'?'<span class="tag soon">Sắp ra mắt</span>':''}
+      </div>
+      <h3>${p.name}</h3>
+      <p class="muted" style="margin:0;font-size:.9rem">${p.short}</p>
+      <div class="price">${p.from? 'Phí từ '+money(p.from)+' <span>/ năm</span>' : '<span>Đang cập nhật biểu phí</span>'}</div>
+      <div class="muted" style="font-size:.82rem">${p.cover}</div>
+      <div class="actions">
+        <a href="#/san-pham-chi-tiet?slug=${p.slug}" class="btn ghost sm">Xem chi tiết</a>
+        ${p.status==='open' && p.flow!=='none'
+          ? `<a href="#/mua?slug=${p.slug}" class="btn green sm">Mua ngay</a>`
+          : `<button class="btn sm" disabled>Sắp ra mắt</button>`}
+      </div>
+    </div>
+  </article>`;
+}
+
+/* ---- UC-HOME-02 : Giới thiệu ---- */
+function pageAbout(){
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Giới thiệu</div>
+    <h1>Giới thiệu về Bảo hiểm VNPT</h1>
+    <p class="muted mb0">Vị thế dẫn đầu thị phần bảo hiểm phi nhân thọ – đồng hành cùng hàng triệu khách hàng.</p>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="info-grid">
+      <div class="stat"><b>#1</b><span class="muted">Thị phần phi nhân thọ</span></div>
+      <div class="stat"><b>20+</b><span class="muted">Năm kinh nghiệm</span></div>
+      <div class="stat"><b>63/63</b><span class="muted">Tỉnh/thành phủ sóng</span></div>
+      <div class="stat"><b>24/7</b><span class="muted">Hỗ trợ bồi thường</span></div>
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:34px">
+      <div class="card pad">
+        <h3>Thành tựu &amp; cột mốc</h3>
+        <p class="muted mb0">Liên tục giữ vững vị trí dẫn đầu về thị phần doanh thu phí bảo hiểm gốc trong khối phi nhân thọ, tăng trưởng ổn định qua các năm và mở rộng mạnh mẽ kênh bán hàng số.</p>
+      </div>
+      <div class="card pad">
+        <h3>Giải thưởng &amp; danh hiệu</h3>
+        <p class="muted mb0">Nhận nhiều giải thưởng uy tín trong nước và quốc tế về năng lực tài chính, chất lượng dịch vụ khách hàng và chuyển đổi số trong lĩnh vực bảo hiểm.</p>
+      </div>
+    </div>
+    <div class="card pad" style="margin-top:22px">
+      <h3>Vì sao chọn VNPT?</h3>
+      <ul class="muted" style="margin:0">
+        <li>Năng lực tài chính vững mạnh, khả năng thanh toán bồi thường cao.</li>
+        <li>Mạng lưới phục vụ rộng khắp, giám định bồi thường nhanh.</li>
+        <li>Kênh online tiện lợi: báo phí tức thì, GCN điện tử, thanh toán an toàn.</li>
+      </ul>
+      <a href="#/san-pham" class="btn" style="margin-top:14px">Khám phá sản phẩm</a>
+    </div>
+  </div></section>`;
+}
+
+/* ---- UC-PROD-01 : Danh mục sản phẩm ---- */
+function pageCatalog(params){
+  const active = params.nhom || 'all';
+  const tabs = [{id:'all',name:'Tất cả'},...GROUPS].map(g=>
+    `<button class="${g.id===active?'on':''}" data-g="${g.id}">${g.name}</button>`).join('');
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Sản phẩm</div>
+    <h1>Danh mục sản phẩm bảo hiểm</h1>
+    <p class="muted mb0">Lọc nhanh theo nhóm sản phẩm.</p>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="feature-tabs" id="catTabs">${tabs}</div>
+    <div class="cards" id="catList"></div>
+  </div></section>`;
+}
+pageCatalog.after=function(params){
+  const list=$('#catList');
+  const draw=(g)=>{
+    const items = g==='all'?PRODUCTS:PRODUCTS.filter(p=>p.group===g);
+    if(!items.length){ list.innerHTML=`<div class="card pad muted">Nhóm này đang cập nhật sản phẩm. Vui lòng quay lại sau.</div>`; return; }
+    list.innerHTML = items.map(prodCard).join('');
+  };
+  draw(params.nhom||'all');
+  $$('#catTabs button').forEach(b=>b.addEventListener('click',()=>{
+    $$('#catTabs button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); draw(b.dataset.g);
+  }));
+};
+
+/* ---- UC-PROD-02 : Chi tiết sản phẩm ---- */
+function pageProduct(params){
+  const p = findProduct(params.slug);
+  if(!p) return page404();
+  if(p.status==='soon'){
+    return `<div class="page-head"><div class="container">
+      <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham">Sản phẩm</a> / ${p.name}</div>
+      <h1>${p.name}</h1></div></div>
+      <section class="section"><div class="container"><div class="card pad center">
+        <div style="font-size:3rem">${p.icon}</div>
+        <h3>Sản phẩm sắp ra mắt</h3>
+        <p class="muted">Sản phẩm này hiện chưa mở bán trực tuyến. Vui lòng để lại thông tin để được thông báo khi ra mắt.</p>
+        <a href="#/lien-he" class="btn">Nhận thông báo</a>
+      </div></div></section>`;
+  }
+  const d = p.detail;
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham">Sản phẩm</a> / ${p.name}</div>
+    <h1>${p.name}</h1>
+    ${d?.tagline?`<p class="tagline">${d.tagline}</p>`:''}
+    <div class="pill-row">
+      <span class="tag">${GROUPS.find(g=>g.id===p.group).name}</span>
+      <span class="tag ok">Đang mở bán</span>
+    </div>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="layout-2">
+      <div>
+        <div class="card pad">
+          <h3>Quyền lợi &amp; phạm vi bảo hiểm</h3>
+          ${d?.highlights ? `
+          <div class="benefit-grid">
+            ${d.highlights.map(h=>`<div class="benefit-card">
+              <div class="b-icon">${h.icon}</div>
+              <h4>${h.title}</h4>
+              <p>${h.desc}</p>
+              ${h.stat?`<span class="b-stat">${h.stat}</span>`:''}
+            </div>`).join('')}
+          </div>` : `<ul class="muted">${p.benefits.map(b=>`<li>${b}</li>`).join('')}</ul>`}
+          ${d?.infoBoxes?`
+          <div class="kv-grid" style="margin-top:18px">
+            ${d.infoBoxes.map(k=>`<div class="kv-card${k.highlight?' highlight':''}">
+              <div class="kv-label">${k.label}</div>
+              <div class="kv-value">${k.value}</div>
+            </div>`).join('')}
+          </div>`:''}
+          ${d?.legalNote?`
+          <div class="legal-alert" style="margin-top:18px">
+            <span class="la-icon">⚠️</span>
+            <p><strong>Lưu ý pháp lý:</strong> ${d.legalNote}</p>
+          </div>`:''}
+        </div>
+        ${d?.incidentSteps?`
+        <div class="card pad" style="margin-top:18px">
+          <h3>Khi xảy ra tai nạn</h3>
+          <ol class="step-list">${d.incidentSteps.map(s=>`<li>${s}</li>`).join('')}</ol>
+        </div>`:''}
+        ${d?.responsibilities?`
+        <div class="card pad" style="margin-top:18px">
+          <h3>Trách nhiệm của người được bảo hiểm</h3>
+          <ol class="step-list">${d.responsibilities.map(s=>`<li>${s}</li>`).join('')}</ol>
+        </div>`:''}
+        <div class="card pad" style="margin-top:18px">
+          <h3>Điều khoản loại trừ</h3>
+          <ul class="excl-list">${p.exclusions.map(b=>`<li>${b}</li>`).join('')}</ul>
+        </div>
+        <div class="card pad" style="margin-top:18px">
+          <h3>Tài liệu &amp; Quy tắc</h3>
+          <p class="muted">Quy tắc, điều khoản sản phẩm (PDF).</p>
+          <button class="btn ghost sm" onclick="toast('Mô phỏng: đang tải Quy-tac-${p.slug}.pdf','ok')">⬇ Tải Quy tắc bảo hiểm (.pdf)</button>
+        </div>
+      </div>
+      <div>
+        <div class="card pad summary-box">
+          <div style="font-size:2.4rem">${p.icon}</div>
+          <p class="muted" style="font-size:.9rem">${d?.tagline||p.short}</p>
+          <div class="price" style="font-weight:800;color:var(--vnpt-blue-dark);font-size:1.2rem">Phí từ ${money(p.from)}<span class="muted" style="font-weight:600">/năm</span></div>
+          <div class="muted" style="font-size:.85rem;margin:6px 0 14px">${p.cover}</div>
+          <a href="#/mua?slug=${p.slug}" class="btn green block">Mua ngay</a>
+          <a href="#/lien-he" class="btn ghost block" style="margin-top:8px">Tư vấn</a>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+}
+
+/* ---- Guard: yêu cầu đăng nhập trước khi mua / cảnh báo hợp đồng còn hiệu lực ---- */
+const DUP_CONFIRMED = new Set(); // slug đã được KH xác nhận "vẫn muốn mua thêm" trong phiên này
+function findActiveContract(p){
+  return contractsForUser(Auth.user).find(c => c.product===p.name && c.status==='Còn hiệu lực' && c.end>=todayISO());
+}
+function gateShell(p, icon, title, bodyHtml, actionsHtml){
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham-chi-tiet?slug=${p.slug}">${p.name}</a> / Mua bảo hiểm</div>
+    <h1>Chọn gói &amp; điền thông tin</h1>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="card pad center" style="max-width:520px;margin-inline:auto">
+      <div style="font-size:2.6rem">${icon}</div>
+      <h3>${title}</h3>
+      <p class="muted">${bodyHtml}</p>
+      ${actionsHtml}
+    </div>
+  </div></section>`;
+}
+function renderLoginRequired(p){
+  const next = encodeURIComponent('#/mua?slug='+p.slug);
+  return gateShell(p, '🔒', 'Vui lòng đăng nhập để tiếp tục',
+    `Bạn cần đăng nhập tài khoản để mua <strong>${esc(p.name)}</strong>.`,
+    `<a href="#/dang-nhap?next=${next}" class="btn green block">Đăng nhập ngay</a>
+     <a href="#/san-pham-chi-tiet?slug=${p.slug}" class="btn ghost block" style="margin-top:8px">Quay lại trang sản phẩm</a>`);
+}
+function renderDupConfirm(p, dup){
+  return gateShell(p, '⚠️', 'Bạn đang có hợp đồng còn hiệu lực',
+    `Hợp đồng <strong>${esc(dup.contractNo)}</strong> (${esc(p.name)}) của bạn còn hiệu lực đến <strong>${viDate(dup.end)}</strong>. Bạn có chắc muốn tiếp tục mua thêm?`,
+    `<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+       <a href="#/san-pham-chi-tiet?slug=${p.slug}" class="btn ghost">Hủy</a>
+       <button type="button" class="btn green" id="dupGoOn">Tiếp tục mua</button>
+     </div>`);
+}
+
+/* ---- UC-BUY-01 (1.1/1.2/1.3): Wizard chọn gói & điền thông tin ---- */
+function pageBuy(params){
+  const p = findProduct(params.slug);
+  if(!p || p.status!=='open') return page404();
+  if(!Auth.user) return renderLoginRequired(p);
+  const dup = findActiveContract(p);
+  if(dup && !DUP_CONFIRMED.has(p.slug)) return renderDupConfirm(p, dup);
+  if(!ORDER || ORDER.product.slug!==p.slug) newOrder(p);
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / <a href="#/san-pham-chi-tiet?slug=${p.slug}">${p.name}</a> / Mua bảo hiểm</div>
+    <h1>Chọn gói &amp; điền thông tin</h1>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="wizard-bar" id="wbar">
+      <div class="wstep on" data-s="1"><span class="n">1</span> Chọn gói bảo hiểm</div>
+      <div class="wstep" data-s="2"><span class="n">2</span> Thông tin mua bảo hiểm</div>
+      <div class="wstep" data-s="3"><span class="n">3</span> Thanh toán</div>
+    </div>
+    <div class="layout-2">
+      <form class="card pad" id="buyForm" novalidate>
+        <div id="buyStep"></div>
+        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+          <button type="button" class="btn ghost" id="btnPrev">&lt; Quay lại</button>
+          <button type="button" class="btn green" id="btnNext" style="margin-left:auto">Tiếp theo →</button>
+        </div>
+      </form>
+      <div>
+        <div class="card pad summary-box" id="buySummary"></div>
+      </div>
+    </div>
+  </div></section>`;
+}
+pageBuy.after=function(params){
+  const p = findProduct(params.slug);
+  if(!Auth.user){
+    const next = encodeURIComponent('#/mua?slug='+p.slug);
+    modal(`<h3>Yêu cầu đăng nhập</h3>
+      <p class="muted">Bạn cần đăng nhập trước khi mua bảo hiểm <strong>${esc(p.name)}</strong>.</p>
+      <div class="modal-actions">
+        <button class="btn ghost" onclick="closeModal()">Để sau</button>
+        <button class="btn green" onclick="closeModal();location.hash='#/dang-nhap?next=${next}'">Đăng nhập ngay</button>
+      </div>`);
+    return;
+  }
+  const dup = findActiveContract(p);
+  if(dup && !DUP_CONFIRMED.has(p.slug)){
+    modal(`<h3>Bạn đang có hợp đồng còn hiệu lực</h3>
+      <p class="muted">Hợp đồng <strong>${esc(dup.contractNo)}</strong> (${esc(p.name)}) của bạn còn hiệu lực đến <strong>${viDate(dup.end)}</strong>. Bạn có chắc muốn tiếp tục mua thêm?</p>
+      <div class="modal-actions">
+        <button class="btn ghost" onclick="closeModal();location.hash='#/san-pham-chi-tiet?slug=${p.slug}'">Hủy</button>
+        <button class="btn green" id="dupModalGoOn">Tiếp tục mua</button>
+      </div>`);
+    $('#dupModalGoOn')?.addEventListener('click',()=>{ DUP_CONFIRMED.add(p.slug); closeModal(); render(); });
+    $('#dupGoOn')?.addEventListener('click',()=>{ DUP_CONFIRMED.add(p.slug); render(); });
+    return;
+  }
+  const o = ORDER;
+  let step = 1;
+  const host=$('#buyStep');
+
+  /* --- Tính phí bảo hiểm chỉ hiển thị khi đã chọn đủ Loại xe / Gói / Nhà bảo hiểm --- */
+  const FEE_DELAY_MS = 5000;
+  let feeStatus = 'incomplete'; // 'incomplete' | 'loading' | 'ready'
+  let feeGen = 0;
+  const needsVehicleType = () => p.flow==='moto' || p.flow==='oto';
+  const feeConditionsMet = () => (!needsVehicleType() || !!o.vehicleType) && !!o.package && !!o.insurer;
+  function syncFeeState(){
+    feeGen++;
+    const myGen = feeGen;
+    if(!feeConditionsMet()){ feeStatus='incomplete'; drawSummary(); return; }
+    feeStatus='loading'; drawSummary();
+    setTimeout(()=>{
+      if(myGen!==feeGen) return; // đã có lựa chọn mới hơn, bỏ kết quả cũ
+      feeStatus='ready'; drawSummary();
+    }, FEE_DELAY_MS);
+  }
+
+  function drawSummary(){
+    const f=calcFees();
+    let feeHTML;
+    if(feeStatus==='incomplete'){
+      feeHTML = `<div class="muted" style="font-size:.85rem;padding:10px 0">
+        Vui lòng chọn đầy đủ ${needsVehicleType()?'<strong>Loại xe</strong>, ':''}<strong>Gói bảo hiểm</strong> và <strong>Nhà bảo hiểm</strong> để xem phí bảo hiểm.
+      </div>`;
+    } else if(feeStatus==='loading'){
+      feeHTML = `<div style="display:flex;align-items:center;gap:10px;padding:14px 0;color:var(--ink-soft);font-size:.88rem">
+        <span class="spinner" aria-hidden="true"></span> Đang tính phí bảo hiểm...
+      </div>`;
+    } else {
+      feeHTML = `
+      <dl style="margin-top:12px">
+        <dt>Phí bảo hiểm (đã gồm VAT)</dt><dd>${money(f.gross)}</dd>
+        ${o.voucher?`<dt>Giảm giá (${o.voucher.code})</dt><dd class="disc">-${money(f.discount)}</dd>`:''}
+      </dl>
+      <dl class="total"><dt>Tổng phí bảo hiểm</dt><dd>${money(f.pay)}</dd></dl>
+      ${o.voucher?`<div class="card" style="margin-top:12px;padding:10px 12px;background:#f0f8ec;border-color:#cfe8bd">
+        <strong style="color:var(--vnpt-green-dark)">🎟️ Voucher ${o.voucher.code}</strong>
+        <div class="muted" style="font-size:.82rem">${o.voucher.label} · Tự động áp dụng</div></div>`:''}`;
+    }
+    $('#buySummary').innerHTML = `
+      <h3>Thông tin bảo hiểm</h3>
+      <dl>
+        <dt>Loại bảo hiểm</dt><dd>${p.name.replace('Bảo hiểm ','')}</dd>
+        <dt>Nhà bảo hiểm</dt><dd>${o.insurer}</dd>
+        <dt>Gói bảo hiểm</dt><dd>${p.packages.find(x=>x.id===o.package)?.name||'-'}</dd>
+        <dt>Thời hạn</dt><dd>${o.term} năm</dd>
+        <dt>Hiệu lực</dt><dd>${viDate(o.startDate)} – ${viDate(addYears(o.startDate,o.term))}</dd>
+        ${o.owner.name?`<dt>Chủ ${o.flow==='dien'?'hộ':'xe'}</dt><dd>${esc(o.owner.name)}</dd>`:''}
+        ${o.flow!=='dien'&&o.vehicleType?`<dt>Loại xe</dt><dd>${esc(o.vehicleType)}</dd>`:''}
+        ${o.flow!=='dien' ? (o.noPlate
+            ? `<dt>Số khung</dt><dd>${esc(o.chassis||'-')}</dd><dt>Số máy</dt><dd>${esc(o.engine||'-')}</dd>`
+            : (o.plate?`<dt>Biển kiểm soát</dt><dd>${esc(o.plate)}</dd>`:'')) : ''}
+        ${o.emailGCN?`<dt>Email nhận GCN</dt><dd>${esc(o.emailGCN)}</dd>`:''}
+      </dl>
+      ${feeHTML}`;
+  }
+  function setWbar(){
+    $$('#wbar .wstep[data-s]').forEach(el=>{
+      const s=+el.dataset.s;
+      el.classList.toggle('on',s===step);
+      el.classList.toggle('done',s<step);
+      $('.n',el).textContent = s<step?'✓':s;
+    });
+    $('#btnPrev').textContent = step===1?'< Về trang sản phẩm':'< Quay lại';
+    $('#btnNext').textContent = step===3?'Thanh toán':'Tiếp theo →';
+  }
+
+  /* ----- STEP 1 : Chọn gói bảo hiểm ----- */
+  function renderStep1(){
+    const terms = p.flow==='dien'?[1]:[1,2,3];
+    const otoTypes = {
+      'khong-kd':['Ô tô ≤ 16 chỗ','Ô tô > 16 chỗ','Ô tô chở hàng (xe tải)','Bán tải, pickup','Đầu kéo'],
+      'kd':['Ô tô KD vận tải','Ô tô chở hàng (xe tải)','Bán tải, pickup','Đầu kéo']
+    };
+    host.innerHTML = `
+      <h3>Bước 1 · Chọn gói bảo hiểm</h3>
+      <div class="field">
+        <label>Thời hạn bảo hiểm <span class="req">*</span></label>
+        ${p.flow==='dien'
+          ? `<input type="text" readonly value="1 năm"><div class="hint">Thời hạn bảo hiểm là 1 năm tính từ ngày bắt đầu.</div>`
+          : `<div class="btn-group" id="b-term">${terms.map(y=>`<button type="button" data-y="${y}" class="${y===o.term?'on':''}">${y} năm</button>`).join('')}</div>`}
+      </div>
+      <div class="form-grid">
+        <div class="field" data-required data-label="Bắt đầu từ">
+          <label>Bắt đầu từ <span class="req">*</span></label>
+          <input type="date" id="b-start" min="${todayISO()}" max="${addYears(todayISO(),2)}" value="${o.startDate}">
+          <div class="err-msg">Ngày bắt đầu không hợp lệ.</div>
+        </div>
+        <div class="field"><label>Kết thúc</label><input type="text" id="b-end" readonly></div>
+      </div>
+      ${p.flow==='oto'?`
+        <div class="field" data-required data-label="Mục đích sử dụng">
+          <label>Mục đích sử dụng <span class="req">*</span></label>
+          <select id="b-purpose">
+            <option value="khong-kd" ${o.purpose==='khong-kd'?'selected':''}>Không kinh doanh</option>
+            <option value="kd" ${o.purpose==='kd'?'selected':''}>Có kinh doanh</option>
+          </select>
+        </div>
+        <div class="field" data-required data-label="Loại xe"><label>Loại xe <span class="req">*</span></label>
+          <select id="b-vtype"></select></div>
+        <div class="form-grid">
+          <div class="field" data-required data-label="Số chỗ ngồi"><label>Số chỗ ngồi <span class="req">*</span></label>
+            <input type="number" id="b-seats" min="1" max="999" value="${o.seats||''}" placeholder="chỗ"><div class="err-msg"></div></div>
+          <div class="field hide" id="b-tonnage-field"><label>Trọng tải (tấn) <span class="req">*</span></label>
+            <input type="number" id="b-tonnage" min="1" max="999" value="${o.tonnage||''}"><div class="err-msg"></div></div>
+        </div>`:''}
+      ${p.flow==='moto'?`
+        <div class="field" data-required data-label="Loại xe"><label>Loại xe <span class="req">*</span></label>
+          <select id="b-vtype">
+            <option value="">-- Chọn loại xe --</option>
+            <option ${o.vehicleType==='Xe trên 50cc'?'selected':''}>Xe trên 50cc</option>
+            <option ${o.vehicleType==='Xe dưới 50cc'?'selected':''}>Xe dưới 50cc</option>
+            <option ${o.vehicleType==='Xe máy điện'?'selected':''}>Xe máy điện</option>
+          </select><div class="err-msg"></div></div>`:''}
+      <div class="field">
+        <label>Gói bảo hiểm <span class="req">*</span></label>
+        <div class="radio-cards" id="b-pkg">
+          ${p.packages.map(pk=>`<label><input type="radio" name="pkg" value="${pk.id}" ${pk.id===o.package?'checked':''}>
+            <div class="rc-body"><strong>${pk.name}</strong><span class="rc-price">${money(pk.price)}/năm</span>
+            ${pk.cover?`<ul class="rc-cover">
+              <li>Người: ${pk.cover.nguoi}</li>
+              <li>Tài sản: ${pk.cover.taisan}</li>
+              <li>Lái, phụ xe &amp; người ngồi trên xe: ${pk.cover.laiphu}</li>
+            </ul>`:''}</div></label>`).join('')}
+        </div>
+      </div>
+      <div class="field">
+        <label>Nhà bảo hiểm <span class="req">*</span></label>
+        <div class="insurer-grid" id="b-insurer">
+          ${INSURERS.map(i=>`<label><input type="radio" name="insurer" value="${i.code}" ${i.code===o.insurer?'checked':''}>
+            <span class="insurer-card">
+              <span class="insurer-tick">✓</span>
+              <span class="insurer-logo" style="background:${i.bg}">${i.mono}</span>
+              <span class="insurer-name">${i.name}</span>
+            </span></label>`).join('')}
+        </div>
+      </div>`;
+
+    const termBox=$('#b-term');
+    const syncEnd=()=> $('#b-end').value = viDate(addYears($('#b-start').value||todayISO(), p.flow==='dien'?1:o.term));
+    syncEnd();
+    $('#b-start').addEventListener('change',()=>{ o.startDate=$('#b-start').value; syncEnd(); drawSummary(); });
+    termBox && $$('#b-term button').forEach(b=>b.addEventListener('click',()=>{
+      $$('#b-term button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+      o.term=+b.dataset.y; syncEnd(); drawSummary();
+    }));
+    $$('#b-pkg input').forEach(r=>r.addEventListener('change',()=>{ o.package=r.value; syncFeeState(); }));
+    $$('#b-insurer input').forEach(r=>r.addEventListener('change',()=>{ o.insurer=r.value; syncFeeState(); }));
+
+    if(p.flow==='oto'){
+      const fillTypes=()=>{
+        const arr = otoTypes[$('#b-purpose').value];
+        $('#b-vtype').innerHTML = '<option value="">-- Chọn loại xe --</option>'+arr.map(t=>`<option ${t===o.vehicleType?'selected':''}>${t}</option>`).join('');
+        toggleTonnage();
+      };
+      const toggleTonnage=()=>{
+        const isTruck = /xe tải/i.test($('#b-vtype').value);
+        $('#b-tonnage-field').classList.toggle('hide',!isTruck);
+        $('#b-tonnage-field').toggleAttribute('data-required',isTruck);
+      };
+      $('#b-purpose').addEventListener('change',()=>{ o.purpose=$('#b-purpose').value; fillTypes(); o.vehicleType=$('#b-vtype').value; syncFeeState(); });
+      $('#b-vtype').addEventListener('change',()=>{ o.vehicleType=$('#b-vtype').value; toggleTonnage(); syncFeeState(); });
+      fillTypes();
+    }
+    if(p.flow==='moto'){
+      $('#b-vtype').addEventListener('change',()=>{ o.vehicleType=$('#b-vtype').value; syncFeeState(); });
+    }
+  }
+  function saveStep1(){
+    if(!validateForm(host)) return false;
+    o.startDate=$('#b-start').value;
+    if(p.flow!=='dien'){ o.vehicleType=$('#b-vtype')?.value||o.vehicleType; }
+    if(p.flow==='oto'){ o.seats=$('#b-seats').value; o.tonnage=$('#b-tonnage')?.value||''; o.purpose=$('#b-purpose').value; }
+    o.package = $('input[name=pkg]:checked')?.value || o.package;
+    o.insurer = $('input[name=insurer]:checked')?.value || o.insurer;
+    return true;
+  }
+
+  /* ----- STEP 2 : Thông tin mua bảo hiểm ----- */
+  function renderStep2(){
+    const ownerLabel = p.flow==='dien'?'chủ hộ':'chủ xe';
+    host.innerHTML = `
+      <h3>Bước 2 · Thông tin mua bảo hiểm</h3>
+      <div class="field" data-required data-label="Họ và tên ${ownerLabel}">
+        <label>Họ và tên ${ownerLabel} <span class="req">*</span></label>
+        <input type="text" id="o-name" maxlength="100" data-type="name" value="${esc(o.owner.name)}" placeholder="Nhập họ tên ${ownerLabel}">
+        <div class="err-msg"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field" data-required data-label="Số điện thoại">
+          <label>Số điện thoại <span class="req">*</span></label>
+          <input type="tel" id="o-phone" maxlength="10" data-type="phone" value="${esc(o.owner.phone)}" placeholder="Nhập số điện thoại">
+          <div class="err-msg"></div>
+        </div>
+        <div class="field" data-required data-label="Email nhận GCN">
+          <label>Email nhận GCN <span class="req">*</span></label>
+          <input type="email" id="o-email" maxlength="100" data-type="email" value="${esc(o.emailGCN)}" placeholder="Nhập địa chỉ email">
+          <div class="hint">GCN điện tử sẽ gửi về email này.</div><div class="err-msg"></div>
+        </div>
+      </div>
+      <div class="field" data-required data-label="Địa chỉ ${ownerLabel}">
+        <label>Địa chỉ ${ownerLabel} <span class="req">*</span></label>
+        <textarea id="o-address" maxlength="200" placeholder="Nhập địa chỉ ${ownerLabel}">${esc(o.owner.address)}</textarea>
+        <div class="err-msg"></div>
+      </div>
+
+      ${p.flow!=='dien'?`
+      <label class="check"><input type="checkbox" id="o-noplate" ${o.noPlate?'checked':''}>
+        <span>Xe chưa có biển kiểm soát</span></label>
+      <div class="field" id="f-plate" data-required data-label="Biển kiểm soát">
+        <label>Biển kiểm soát <span class="req">*</span></label>
+        <input type="text" id="o-plate" maxlength="15" value="${esc(o.plate)}" placeholder="Nhập biển kiểm soát">
+        <div class="err-msg"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field hide" id="f-chassis" data-label="Số khung"><label>Số khung <span class="req">*</span></label>
+          <input type="text" id="o-chassis" maxlength="20" value="${esc(o.chassis)}" placeholder="Nhập số khung"><div class="err-msg"></div></div>
+        <div class="field hide" id="f-engine" data-label="Số máy"><label>Số máy <span class="req">*</span></label>
+          <input type="text" id="o-engine" maxlength="20" value="${esc(o.engine)}" placeholder="Nhập số máy"><div class="err-msg"></div></div>
+      </div>`:''}
+
+      ${p.flow==='dien'?`
+      <div class="field">
+        <label>Thành viên gia đình được bảo hiểm cùng</label>
+        <div class="member-list" id="memberList"></div>
+        <button type="button" class="btn ghost sm" id="addMember">+ Thêm thông tin thành viên hộ gia đình</button>
+        <div class="hint">Không giới hạn số lượng thành viên.</div>
+      </div>`:''}
+
+      <label class="check"><input type="checkbox" id="o-wantinv" ${o.wantInvoice?'checked':''}>
+        <span>Yêu cầu xuất hóa đơn điện tử</span></label>
+      <div id="invBox" class="${o.wantInvoice?'':'hide'}" style="border:1px dashed var(--line);border-radius:12px;padding:16px;margin-bottom:14px">
+        <div class="field" data-required data-label="Đối tượng xuất hóa đơn">
+          <label>Đối tượng xuất hóa đơn <span class="req">*</span></label>
+          <select id="i-type"><option ${o.invoice.type==='Cá nhân'?'selected':''}>Cá nhân</option><option ${o.invoice.type==='Tổ chức'?'selected':''}>Tổ chức</option></select>
+        </div>
+        <div class="field" data-required data-label="Tên cá nhân/đơn vị">
+          <label>Tên cá nhân / đơn vị <span class="req">*</span></label>
+          <textarea id="i-name" maxlength="200" placeholder="Nhập tên cá nhân/đơn vị">${esc(o.invoice.name)}</textarea><div class="err-msg"></div>
+        </div>
+        <div class="field hide" id="f-tax" data-label="Mã số thuế">
+          <label>Mã số thuế <span class="req">*</span></label>
+          <input type="text" id="i-tax" data-type="taxcode" maxlength="14" value="${esc(o.invoice.taxcode)}" placeholder="Nhập mã số thuế">
+          <div class="hint">Cho phép 10, 12 hoặc 14 ký tự.</div><div class="err-msg"></div>
+        </div>
+        <div class="field" data-required data-label="Địa chỉ hóa đơn">
+          <label>Địa chỉ (hóa đơn) <span class="req">*</span></label>
+          <textarea id="i-address" maxlength="200" placeholder="Nhập địa chỉ">${esc(o.invoice.address)}</textarea><div class="err-msg"></div>
+        </div>
+        <div class="field" data-required data-label="Email nhận hóa đơn">
+          <label>Email nhận hóa đơn <span class="req">*</span></label>
+          <input type="email" id="i-email" data-type="email" maxlength="100" value="${esc(o.invoice.email)}" placeholder="Nhập email nhận hóa đơn"><div class="err-msg"></div>
+        </div>
+      </div>`;
+
+    // plate / chassis toggle
+    if(p.flow!=='dien'){
+      const applyPlate=()=>{
+        const no=$('#o-noplate').checked;
+        $('#f-plate').classList.toggle('hide',no);
+        $('#f-plate').toggleAttribute('data-required',!no);
+        $('#f-chassis').classList.toggle('hide',!no);
+        $('#f-engine').classList.toggle('hide',!no);
+        $('#f-chassis').toggleAttribute('data-required',no);
+        $('#f-engine').toggleAttribute('data-required',no);
+      };
+      $('#o-noplate').addEventListener('change',applyPlate); applyPlate();
+    }
+
+    // invoice toggle
+    const applyInv=()=>{
+      const on=$('#o-wantinv').checked;
+      $('#invBox').classList.toggle('hide',!on);
+      $$('#invBox .field').forEach(f=>{
+        if(f.id==='f-tax') return;
+        f.toggleAttribute('data-required',on);
+      });
+      applyTax();
+    };
+    const applyTax=()=>{
+      const org = $('#i-type').value==='Tổ chức' && $('#o-wantinv').checked;
+      $('#f-tax').classList.toggle('hide',!org);
+      $('#f-tax').toggleAttribute('data-required',org);
+      // default name/address for Cá nhân
+      if($('#i-type').value==='Cá nhân'){
+        if(!$('#i-name').value) $('#i-name').value=$('#o-name').value;
+        if(!$('#i-address').value) $('#i-address').value=$('#o-address').value;
+      }
+      if(!$('#i-email').value) $('#i-email').value=$('#o-email').value;
+    };
+    $('#o-wantinv').addEventListener('change',applyInv);
+    $('#i-type').addEventListener('change',applyTax);
+    applyInv();
+
+    // members (UC-BUY-1.3 popup SCR-BHTM-05a)
+    if(p.flow==='dien'){
+      const drawMembers=()=>{
+        $('#memberList').innerHTML = o.members.length? o.members.map((m,i)=>`
+          <div class="member-row"><span>${esc(m.name)} · <span class="muted">${esc(m.rel)}</span></span>
+          <button type="button" data-i="${i}" title="Xóa">🗑️</button></div>`).join('')
+          : '<div class="muted" style="font-size:.86rem">Chưa thêm thành viên nào.</div>';
+        $$('#memberList button').forEach(b=>b.addEventListener('click',()=>{ o.members.splice(+b.dataset.i,1); drawMembers(); }));
+      };
+      drawMembers();
+      $('#addMember').addEventListener('click',()=>{
+        modal(`<h3>Thêm thông tin thành viên hộ gia đình</h3>
+          <div class="field" data-required data-label="Họ và tên" id="m-name-f">
+            <label>Họ và tên <span class="req">*</span></label>
+            <input type="text" id="m-name" maxlength="100" placeholder="Nhập họ và tên"><div class="err-msg"></div></div>
+          <div class="field" data-required data-label="Mối quan hệ" id="m-rel-f">
+            <label>Mối quan hệ với chủ hộ <span class="req">*</span></label>
+            <select id="m-rel"><option value="">-- Chọn mối quan hệ --</option>
+              <option>Vợ</option><option>Chồng</option><option>Con</option><option>Bố</option><option>Mẹ</option><option>Khác</option></select>
+            <div class="err-msg"></div></div>
+          <div class="modal-actions">
+            <button class="btn ghost" onclick="closeModal()">Hủy</button>
+            <button class="btn green" id="m-ok">Xác nhận</button>
+          </div>`);
+        $('#m-ok').addEventListener('click',()=>{
+          let ok=true;
+          [['m-name','m-name-f'],['m-rel','m-rel-f']].forEach(([id,f])=>{
+            const fe=$('#'+f); clearErr(fe);
+            if(!$('#'+id).value.trim()){ setErr(fe,'Vui lòng nhập '+fe.dataset.label.toLowerCase()); ok=false; }
+          });
+          if(!ok) return;
+          o.members.push({name:$('#m-name').value.trim(), rel:$('#m-rel').value});
+          closeModal(); drawMembers();
+        });
+      });
+    }
+  }
+  function saveStep2(){
+    if(!validateForm(host)){ toast('Vui lòng kiểm tra các trường bắt buộc.','err'); return false; }
+    o.owner.name=$('#o-name').value.trim();
+    o.owner.phone=$('#o-phone').value.trim();
+    o.owner.address=$('#o-address').value.trim();
+    o.emailGCN=$('#o-email').value.trim();
+    if(p.flow!=='dien'){
+      o.noPlate=$('#o-noplate').checked;
+      o.plate=$('#o-plate').value.trim();
+      o.chassis=$('#o-chassis').value.trim();
+      o.engine=$('#o-engine').value.trim();
+    }
+    o.wantInvoice=$('#o-wantinv').checked;
+    if(o.wantInvoice){
+      o.invoice={type:$('#i-type').value,name:$('#i-name').value.trim(),taxcode:$('#i-tax').value.trim(),
+        address:$('#i-address').value.trim(),email:$('#i-email').value.trim()};
+    }
+    return true;
+  }
+
+  /* ----- STEP 3 : Thanh toán (xác nhận) ----- */
+  function renderStep3(){
+    const f=calcFees();
+    host.innerHTML = `
+      <h3>Bước 3 · Thanh toán</h3>
+      <div class="card" style="padding:16px;background:#f7fafd">
+        <h4 style="margin:0 0 10px">Thông tin bảo hiểm</h4>
+        <dl style="display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:0;font-size:.9rem">
+          <dt class="muted">Loại bảo hiểm</dt><dd>${p.name.replace('Bảo hiểm ','')}</dd>
+          <dt class="muted">Nhà bảo hiểm</dt><dd>${o.insurer}</dd>
+          <dt class="muted">Gói bảo hiểm</dt><dd>${p.packages.find(x=>x.id===o.package)?.name}</dd>
+          <dt class="muted">Thời hạn</dt><dd>${o.term} năm</dd>
+          <dt class="muted">Hiệu lực</dt><dd>${viDate(o.startDate)} – ${viDate(addYears(o.startDate,o.term))}</dd>
+          <dt class="muted">Họ tên chủ ${p.flow==='dien'?'hộ':'xe'}</dt><dd>${esc(o.owner.name)}</dd>
+          ${p.flow!=='dien'?`<dt class="muted">Loại xe</dt><dd>${esc(o.vehicleType||'-')}</dd>`:''}
+          ${p.flow!=='dien' ? (o.noPlate
+            ? `<dt class="muted">Số khung</dt><dd>${esc(o.chassis)}</dd><dt class="muted">Số máy</dt><dd>${esc(o.engine)}</dd>`
+            : `<dt class="muted">Biển kiểm soát</dt><dd>${esc(o.plate||'-')}</dd>`) : ''}
+          ${p.flow==='dien'&&o.members.length?`<dt class="muted">Thành viên</dt><dd>${o.members.map(m=>esc(m.name)).join(', ')}</dd>`:''}
+          <dt class="muted">Email nhận GCN</dt><dd>${esc(o.emailGCN)}</dd>
+          <dt class="muted">Tổng phí bảo hiểm</dt><dd><strong>${money(f.gross)}</strong></dd>
+          ${o.voucher?`<dt class="muted">Giảm giá</dt><dd style="color:var(--vnpt-red)">-${money(f.discount)}</dd>`:''}
+          <dt class="muted"><strong>Tổng thanh toán</strong></dt><dd><strong style="color:var(--vnpt-blue-dark);font-size:1.05rem">${money(f.pay)}</strong></dd>
+        </dl>
+      </div>
+
+      ${o.voucher?`<div class="card" style="margin-top:14px;padding:12px 14px;background:#f0f8ec;border-color:#cfe8bd">
+        <strong style="color:var(--vnpt-green-dark)">🎟️ ${o.voucher.code}</strong> · ${o.voucher.label}
+        <span class="muted" style="font-size:.82rem"> (tự động áp dụng 1 voucher hiệu lực)</span></div>`:''}
+
+      <div class="field" style="margin-top:16px">
+        <label>Phương thức thanh toán <span class="req">*</span></label>
+        <div class="pay-methods">
+          <label><input type="radio" name="pm" value="qr" checked> Chuyển khoản (Quét mã QR VNPT PAY)</label>
+          <label style="opacity:.5"><input type="radio" name="pm" value="wallet" disabled> Ví VNPT Money Agent <span class="muted" style="font-size:.8rem">(ẩn ở phase này)</span></label>
+        </div>
+      </div>
+
+      <label class="check" id="agree-f"><input type="checkbox" id="o-agree" ${o.agreeTerms?'checked':''}>
+        <span>Tôi đã đọc, hiểu và đồng ý với <a href="#/tai-lieu">Điều kiện, điều khoản và Quy tắc bảo hiểm</a> của sản phẩm.</span></label>`;
+    $('#o-agree').addEventListener('change',()=>{ o.agreeTerms=$('#o-agree').checked; });
+  }
+
+  function goNext(){
+    if(step===1){ if(!saveStep1()){toast('Vui lòng chọn đầy đủ thông tin sản phẩm.','err');return;} step=2; }
+    else if(step===2){ if(!saveStep2()) return; step=3; }
+    else if(step===3){
+      if(!$('#o-agree').checked){
+        toast('Vui lòng đồng ý với điều kiện, điều khoản bảo hiểm trước khi thanh toán.','err');
+        return;
+      }
+      const stamp = Date.now().toString().slice(-9);
+      o.contractNo = 'BH' + stamp;
+      o.orderNo = 'DH' + stamp;
+      // BF-8: lưu đơn ở trạng thái "Chờ thanh toán", ghi nhận đơn hàng
+      if(!Orders.get(o.orderNo)){
+        Orders.add({
+          orderNo:o.orderNo, createdAt:new Date().toISOString(),
+          account: Auth.user ? Auth.user.id : null,
+          productSlug:o.product.slug, productName:o.product.name,
+          packageName:o.product.packages.find(x=>x.id===o.package)?.name || '',
+          insurer:o.insurer, owner:o.owner.name, phone:o.owner.phone, email:o.emailGCN,
+          start:o.startDate, end:addYears(o.startDate,o.term),
+          amount:calcFees().pay, payMethod:'—', status:'pending', contractNo:o.contractNo
+        });
+      }
+      location.hash = '#/thanh-toan';
+      return;
+    }
+    paint();
+  }
+  function goPrev(){
+    if(step===1){ location.hash = `#/san-pham-chi-tiet?slug=${p.slug}`; return; }
+    step--; paint();
+  }
+  let feeInited = false;
+  function paint(){
+    setWbar();
+    if(step===1) renderStep1();
+    else if(step===2) renderStep2();
+    else renderStep3();
+    if(!feeInited){ feeInited=true; syncFeeState(); }
+    else drawSummary();
+  }
+  $('#btnNext').addEventListener('click',goNext);
+  $('#btnPrev').addEventListener('click',goPrev);
+  paint();
+};
+
+/* ---- UC-BUY-02/03/04 : Xác nhận & Thanh toán VNPT PAY ---- */
+function pagePayment(){
+  if(!ORDER || !ORDER.contractNo) { location.hash='#/san-pham'; return ''; }
+  const o=ORDER, f=calcFees();
+  return `
+  <div class="page-head"><div class="container">
+    <h1>Bước 3 · Thanh toán qua VNPT PAY</h1>
+    <p class="muted mb0">Đơn <strong>${o.contractNo}</strong> · Trạng thái: <span class="tag wait">Chờ thanh toán</span></p>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="layout-2">
+      <div class="card pad">
+        <h3>Cổng thanh toán VNPT PAY / VNPAY</h3>
+        <div class="center" style="padding:10px 0 4px">
+          <div class="qr-mock" aria-label="Mã QR thanh toán (mô phỏng)"></div>
+          <p class="muted" style="font-size:.86rem;margin-top:12px">Dùng ứng dụng Ngân hàng / Ví VNPAY quét mã để thanh toán<br><strong style="color:var(--vnpt-blue-dark);font-size:1.2rem">${money(f.pay)}</strong></p>
+        </div>
+        <div class="field">
+          <label>Mã giảm giá khác (tùy chọn)</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="pm-voucher" placeholder="Nhập mã VNPT10 / ONLINE50" style="text-transform:uppercase">
+            <button class="btn ghost" id="pm-apply" type="button">Áp dụng</button>
+          </div>
+          <div class="hint" id="pm-vmsg">Mã giảm giá chỉ áp dụng trước khi thanh toán (BR-04).</div>
+        </div>
+        <label class="check"><input type="checkbox" id="pm-inv" ${o.wantInvoice?'checked':''}>
+          <span>Yêu cầu xuất hóa đơn (trong ngày giao dịch)</span></label>
+        <div class="pay-methods">
+          <label><input type="radio" name="pm2" value="qr" checked> VNPAY-QR (ứng dụng ngân hàng)</label>
+          <label><input type="radio" name="pm2" value="atm"> Thẻ nội địa &amp; tài khoản ngân hàng</label>
+          <label><input type="radio" name="pm2" value="cc"> Thẻ quốc tế (Visa, MasterCard, JCB, UnionPay)</label>
+          <label><input type="radio" name="pm2" value="wallet"> Ví VNPAY</label>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn ghost" type="button" id="pm-cancel">Hủy</button>
+          <button class="btn" type="button" id="pm-fail" style="background:#b91c1c">Mô phỏng thất bại</button>
+          <button class="btn green" type="button" id="pm-ok" style="margin-left:auto">Thanh toán thành công</button>
+        </div>
+      </div>
+      <div>
+        <div class="card pad summary-box">
+          <h3>Tóm tắt yêu cầu bảo hiểm</h3>
+          <dl id="pm-summary"></dl>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+}
+pagePayment.after=function(){
+  const o=ORDER;
+  const drawSum=()=>{
+    const f=calcFees();
+    $('#pm-summary').innerHTML=`
+      <dt>Sản phẩm</dt><dd>${o.product.name.replace('Bảo hiểm ','')}</dd>
+      <dt>Gói</dt><dd>${o.product.packages.find(x=>x.id===o.package)?.name}</dd>
+      <dt>Người mua</dt><dd>${esc(o.owner.name)}</dd>
+      <dt>Thời hạn</dt><dd>${viDate(o.startDate)} – ${viDate(addYears(o.startDate,o.term))}</dd>
+      <dt>Phí (gồm VAT)</dt><dd>${money(f.gross)}</dd>
+      ${o.voucher?`<dt>Giảm (${o.voucher.code})</dt><dd style="color:var(--vnpt-red)">-${money(f.discount)}</dd>`:''}
+      <div class="total" style="grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:8px 12px">
+        <dt><strong>Tổng tiền thanh toán</strong></dt><dd><strong>${money(f.pay)}</strong></dd>
+      </div>`;
+  };
+  drawSum();
+  $('#pm-apply').addEventListener('click',()=>{
+    const code=$('#pm-voucher').value.trim().toUpperCase();
+    if(!code) return;
+    if(VOUCHERS[code]){ o.voucher={code,...VOUCHERS[code]}; $('#pm-vmsg').textContent='Đã áp dụng mã '+code+' · '+VOUCHERS[code].label; $('#pm-vmsg').style.color='var(--vnpt-green-dark)'; toast('Áp dụng mã giảm giá thành công.','ok'); drawSum(); }
+    else { $('#pm-vmsg').textContent='Mã giảm giá không hợp lệ hoặc đã hết hạn.'; $('#pm-vmsg').style.color='var(--vnpt-red)'; toast('Mã không hợp lệ.','err'); }
+  });
+  $('#pm-cancel').addEventListener('click',()=>{
+    toast('Đã hủy thanh toán. Đơn giữ trạng thái "Chờ thanh toán".');
+    location.hash = Auth.user ? '#/don-hang' : '#/san-pham';
+  });
+  $('#pm-fail').addEventListener('click',()=>{
+    modal(`<h3>Thanh toán thất bại</h3><p class="muted">Giao dịch bị hủy hoặc cổng VNPT PAY lỗi/timeout — <strong>không trừ tiền</strong>. Đơn giữ trạng thái "Chờ thanh toán", bạn có thể chọn lại phương thức và thanh toán lại.</p>
+      <div class="modal-actions"><button class="btn green" onclick="closeModal()">Thử lại</button></div>`);
+  });
+  $('#pm-ok').addEventListener('click',()=>{
+    ORDER.paidAt = new Date().toISOString();
+    ORDER.status = 'Đã thanh toán';
+    const m = $('input[name=pm2]:checked')?.value;
+    const mLabel = {qr:'VNPAY-QR',atm:'Thẻ nội địa & tài khoản NH',cc:'Thẻ quốc tế',wallet:'Ví VNPAY'}[m] || 'VNPAY-QR';
+    if(ORDER.orderNo) Orders.update(ORDER.orderNo,{status:'paid', payMethod:mLabel, amount:calcFees().pay});
+    location.hash='#/ket-qua';
+  });
+};
+
+/* ---- UC-BUY-05 : Kết quả & GCN điện tử ---- */
+function pageResult(){
+  if(!ORDER || !ORDER.paidAt){ location.hash='#/san-pham'; return ''; }
+  const o=ORDER, f=calcFees();
+  // BF-1: phát hành GCN → lưu hợp đồng + cập nhật đơn hàng sang "Đã cấp GCN"
+  const store = allContracts();
+  if(!store.find(c=>c.contractNo===o.contractNo)){
+    store.unshift({
+      contractNo:o.contractNo, account: Auth.user ? Auth.user.id : null,
+      product:o.product.name, package:o.product.packages.find(x=>x.id===o.package)?.name,
+      insurer:o.insurer, owner:o.owner.name, phone:o.owner.phone, email:o.emailGCN,
+      start:o.startDate, end:addYears(o.startDate,o.term), pay:f.pay, status:'Đã cấp GCN',
+      plate:o.noPlate?('Số khung '+o.chassis):o.plate
+    });
+    saveContracts(store);
+  }
+  if(o.orderNo) Orders.update(o.orderNo,{status:'issued', contractNo:o.contractNo});
+  return `
+  <section class="section"><div class="container" style="max-width:820px">
+    <div class="card pad center" style="background:linear-gradient(180deg,#eafaef,#fff);border-color:#bfe6c8">
+      <div style="font-size:3rem">✅</div>
+      <h1 style="color:var(--vnpt-green-dark)">Thanh toán thành công!</h1>
+      <p class="muted">Yêu cầu bảo hiểm đã chuyển trạng thái <span class="tag ok">Đã thanh toán</span> · Mã hợp đồng <strong>${o.contractNo}</strong></p>
+      <p class="muted" style="font-size:.9rem">Giấy chứng nhận điện tử đã được phát hành và gửi tới <strong>Email</strong> (${esc(o.emailGCN)}) và <strong>Zalo</strong> theo thông tin bạn cung cấp.</p>
+    </div>
+
+    <div class="gcn-doc" style="margin-top:22px" id="gcnDoc">
+      <div class="gcn-h">
+        <div>
+          <svg viewBox="0 0 116 40" style="height:34px"><defs><linearGradient id="vgGcn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a8fe0"/><stop offset="1" stop-color="#0a3d70"/></linearGradient></defs><path d="M20 2.5 L35.5 8 V20.5 C35.5 30 28.8 35.6 20 38 C11.2 35.6 4.5 30 4.5 20.5 V8 Z" fill="url(#vgGcn)"/><path d="M11 17.5 L18 26 L28.5 11.5" fill="none" stroke="#fff" stroke-width="4.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="29" cy="10.8" r="3.1" fill="#ff8a1e"/><text x="46" y="27" font-family="Segoe UI,Arial,sans-serif" font-size="21" font-weight="800" letter-spacing=".4" fill="#062b52">VNPT</text></svg>
+          <div class="muted" style="font-size:.78rem">TỔNG CÔNG TY BẢO HIỂM VNPT</div>
+        </div>
+        <div style="text-align:right">
+          <strong>GIẤY CHỨNG NHẬN BẢO HIỂM ĐIỆN TỬ</strong><br>
+          <span class="muted" style="font-size:.8rem">Số: ${o.contractNo}</span>
+        </div>
+      </div>
+      <dl>
+        <dt>Sản phẩm</dt><dd>${o.product.name}</dd>
+        <dt>Nhà bảo hiểm</dt><dd>${o.insurer}</dd>
+        <dt>Gói bảo hiểm</dt><dd>${o.product.packages.find(x=>x.id===o.package)?.name}</dd>
+        <dt>Chủ hợp đồng</dt><dd>${esc(o.owner.name)}</dd>
+        <dt>Điện thoại</dt><dd>${esc(o.owner.phone)}</dd>
+        ${o.flow!=='dien'?`<dt>${o.noPlate?'Số khung / Số máy':'Biển kiểm soát'}</dt><dd>${o.noPlate? esc(o.chassis+' / '+o.engine): esc(o.plate||'-')}</dd>`:''}
+        ${o.flow==='dien'&&o.members.length?`<dt>Thành viên</dt><dd>${o.members.map(m=>esc(m.name+' ('+m.rel+')')).join(', ')}</dd>`:''}
+        <dt>Thời hạn</dt><dd>${viDate(o.startDate)} – ${viDate(addYears(o.startDate,o.term))}</dd>
+        <dt>Tổng phí (gồm VAT)</dt><dd>${money(f.gross)}</dd>
+        ${o.voucher?`<dt>Giảm giá</dt><dd>-${money(f.discount)}</dd>`:''}
+        <dt>Đã thanh toán</dt><dd><strong>${money(f.pay)}</strong></dd>
+      </dl>
+      <p class="muted" style="font-size:.78rem;margin-top:14px">GCN điện tử có giá trị pháp lý tương đương bản giấy. Vui lòng xuất trình bản điện tử hoặc bản in khi có yêu cầu.</p>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn green sm" id="dl-gcn">⬇ Tải GCN (.pdf)</button>
+      <button class="btn ghost sm" id="resend-gcn">Gửi lại GCN</button>
+      <a href="#/don-hang" class="btn ghost sm">Đơn hàng của tôi</a>
+      <a href="#/hop-dong-cua-toi" class="btn ghost sm">Hợp đồng của tôi</a>
+      <a href="#/" class="btn ghost sm">Về trang chủ</a>
+    </div>
+    <p class="hint center" style="margin-top:14px">Đã thanh toán nhưng chưa nhận GCN? Liên hệ 028 999 66 995 (phím 8).</p>
+  </div></section>`;
+}
+pageResult.after=function(){
+  $('#dl-gcn')?.addEventListener('click',()=>{
+    const o=ORDER,f=calcFees();
+    const txt=`GIAY CHUNG NHAN BAO HIEM DIEN TU\n================================\nSo: ${o.contractNo}\nSan pham: ${o.product.name}\nNha bao hiem: ${o.insurer}\nChu hop dong: ${o.owner.name}\nDien thoai: ${o.owner.phone}\nThoi han: ${viDate(o.startDate)} - ${viDate(addYears(o.startDate,o.term))}\nDa thanh toan: ${money(f.pay)}\n\n(Ban mo phong tu prototype)`;
+    const blob=new Blob([txt],{type:'application/pdf'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`GCN-${o.contractNo}.pdf`;a.click();
+    toast('Đang tải GCN...','ok');
+  });
+  $('#resend-gcn')?.addEventListener('click',()=>toast('Đã gửi lại GCN tới Email và Zalo.','ok'));
+};
+
+/* ---- UC-ACCT-02 : Đăng nhập ---- */
+function pageLogin(params){
+  if(Auth.user){ location.hash='#/tai-khoan'; return ''; }
+  const next = params.next ? decodeURIComponent(params.next) : '';
+  return authShell('Đăng nhập','Đăng nhập để xem đơn hàng đã mua, quản lý hợp đồng và theo dõi bồi thường.',`
+    <form id="loginForm" novalidate data-next="${esc(next)}">
+      <div class="field" data-required data-label="Tên đăng nhập" data-msg="Vui lòng nhập tên đăng nhập">
+        <label>Tên đăng nhập (SĐT / Email) <span class="req">*</span></label>
+        <input type="text" id="lg-user" autocomplete="username" placeholder="Số điện thoại hoặc email"><div class="err-msg"></div>
+      </div>
+      <div class="field" data-required data-label="Mật khẩu" data-msg="Vui lòng nhập mật khẩu">
+        <label>Mật khẩu <span class="req">*</span></label>
+        <div style="position:relative">
+          <input type="password" id="lg-pass" autocomplete="current-password" placeholder="Nhập mật khẩu" style="padding-right:44px">
+          <button type="button" id="lg-eye" aria-label="Hiện mật khẩu" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;font-size:1.1rem;padding:6px">👁</button>
+        </div>
+        <div class="err-msg"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <label class="check" style="margin:0"><input type="checkbox" id="lg-remember"> <span>Ghi nhớ đăng nhập</span></label>
+        <a href="#/quen-mat-khau" style="font-size:.88rem">Quên mật khẩu?</a>
+      </div>
+      <button class="btn green block" type="submit">Đăng nhập</button>
+      <div class="center" style="margin-top:14px;font-size:.9rem">
+        Chưa có tài khoản? <a href="#/dang-ky">Đăng ký ngay</a>
+      </div>
+      <div class="card" style="margin-top:16px;padding:12px 14px;background:var(--vnpt-blue-050);border-color:var(--vnpt-blue-100);font-size:.83rem">
+        <strong>Tài khoản dùng thử:</strong> demo@vnpt.vn &nbsp;/&nbsp; Vnpt@1234
+        <button type="button" id="lg-fill" class="btn ghost sm" style="margin-top:8px;padding:.4em .9em">Điền nhanh</button>
+      </div>
+    </form>`);
+}
+pageLogin.after=function(){
+  const form=$('#loginForm');
+  const uf=$('#lg-user').closest('.field'), pf=$('#lg-pass').closest('.field');
+
+  $('#lg-eye').addEventListener('click',()=>{
+    const i=$('#lg-pass'); i.type = i.type==='password' ? 'text' : 'password';
+    $('#lg-eye').textContent = i.type==='password' ? '👁' : '🙈';
+  });
+  $('#lg-fill').addEventListener('click',()=>{ $('#lg-user').value='demo@vnpt.vn'; $('#lg-pass').value='Vnpt@1234'; });
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!validateForm(form)) return;
+    const id = normId($('#lg-user').value);
+    const pass = $('#lg-pass').value;
+    const acc = Accounts.get(id);
+    const now = Date.now();
+
+    // AF-2: tài khoản đang bị khóa
+    if(acc && acc.lockUntil && acc.lockUntil > now){
+      const mins = Math.ceil((acc.lockUntil - now)/60000);
+      setErr(pf, `Tài khoản tạm khóa do đăng nhập sai nhiều lần. Vui lòng thử lại sau ${mins} phút.`);
+      return;
+    }
+    // AF-1: sai tài khoản / mật khẩu → đếm số lần thử
+    if(!acc || acc.pass !== pass){
+      if(acc){
+        acc.fail = (acc.fail||0) + 1;
+        if(acc.fail >= MAX_LOGIN_FAIL){
+          acc.lockUntil = now + LOCK_MINUTES*60000; acc.fail = 0;
+          Accounts.put(acc);
+          setErr(pf, `Sai quá ${MAX_LOGIN_FAIL} lần. Tài khoản bị tạm khóa ${LOCK_MINUTES} phút.`);
+          return;
+        }
+        Accounts.put(acc);
+        setErr(pf, `Tài khoản hoặc mật khẩu không đúng. Còn ${MAX_LOGIN_FAIL - acc.fail} lần thử.`);
+      }else{
+        setErr(pf, 'Tài khoản hoặc mật khẩu không đúng.');
+      }
+      return;
+    }
+    // Thành công
+    acc.fail = 0; acc.lockUntil = 0; acc.lastLogin = new Date().toISOString();
+    Accounts.put(acc);
+    Auth.login({id:acc.id, name:acc.name}, $('#lg-remember').checked);
+    toast('Đăng nhập thành công. Xin chào ' + acc.name + '!','ok');
+    location.hash = form.dataset.next || '#/';
+  });
+};
+
+/* ---- UC-ACCT-01 : Đăng ký ---- */
+function pageRegister(){
+  return authShell('Đăng ký tài khoản','Tạo tài khoản VNPT Online để quản lý hợp đồng thuận tiện.',`
+    <form id="regForm" novalidate>
+      <div class="field" data-required data-label="Số điện thoại / Email">
+        <label>Số điện thoại / Email <span class="req">*</span></label>
+        <input type="text" id="rg-id" placeholder="Dùng để đăng nhập"><div class="err-msg"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field" data-required data-label="Mật khẩu">
+          <label>Mật khẩu <span class="req">*</span></label>
+          <input type="password" id="rg-p1"><div class="hint">8–32 ký tự, gồm chữ hoa, chữ thường, số.</div><div class="err-msg"></div>
+        </div>
+        <div class="field" data-required data-label="Xác nhận mật khẩu">
+          <label>Xác nhận mật khẩu <span class="req">*</span></label>
+          <input type="password" id="rg-p2"><div class="err-msg"></div>
+        </div>
+      </div>
+      <div class="field" id="rg-otp-f" style="display:none">
+        <label>Mã OTP <span class="req">*</span></label>
+        <input type="text" id="rg-otp" maxlength="6" placeholder="Nhập OTP gồm 6 số">
+        <div class="hint">OTP đã gửi qua SMS/Email (mô phỏng: <strong>123456</strong>).</div><div class="err-msg"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="rg-agree"> <span>Tôi đồng ý với <a href="#/tai-lieu">Điều khoản sử dụng</a> <span class="req">*</span></span></label>
+      <button class="btn green block" type="submit" id="rg-btn">Gửi OTP &amp; Đăng ký</button>
+      <div class="center" style="margin-top:14px;font-size:.9rem"><a href="#/dang-nhap">Đã có tài khoản? Đăng nhập</a></div>
+    </form>`);
+}
+pageRegister.after=function(){
+  let otpSent=false;
+  $('#regForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!validateForm($('#regForm'))) return;
+    const id=normId($('#rg-id').value);
+    const p1=$('#rg-p1').value,p2=$('#rg-p2').value;
+    const isEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(id), isPhone=/^0\d{9}$/.test(id);
+    if(!isEmail && !isPhone){ setErr($('#rg-id').closest('.field'),'Nhập email hợp lệ hoặc SĐT 10 số bắt đầu bằng 0.'); return; }
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/.test(p1)){ setErr($('#rg-p1').closest('.field'),'Mật khẩu 8–32 ký tự, gồm chữ hoa, chữ thường, số.'); return; }
+    if(p1!==p2){ setErr($('#rg-p2').closest('.field'),'Xác nhận mật khẩu không trùng khớp.'); return; }
+    if(!$('#rg-agree').checked){ toast('Vui lòng đồng ý với điều khoản để đăng ký.','err'); return; }
+    // AF-1: định danh đã tồn tại
+    if(Accounts.get(id)){
+      setErr($('#rg-id').closest('.field'),'SĐT/Email này đã có tài khoản. Vui lòng đăng nhập hoặc dùng "Quên mật khẩu".');
+      return;
+    }
+    if(!otpSent){
+      otpSent=true;
+      $('#rg-otp-f').style.display='block';
+      $('#rg-otp-f').setAttribute('data-required','');$('#rg-otp-f').dataset.label='Mã OTP';
+      $('#rg-btn').textContent='Xác nhận đăng ký';
+      toast('Đã gửi OTP xác thực tới ' + (isEmail?'email':'số điện thoại') + '.','ok');
+      return;
+    }
+    if($('#rg-otp').value!=='123456'){ setErr($('#rg-otp').closest('.field'),'OTP sai hoặc hết hạn. Vui lòng thử lại.'); return; }
+    const name = isEmail ? id.split('@')[0].replace(/[._-]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase()) : 'Khách ' + id.slice(-4);
+    Accounts.put({id, name, pass:p1, phone:isPhone?id:'', createdAt:todayISO(), fail:0, lockUntil:0});
+    Auth.login({id, name}, true);
+    toast('Tạo tài khoản thành công! Chào mừng ' + name + '.','ok');
+    location.hash='#/tai-khoan';
+  });
+};
+
+/* ---- UC-ACCT-03 : Quên mật khẩu ---- */
+function pageForgot(){
+  return authShell('Quên / Đặt lại mật khẩu','Xác thực OTP gửi tới SĐT/Email đã đăng ký.',`
+    <form id="fgForm" novalidate>
+      <div class="field" data-required data-label="SĐT / Email đăng ký">
+        <label>SĐT / Email đăng ký <span class="req">*</span></label>
+        <input type="text" id="fg-id"><div class="err-msg"></div>
+      </div>
+      <div id="fg-more" style="display:none">
+        <div class="field" data-label="Mã OTP" id="fg-otp-f">
+          <label>Mã OTP <span class="req">*</span></label>
+          <input type="text" id="fg-otp" maxlength="6" placeholder="OTP 6 số (mô phỏng 123456)"><div class="err-msg"></div>
+        </div>
+        <div class="field" data-label="Mật khẩu mới" id="fg-p1-f">
+          <label>Mật khẩu mới <span class="req">*</span></label>
+          <input type="password" id="fg-p1"><div class="hint">8–32 ký tự, gồm chữ hoa, chữ thường, số. Không trùng mật khẩu cũ.</div><div class="err-msg"></div>
+        </div>
+        <div class="field" data-label="Xác nhận mật khẩu mới" id="fg-p2-f">
+          <label>Xác nhận mật khẩu mới <span class="req">*</span></label>
+          <input type="password" id="fg-p2"><div class="err-msg"></div>
+        </div>
+      </div>
+      <button class="btn green block" type="submit" id="fg-btn">Gửi OTP</button>
+      <div class="center" style="margin-top:14px;font-size:.9rem"><a href="#/dang-nhap">Quay lại đăng nhập</a></div>
+    </form>`);
+}
+pageForgot.after=function(){
+  let sent=false, acc=null;
+  $('#fgForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!sent){
+      const id=normId($('#fg-id').value);
+      if(!id){ setErr($('#fg-id').closest('.field'),'Vui lòng nhập định danh.'); return; }
+      acc=Accounts.get(id);
+      // AF-1: định danh không tồn tại
+      if(!acc){ setErr($('#fg-id').closest('.field'),'Định danh không tồn tại trong hệ thống.'); return; }
+      sent=true; $('#fg-more').style.display='block';
+      ['fg-otp-f','fg-p1-f','fg-p2-f'].forEach(id=>$('#'+id).setAttribute('data-required',''));
+      $('#fg-btn').textContent='Đặt lại mật khẩu';
+      toast('Đã gửi OTP tới ' + (id.includes('@')?'email':'số điện thoại') + ' đã đăng ký.','ok'); return;
+    }
+    if(!validateForm($('#fgForm'))) return;
+    if($('#fg-otp').value!=='123456'){ setErr($('#fg-otp-f'),'OTP sai hoặc hết hạn.'); return; }
+    if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/.test($('#fg-p1').value)){ setErr($('#fg-p1-f'),'Mật khẩu chưa đạt quy tắc.'); return; }
+    if(acc && $('#fg-p1').value===acc.pass){ setErr($('#fg-p1-f'),'Mật khẩu mới không được trùng mật khẩu cũ.'); return; }
+    if($('#fg-p1').value!==$('#fg-p2').value){ setErr($('#fg-p2-f'),'Xác nhận không trùng khớp.'); return; }
+    acc.pass=$('#fg-p1').value; acc.fail=0; acc.lockUntil=0;
+    Accounts.put(acc);
+    toast('Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.','ok');
+    location.hash='#/dang-nhap';
+  });
+};
+
+/* =====================================================================
+   TÀI KHOẢN – Tổng quan & Đơn hàng đã mua
+   ===================================================================== */
+function requireLogin(next){
+  if(Auth.user) return true;
+  location.hash = '#/dang-nhap?next=' + encodeURIComponent(next);
+  return false;
+}
+const ACCT_ICONS = {
+  overview:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+  orders:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  contracts:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/>',
+  profile:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>'
+};
+const ic = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ACCT_ICONS[n]}</svg>`;
+const initials = s => (s||'?').trim().split(/\s+/).slice(-2).map(w=>w[0]||'').join('').toUpperCase() || '?';
+
+function accountShell(active, body){
+  const u=Auth.user;
+  const pend=Orders.forUser(u).filter(o=>o.status==='pending').length;
+  const items=[
+    ['#/tai-khoan','tai-khoan','overview','Tổng quan',0],
+    ['#/don-hang','don-hang','orders','Đơn hàng đã mua',pend],
+    ['#/hop-dong-cua-toi','hop-dong-cua-toi','contracts','Hợp đồng của tôi',0],
+    ['#/tai-khoan-thong-tin','tai-khoan-thong-tin','profile','Thông tin tài khoản',0]
+  ];
+  return `<section class="section"><div class="container">
+    <div class="breadcrumb" style="padding-top:0"><a href="#/">Trang chủ</a> / Tài khoản</div>
+    <h1 style="margin:.15em 0 20px">Tài khoản của tôi</h1>
+    <div class="acct-shell">
+      <aside class="acct-side">
+        <div class="acct-user">
+          <span class="acct-avatar">${initials(u.name)}</span>
+          <div><b>${esc(u.name)}</b><span>${esc(u.id)}</span></div>
+        </div>
+        <nav class="acct-menu" aria-label="Menu tài khoản">
+          ${items.map(([h,k,i,l,b])=>`<a href="${h}" class="${active===k?'on':''}">${ic(i)}<span>${l}</span>${b?`<em class="m-badge">${b}</em>`:''}</a>`).join('')}
+        </nav>
+        <button class="acct-logout" onclick="Auth.logout()">${ic('logout')}<span>Đăng xuất</span></button>
+      </aside>
+      <div class="acct-body">${body}</div>
+    </div>
+  </div></section>`;
+}
+function orderStatusTag(s){ const m=ORDER_STATUS[s]||{label:s,cls:'wait'}; return `<span class="tag ${m.cls}">${m.label}</span>`; }
+function orderProgress(status){
+  const steps=['Khởi tạo','Chờ thanh toán','Đã thanh toán','Đã cấp GCN'];
+  let reached = {pending:1,paid:2,issued:3,cancelled:1}[status] ?? 0;
+  if(status==='cancelled'){
+    return `<div class="order-steps"><span class="os done cancel">Đơn đã hủy</span></div>`;
+  }
+  return `<div class="order-steps">${steps.map((s,i)=>`<span class="os ${i<=reached?'done':''}">${s}</span>`).join('')}</div>`;
+}
+function orderCardHtml(o){
+  const paidMethod = o.payMethod && o.payMethod!=='—' ? o.payMethod : '(chưa thanh toán)';
+  let actions='';
+  if(o.status==='pending'){
+    actions = `<button class="btn green sm" onclick="payPendingOrder('${o.orderNo}')">Tiếp tục thanh toán</button>
+               <button class="btn ghost sm" onclick="cancelPendingOrder('${o.orderNo}')">Hủy đơn</button>`;
+  }else if(o.status==='paid'){
+    actions = `<span class="muted" style="font-size:.85rem">Đang phát hành GCN…</span>`;
+  }else if(o.status==='issued'){
+    actions = `<button class="btn green sm" onclick="toast('Đang tải GCN-${o.contractNo}.pdf','ok')">⬇ Tải GCN</button>
+               <a class="btn ghost sm" href="#/hop-dong?no=${o.contractNo}">Xem hợp đồng</a>`;
+  }else if(o.status==='cancelled'){
+    actions = `<a class="btn ghost sm" href="#/mua?slug=${o.productSlug}">Mua lại</a>`;
+  }
+  return `<div class="order-card">
+    <div class="oc-h">
+      <div>
+        <div class="oc-no">Mã đơn ${o.orderNo}${o.contractNo && o.status!=='pending' ? ' · HĐ '+o.contractNo : ''}</div>
+        <h3>${o.productName.replace('Bảo hiểm ','')}</h3>
+      </div>
+      ${orderStatusTag(o.status)}
+    </div>
+    ${orderProgress(o.status)}
+    <div class="oc-meta">
+      <span>Ngày đặt</span><b>${new Date(o.createdAt).toLocaleString('vi-VN')}</b>
+      <span>Gói bảo hiểm</span><b>${o.packageName||'-'}</b>
+      <span>Nhà bảo hiểm</span><b>${o.insurer}</b>
+      <span>Người mua</span><b>${esc(o.owner)}</b>
+      <span>Hiệu lực</span><b>${viDate(o.start)} – ${viDate(o.end)}</b>
+      <span>Thanh toán</span><b>${paidMethod}</b>
+    </div>
+    <div class="oc-foot">
+      <span class="oc-amt">${money(o.amount)}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${actions}</div>
+    </div>
+  </div>`;
+}
+
+/* ---- Tổng quan tài khoản ---- */
+function pageAccount(){
+  if(!requireLogin('#/tai-khoan')) return '';
+  const u=Auth.user;
+  const orders=Orders.forUser(u);
+  const contracts=contractsForUser(u);
+  const pend=orders.filter(o=>o.status==='pending').length;
+  const active=contracts.filter(c=>/hiệu lực|GCN/i.test(c.status)).length;
+  const spent=orders.filter(o=>o.status==='issued'||o.status==='paid').reduce((s,o)=>s+o.amount,0);
+  const recent=orders.slice(0,3);
+  return accountShell('tai-khoan', `
+    <h2>Tổng quan</h2>
+    <div class="info-grid" style="margin-bottom:22px">
+      <div class="stat"><b>${orders.length}</b><span class="muted">Đơn hàng đã tạo</span></div>
+      <div class="stat"><b style="color:var(--accent-orange)">${pend}</b><span class="muted">Đơn chờ thanh toán</span></div>
+      <div class="stat"><b>${active}</b><span class="muted">Hợp đồng còn hiệu lực</span></div>
+      <div class="stat"><b style="font-size:1.3rem">${money(spent)}</b><span class="muted">Tổng đã chi</span></div>
+    </div>
+    ${pend?`<div class="card pad" style="margin-bottom:20px;background:#fff6ec;border-color:#ffd8ac">
+      <strong>⏳ Bạn có ${pend} đơn hàng chưa hoàn tất thanh toán.</strong>
+      <a href="#/don-hang" class="btn green sm" style="margin-left:10px">Xem &amp; thanh toán</a></div>`:''}
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+      <h3 style="margin:0">Đơn hàng gần đây</h3>
+      <a href="#/don-hang" class="btn ghost sm">Xem tất cả</a>
+    </div>
+    <div style="margin-top:16px">
+      ${recent.length ? recent.map(orderCardHtml).join('') :
+        `<div class="card pad muted">Bạn chưa có đơn hàng nào. <a href="#/san-pham">Mua bảo hiểm ngay</a>.</div>`}
+    </div>`);
+}
+
+/* ---- Đơn hàng đã mua + trạng thái ---- */
+function pageOrders(){
+  if(!requireLogin('#/don-hang')) return '';
+  return accountShell('don-hang', `
+    <h2>Đơn hàng đã mua</h2>
+    <div class="card pad" style="margin-bottom:18px;background:var(--vnpt-blue-050)">
+      <div class="form-grid" style="grid-template-columns:1fr 1fr auto;align-items:end">
+        <div class="field" style="margin:0"><label>Trạng thái đơn</label>
+          <select id="od-status">
+            <option value="">Tất cả</option>
+            <option value="pending">Chờ thanh toán</option>
+            <option value="paid">Đã thanh toán</option>
+            <option value="issued">Đã cấp GCN</option>
+            <option value="cancelled">Đã hủy</option>
+          </select></div>
+        <div class="field" style="margin:0"><label>Từ khóa</label>
+          <input type="text" id="od-kw" placeholder="Mã đơn, sản phẩm, nhà bảo hiểm..."></div>
+        <button class="btn ghost sm" id="od-reset" style="margin-bottom:2px">Đặt lại</button>
+      </div>
+    </div>
+    <div id="odList"></div>`);
+}
+pageOrders.after=function(){
+  const draw=()=>{
+    const st=$('#od-status').value, kw=$('#od-kw').value.trim().toLowerCase();
+    let list=Orders.forUser(Auth.user);
+    list=list.filter(o=>{
+      const okS=!st || o.status===st;
+      const okK=!kw || (o.orderNo+o.productName+o.insurer+(o.contractNo||'')).toLowerCase().includes(kw);
+      return okS && okK;
+    });
+    $('#odList').innerHTML = list.length ? list.map(orderCardHtml).join('')
+      : `<div class="card pad muted">Không có đơn hàng nào khớp bộ lọc.</div>`;
+  };
+  draw();
+  $('#od-status').addEventListener('change',draw);
+  $('#od-kw').addEventListener('input',draw);
+  $('#od-reset').addEventListener('click',()=>{ $('#od-status').value=''; $('#od-kw').value=''; draw(); });
+};
+
+function payPendingOrder(no){
+  const o=Orders.get(no); if(!o) return;
+  modal(`<h3>Thanh toán đơn ${o.orderNo}</h3>
+    <p class="muted" style="font-size:.9rem">${o.productName}<br>Số tiền: <strong style="color:var(--vnpt-blue-900)">${money(o.amount)}</strong></p>
+    <div class="pay-methods">
+      <label><input type="radio" name="pp" value="VNPAY-QR" checked> VNPAY-QR (ứng dụng ngân hàng)</label>
+      <label><input type="radio" name="pp" value="Thẻ nội địa & tài khoản NH"> Thẻ nội địa &amp; tài khoản NH</label>
+      <label><input type="radio" name="pp" value="Ví VNPAY"> Ví VNPAY</label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Để sau</button>
+      <button class="btn green" id="pp-ok">Xác nhận thanh toán</button>
+    </div>`);
+  $('#pp-ok').addEventListener('click',()=>{
+    const method=$('input[name=pp]:checked').value;
+    // paid → issued (phát hành GCN)
+    Orders.update(no,{status:'issued', payMethod:method});
+    const store=allContracts();
+    if(!store.find(c=>c.contractNo===o.contractNo)){
+      store.unshift({
+        contractNo:o.contractNo, account:Auth.user?Auth.user.id:null, product:o.productName, package:o.packageName,
+        insurer:o.insurer, owner:o.owner, phone:o.phone, email:o.email,
+        start:o.start, end:o.end, pay:o.amount, status:'Đã cấp GCN', plate:''
+      });
+      saveContracts(store);
+    }
+    closeModal();
+    toast('Thanh toán thành công! GCN điện tử đã được gửi tới Email/Zalo.','ok');
+    render();
+  });
+}
+function cancelPendingOrder(no){
+  modal(`<h3>Hủy đơn hàng?</h3><p class="muted">Đơn <strong>${no}</strong> đang chờ thanh toán sẽ được hủy. Bạn có thể tạo đơn mới bất cứ lúc nào.</p>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Không</button>
+      <button class="btn" style="background:#b91c1c" id="cp-ok">Hủy đơn</button>
+    </div>`);
+  $('#cp-ok').addEventListener('click',()=>{ Orders.update(no,{status:'cancelled'}); closeModal(); toast('Đã hủy đơn hàng.'); render(); });
+}
+window.payPendingOrder=payPendingOrder; window.cancelPendingOrder=cancelPendingOrder;
+
+/* ---- Thông tin tài khoản ---- */
+function pageProfile(){
+  if(!requireLogin('#/tai-khoan-thong-tin')) return '';
+  const u=Auth.user;
+  const acc=Accounts.get(u.id) || {};
+  return accountShell('tai-khoan-thong-tin', `
+    <h2>Thông tin tài khoản</h2>
+    <div class="card pad" style="margin-bottom:16px">
+      <dl style="display:grid;grid-template-columns:auto 1fr;gap:12px 20px;margin:0;font-size:.92rem">
+        <dt class="muted">Họ và tên</dt><dd style="margin:0;font-weight:600">${esc(u.name)}</dd>
+        <dt class="muted">Định danh đăng nhập</dt><dd style="margin:0;font-weight:600">${esc(u.id)}</dd>
+        <dt class="muted">Số điện thoại</dt><dd style="margin:0;font-weight:600">${esc(acc.phone||'Chưa cập nhật')}</dd>
+        <dt class="muted">Ngày tạo tài khoản</dt><dd style="margin:0;font-weight:600">${acc.createdAt?viDate(acc.createdAt):'-'}</dd>
+        <dt class="muted">Đăng nhập gần nhất</dt><dd style="margin:0;font-weight:600">${acc.lastLogin? new Date(acc.lastLogin).toLocaleString('vi-VN') : 'Phiên hiện tại'}</dd>
+      </dl>
+    </div>
+    <div class="card pad">
+      <h3 style="margin-top:0">Bảo mật</h3>
+      <p class="muted" style="font-size:.9rem">Mật khẩu 8–32 ký tự, gồm chữ hoa, chữ thường và số.</p>
+      <button class="btn ghost" id="pf-chpass">Đổi mật khẩu</button>
+    </div>`);
+}
+pageProfile.after=function(){
+  $('#pf-chpass')?.addEventListener('click',()=>{
+    modal(`<h3>Đổi mật khẩu</h3>
+      <div class="field" data-required data-label="Mật khẩu hiện tại" id="cp-old-f">
+        <label>Mật khẩu hiện tại <span class="req">*</span></label>
+        <input type="password" id="cp-old"><div class="err-msg"></div></div>
+      <div class="field" data-required data-label="Mật khẩu mới" id="cp-new-f">
+        <label>Mật khẩu mới <span class="req">*</span></label>
+        <input type="password" id="cp-new"><div class="err-msg"></div></div>
+      <div class="field" data-required data-label="Xác nhận mật khẩu mới" id="cp-cf-f">
+        <label>Xác nhận mật khẩu mới <span class="req">*</span></label>
+        <input type="password" id="cp-cf"><div class="err-msg"></div></div>
+      <div class="modal-actions">
+        <button class="btn ghost" onclick="closeModal()">Hủy</button>
+        <button class="btn green" id="cp-ok">Cập nhật</button>
+      </div>`);
+    $('#cp-ok').addEventListener('click',()=>{
+      const acc=Accounts.get(Auth.user.id);
+      const o=$('#cp-old').value, n=$('#cp-new').value, c=$('#cp-cf').value;
+      [['cp-old',o],['cp-new',n],['cp-cf',c]].forEach(([id,v])=>{ const f=$('#'+id+'-f'); clearErr(f); if(!v){ setErr(f,'Vui lòng nhập '+f.dataset.label.toLowerCase()); } });
+      if(!o||!n||!c) return;
+      if(acc.pass!==o){ setErr($('#cp-old-f'),'Mật khẩu hiện tại không đúng.'); return; }
+      if(!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$/.test(n)){ setErr($('#cp-new-f'),'Mật khẩu chưa đạt quy tắc (8–32, hoa/thường/số).'); return; }
+      if(n===o){ setErr($('#cp-new-f'),'Mật khẩu mới không được trùng mật khẩu cũ.'); return; }
+      if(n!==c){ setErr($('#cp-cf-f'),'Xác nhận không trùng khớp.'); return; }
+      acc.pass=n; Accounts.put(acc);
+      closeModal(); toast('Đổi mật khẩu thành công.','ok');
+    });
+  });
+};
+
+function authShell(title,sub,formHtml){
+  return `<section class="section"><div class="container" style="max-width:460px">
+    <div class="card pad">
+      <h1 style="font-size:1.5rem">${title}</h1>
+      <p class="muted" style="font-size:.9rem">${sub}</p>
+      ${formHtml}
+    </div>
+  </div></section>`;
+}
+
+/* ---- UC-MGMT-01 : Tra cứu hợp đồng / GCN ---- */
+function pageLookup(){
+  return `
+  <div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Tra cứu hợp đồng</div>
+    <h1>Tra cứu hợp đồng / GCN</h1>
+    <p class="muted mb0">Không bắt buộc đăng nhập. Nhập thông tin định danh để tra cứu.</p>
+  </div></div>
+  <section class="section"><div class="container" style="max-width:640px">
+    <form class="card pad" id="lkForm" novalidate>
+      <div class="field" data-required data-label="Số GCN / Số hợp đồng">
+        <label>Số GCN / Số hợp đồng <span class="req">*</span></label>
+        <input type="text" id="lk-no" placeholder="VD: BH123456789"><div class="err-msg"></div>
+      </div>
+      <div class="field" data-required data-label="Số điện thoại / CMND-CCCD">
+        <label>Số điện thoại / CMND-CCCD <span class="req">*</span></label>
+        <input type="text" id="lk-id" placeholder="Xác thực chủ hợp đồng"><div class="err-msg"></div>
+      </div>
+      <button class="btn green" type="submit">Tra cứu</button>
+    </form>
+    <div id="lkResult" style="margin-top:20px"></div>
+  </div></section>`;
+}
+pageLookup.after=function(){
+  $('#lkForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!validateForm($('#lkForm'))) return;
+    const no=$('#lk-no').value.trim();
+    const c=allContracts().find(x=>x.contractNo.toLowerCase()===no.toLowerCase());
+    if(!c){
+      $('#lkResult').innerHTML=`<div class="card pad"><span class="tag warn">Không tìm thấy</span>
+        <p class="muted" style="margin:10px 0 0">Không tìm thấy dữ liệu hợp đồng khớp thông tin. Vui lòng kiểm tra lại hoặc gọi CSKH 1900 54 54 58.</p></div>`;
+      return;
+    }
+    $('#lkResult').innerHTML=contractCardHtml(c,true);
+  });
+};
+function contractCardHtml(c,withGcn){
+  return `<div class="card pad">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <h3 style="margin:0">${c.product}</h3>
+      <span class="tag ${c.status==='Đã cấp GCN'?'ok':c.status==='Chờ thanh toán'?'wait':'warn'}">${c.status}</span>
+    </div>
+    <dl style="display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:12px 0 0;font-size:.9rem">
+      <dt class="muted">Số GCN</dt><dd>${c.contractNo}</dd>
+      <dt class="muted">Chủ hợp đồng</dt><dd>${esc(c.owner)}</dd>
+      <dt class="muted">Gói</dt><dd>${c.package||'-'}</dd>
+      <dt class="muted">Hiệu lực</dt><dd>${viDate(c.start)} – ${viDate(c.end)}</dd>
+      <dt class="muted">Phí đã thanh toán</dt><dd>${money(c.pay)}</dd>
+    </dl>
+    ${withGcn?`<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn green sm" onclick="toast('Đang tải GCN-${c.contractNo}.pdf','ok')">⬇ Tải GCN</button>
+      <a class="btn ghost sm" href="#/hop-dong?no=${c.contractNo}">Xem chi tiết</a></div>`:''}
+  </div>`;
+}
+
+/* ---- UC-MGMT-02 : Hợp đồng của tôi ---- */
+function pageMyContracts(){
+  if(!requireLogin('#/hop-dong-cua-toi')) return '';
+  return accountShell('hop-dong-cua-toi', `
+    <h2>Hợp đồng của tôi</h2>
+    <div class="card pad" style="margin-bottom:18px;background:var(--vnpt-blue-050)">
+      <div class="form-grid" style="grid-template-columns:1fr 1fr auto;align-items:end">
+        <div class="field" style="margin:0"><label>Trạng thái</label>
+          <select id="mc-status"><option value="">Tất cả</option><option>Còn hiệu lực</option><option>Sắp hết hạn</option><option>Hết hiệu lực</option><option>Đã hủy</option><option>Chờ thanh toán</option></select></div>
+        <div class="field" style="margin:0"><label>Từ khóa</label>
+          <input type="text" id="mc-kw" placeholder="Số GCN, sản phẩm, biển số..."></div>
+        <button class="btn ghost sm" id="mc-reset" style="margin-bottom:2px">Đặt lại</button>
+      </div>
+    </div>
+    <div id="mcList" class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))"></div>`);
+}
+pageMyContracts.after=function(){
+  const draw=()=>{
+    const st=$('#mc-status').value, kw=$('#mc-kw').value.toLowerCase();
+    let list=contractsForUser(Auth.user);
+    list=list.filter(c=>{
+      const s = c.status==='Đã cấp GCN'?'Còn hiệu lực':c.status;
+      const okS = !st || s===st;
+      const okK = !kw || (c.contractNo+c.product+(c.plate||'')).toLowerCase().includes(kw);
+      return okS && okK;
+    });
+    $('#mcList').innerHTML = list.length? list.map(c=>`
+      <div class="card pad">
+        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <strong>${c.product.replace('Bảo hiểm ','')}</strong>
+          <span class="tag ${/hiệu lực|GCN/.test(c.status)?'ok':c.status==='Chờ thanh toán'?'wait':'warn'}">${c.status}</span>
+        </div>
+        <div class="muted" style="font-size:.85rem;margin:8px 0">
+          Số GCN: <strong>${c.contractNo}</strong><br>
+          Hiệu lực: ${viDate(c.start)} – ${viDate(c.end)}<br>
+          ${c.plate?('Biển số: '+esc(c.plate)):''}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn ghost sm" href="#/hop-dong?no=${c.contractNo}">Chi tiết</a>
+          <a class="btn ghost sm" href="#/sua-doi-hop-dong?no=${c.contractNo}">Sửa đổi</a>
+          <a class="btn ghost sm" href="#/huy-hop-dong?no=${c.contractNo}">Yêu cầu hủy</a>
+        </div>
+      </div>`).join('')
+      : `<div class="card pad muted">Chưa có hợp đồng phù hợp. <a href="#/san-pham">Mua bảo hiểm ngay</a>.</div>`;
+  };
+  draw();
+  $('#mc-status').addEventListener('change',draw);
+  $('#mc-kw').addEventListener('input',draw);
+  $('#mc-reset').addEventListener('click',()=>{ $('#mc-status').value=''; $('#mc-kw').value=''; draw(); });
+};
+
+function getContract(no){ return allContracts().find(c=>c.contractNo===no); }
+
+/* ---- Contract detail ---- */
+function pageContractDetail(params){
+  const c=getContract(params.no); if(!c) return page404();
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/hop-dong-cua-toi">Hợp đồng của tôi</a> / ${c.contractNo}</div>
+    <h1>${c.product}</h1><span class="tag ok">${c.status}</span>
+  </div></div>
+  <section class="section"><div class="container" style="max-width:720px">
+    ${contractCardHtml(c,true)}
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <a class="btn ghost" href="#/sua-doi-hop-dong?no=${c.contractNo}">Yêu cầu sửa đổi / bổ sung</a>
+      <a class="btn ghost" href="#/huy-hop-dong?no=${c.contractNo}">Yêu cầu hủy hợp đồng</a>
+    </div>
+  </div></section>`;
+}
+
+/* ---- UC-MGMT-03 : Sửa đổi / bổ sung ---- */
+function pageAmend(params){
+  const c=getContract(params.no); if(!c) return page404();
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/hop-dong?no=${c.contractNo}">${c.contractNo}</a> / Yêu cầu sửa đổi</div>
+    <h1>Yêu cầu sửa đổi / bổ sung hợp đồng</h1>
+    <p class="muted mb0">Chỉ được sửa các trường phi rủi ro (SĐT, email, địa chỉ nhận GCN) – BR-06.</p>
+  </div></div>
+  <section class="section"><div class="container" style="max-width:640px">
+    <form class="card pad" id="amForm" novalidate>
+      <div class="field" data-required data-label="Trường được sửa">
+        <label>Trường được sửa <span class="req">*</span></label>
+        <select id="am-field"><option value="">-- Chọn trường --</option><option>Số điện thoại</option><option>Email nhận GCN</option><option>Địa chỉ nhận GCN</option></select>
+        <div class="err-msg"></div>
+      </div>
+      <div class="field" data-required data-label="Giá trị mới">
+        <label>Giá trị mới <span class="req">*</span></label>
+        <input type="text" id="am-value"><div class="err-msg"></div>
+      </div>
+      <div class="field" data-required data-label="Lý do sửa đổi">
+        <label>Lý do sửa đổi <span class="req">*</span></label>
+        <textarea id="am-reason" maxlength="300" placeholder="Tối đa 300 ký tự"></textarea><div class="err-msg"></div>
+      </div>
+      <div class="field">
+        <label>Tài liệu đính kèm (tùy chọn)</label>
+        <input type="file" id="am-file" accept=".pdf,.jpg,.png">
+        <div class="hint">.pdf/.jpg/.png, tối đa 5MB.</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn ghost" onclick="history.back()">Hủy</button>
+        <button type="submit" class="btn green" style="margin-left:auto">Gửi yêu cầu</button>
+      </div>
+    </form>
+  </div></section>`;
+}
+pageAmend.after=function(){
+  $('#amForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!validateForm($('#amForm'))) return;
+    const f=$('#am-file').files[0];
+    if(f && f.size>5*1024*1024){ toast('Tài liệu vượt quá 5MB.','err'); return; }
+    modal(`<h3>Đã tiếp nhận yêu cầu</h3><p class="muted">Yêu cầu sửa đổi đã được ghi nhận và gửi xử lý. Nếu được duyệt, VNPT sẽ phát hành GCN thay thế và thông báo qua Email/Zalo.</p>
+      <div class="modal-actions"><button class="btn green" onclick="closeModal();location.hash='#/hop-dong-cua-toi'">Đóng</button></div>`);
+  });
+};
+
+/* ---- UC-MGMT-04 : Yêu cầu hủy ---- */
+function pageCancel(params){
+  const c=getContract(params.no); if(!c) return page404();
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/hop-dong?no=${c.contractNo}">${c.contractNo}</a> / Yêu cầu hủy</div>
+    <h1>Yêu cầu hủy hợp đồng</h1>
+    <p class="muted mb0">Hủy hợp đồng &amp; hoàn phí tuân theo quy tắc sản phẩm và điều khoản đã ký (BR-07).</p>
+  </div></div>
+  <section class="section"><div class="container" style="max-width:640px">
+    <form class="card pad" id="cxForm" novalidate>
+      <div class="field" data-required data-label="Lý do hủy">
+        <label>Lý do hủy <span class="req">*</span></label>
+        <select id="cx-reason"><option value="">-- Chọn lý do --</option><option>Không còn nhu cầu sử dụng</option><option>Đã mua trùng bảo hiểm khác</option><option>Chuyển nhượng / bán tài sản</option><option>Lý do khác</option></select>
+        <div class="err-msg"></div>
+      </div>
+      <div class="field">
+        <label>Mô tả thêm</label>
+        <textarea id="cx-note" maxlength="300" placeholder="Tối đa 300 ký tự"></textarea>
+      </div>
+      <div class="field">
+        <label>Thông tin hoàn phí (nếu áp dụng)</label>
+        <input type="text" id="cx-bank" placeholder="Số tài khoản / ví nhận hoàn phí">
+      </div>
+      <label class="check" id="cx-agree-f"><input type="checkbox" id="cx-agree"> <span>Tôi xác nhận đã đọc quy định hoàn phí khi hủy hợp đồng <span class="req">*</span></span></label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button type="button" class="btn ghost" onclick="history.back()">Hủy thao tác</button>
+        <button type="submit" class="btn" style="margin-left:auto;background:#b91c1c">Gửi yêu cầu hủy</button>
+      </div>
+    </form>
+  </div></section>`;
+}
+pageCancel.after=function(params){
+  $('#cxForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!validateForm($('#cxForm'))) return;
+    if(!$('#cx-agree').checked){ toast('Vui lòng xác nhận đã đọc quy định hoàn phí.','err'); return; }
+    // mô phỏng: yêu cầu được duyệt → hợp đồng "Đã hủy", đơn hàng liên quan "Đã hủy"
+    const store=allContracts();
+    const c=store.find(x=>x.contractNo===params.no);
+    if(c){ c.status='Đã hủy'; saveContracts(store); }
+    const ord=Orders.all().find(o=>o.contractNo===params.no);
+    if(ord) Orders.update(ord.orderNo,{status:'cancelled'});
+    modal(`<h3>Đã gửi yêu cầu hủy</h3><p class="muted">Yêu cầu hủy đã được ghi nhận và xử lý. Hợp đồng <strong>${params.no}</strong> chuyển trạng thái <strong>"Đã hủy"</strong>; phần hoàn phí (nếu có) sẽ được chi trả theo quy định trong 5–7 ngày làm việc.</p>
+      <div class="modal-actions"><button class="btn green" onclick="closeModal();location.hash='#/hop-dong-cua-toi'">Đóng</button></div>`);
+  });
+};
+
+/* ---- UC-CLAIM-01 : Hướng dẫn bồi thường ---- */
+function pageClaimGuide(){
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Hướng dẫn bồi thường</div>
+    <h1>Hướng dẫn bồi thường</h1>
+    <p class="muted mb0">Quy trình, hồ sơ và các bước cần thực hiện khi xảy ra sự cố.</p>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="layout-2">
+      <div>
+        <div class="card pad">
+          <h3>Quy trình bồi thường</h3>
+          <ol class="timeline">
+            <li class="done"><strong>Bước 1 · Thông báo tổn thất</strong><br><small>Gọi hotline 1900 54 54 58 ngay khi xảy ra sự cố để được hướng dẫn giữ hiện trường.</small></li>
+            <li class="done"><strong>Bước 2 · Chuẩn bị hồ sơ</strong><br><small>Tập hợp giấy tờ theo danh mục sản phẩm.</small></li>
+            <li class="current"><strong>Bước 3 · Giám định</strong><br><small>VNPT giám định thiệt hại và xác định phạm vi, mức bồi thường.</small></li>
+            <li><strong>Bước 4 · Phê duyệt &amp; chi trả</strong><br><small>Nhận bồi thường qua tài khoản ngân hàng.</small></li>
+          </ol>
+        </div>
+        <div class="card pad" style="margin-top:18px">
+          <h3>Hồ sơ yêu cầu bồi thường</h3>
+          <div class="table-wrap"><table class="data">
+            <thead><tr><th>Nhóm sản phẩm</th><th>Giấy tờ cần chuẩn bị</th></tr></thead>
+            <tbody>
+              <tr><td>Xe cơ giới</td><td>GCN bảo hiểm, giấy tờ xe &amp; GPLX, biên bản hiện trường / CSGT, ảnh thiệt hại, hóa đơn sửa chữa.</td></tr>
+              <tr><td>Con người</td><td>GCN, giấy ra viện / chứng từ y tế, hóa đơn viện phí, giấy tờ tùy thân.</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+      <div>
+        <div class="card pad summary-box">
+          <h3>Kênh tiếp nhận</h3>
+          <p class="muted" style="font-size:.9rem">Hotline CSKH 24/7<br><strong style="font-size:1.2rem;color:var(--vnpt-blue-dark)">1900 54 54 58</strong></p>
+          <a href="#/lien-he" class="btn green block">Liên hệ ngay</a>
+          <a href="#/tra-cuu-boi-thuong" class="btn ghost block" style="margin-top:8px">Tra cứu tiến độ bồi thường</a>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+}
+
+/* ---- UC-CLAIM-02 : Tra cứu bồi thường ---- */
+function pageClaimTrack(){
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Tra cứu bồi thường</div>
+    <h1>Tra cứu / theo dõi tiến độ bồi thường</h1>
+  </div></div>
+  <section class="section"><div class="container" style="max-width:640px">
+    <form class="card pad" id="ctForm" novalidate>
+      <div class="field" data-required data-label="Mã hồ sơ BT / Số GCN">
+        <label>Mã hồ sơ BT / Số GCN <span class="req">*</span></label>
+        <input type="text" id="ct-no" placeholder="VD: BT2026-000123"><div class="err-msg"></div>
+      </div>
+      <div class="field" data-required data-label="Số điện thoại / CMND-CCCD">
+        <label>Số điện thoại / CMND-CCCD <span class="req">*</span></label>
+        <input type="text" id="ct-id"><div class="err-msg"></div>
+      </div>
+      <button class="btn green" type="submit">Tra cứu</button>
+    </form>
+    <div id="ctResult" style="margin-top:20px"></div>
+  </div></section>`;
+}
+pageClaimTrack.after=function(){
+  $('#ctForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!validateForm($('#ctForm'))) return;
+    $('#ctResult').innerHTML=`<div class="card pad">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+        <strong>Hồ sơ ${esc($('#ct-no').value)}</strong><span class="tag">Đang giám định</span>
+      </div>
+      <ol class="timeline" style="margin-top:14px">
+        <li class="done"><strong>Tiếp nhận hồ sơ</strong><br><small>02/09/2026</small></li>
+        <li class="done"><strong>Bổ sung / kiểm tra hồ sơ</strong><br><small>03/09/2026</small></li>
+        <li class="current"><strong>Giám định thiệt hại</strong><br><small>Đang xử lý</small></li>
+        <li><strong>Phê duyệt bồi thường</strong></li>
+        <li><strong>Chi trả</strong></li>
+      </ol>
+      <p class="hint">Timeline đồng bộ từ hệ thống nghiệp vụ VNPT. Cần hỗ trợ? Gọi 1900 54 54 58.</p>
+    </div>`;
+  });
+};
+
+/* ---- UC-SUPP-01 : Tài liệu & Quy tắc ---- */
+function pageDocs(){
+  const docs=[
+    {name:'Quy tắc bảo hiểm bắt buộc TNDS chủ xe cơ giới',group:'xe',type:'Quy tắc'},
+    {name:'Biểu phí bảo hiểm TNDS xe mô tô, xe máy',group:'xe',type:'Biểu phí'},
+    {name:'Biểu phí bảo hiểm TNDS xe ô tô',group:'xe',type:'Biểu phí'},
+    {name:'Quy tắc bảo hiểm Tai nạn hộ sử dụng điện',group:'con-nguoi',type:'Quy tắc'},
+    {name:'Hướng dẫn yêu cầu bồi thường',group:'all',type:'Hướng dẫn'},
+  ];
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Tài liệu &amp; Quy tắc</div>
+    <h1>Tài liệu &amp; Quy tắc bảo hiểm</h1>
+  </div></div>
+  <section class="section"><div class="container" style="max-width:820px">
+    <div class="field" style="max-width:300px">
+      <label>Lọc theo sản phẩm</label>
+      <select id="dc-filter"><option value="all">Tất cả</option>${GROUPS.map(g=>`<option value="${g.id}">${g.name}</option>`).join('')}</select>
+    </div>
+    <div class="table-wrap"><table class="data" id="dcTable">
+      <thead><tr><th>Tên tài liệu</th><th>Loại</th><th></th></tr></thead>
+      <tbody>${docs.map(d=>`<tr data-g="${d.group}"><td>${d.name}</td><td>${d.type}</td>
+        <td><button class="btn ghost sm" onclick="toast('Đang tải ${d.name}.pdf','ok')">⬇ Tải xuống</button></td></tr>`).join('')}</tbody>
+    </table></div>
+  </div></section>`;
+}
+pageDocs.after=function(){
+  $('#dc-filter').addEventListener('change',e=>{
+    const v=e.target.value;
+    $$('#dcTable tbody tr').forEach(tr=>{ tr.style.display = (v==='all'||tr.dataset.g===v||tr.dataset.g==='all')?'':'none'; });
+  });
+};
+
+/* ---- UC-SUPP-02 : Cẩm nang ---- */
+function pageBlog(){
+  const topics=[...new Set(ARTICLES.map(a=>a.topic))];
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Cẩm nang</div>
+    <h1>Cẩm nang &amp; Kiến thức bảo hiểm</h1>
+  </div></div>
+  <section class="section"><div class="container">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+      <input type="text" id="bl-search" placeholder="🔍 Tìm bài viết..." style="max-width:280px">
+      <div class="feature-tabs" id="bl-tabs" style="margin:0">
+        <button class="on" data-t="all">Tất cả</button>
+        ${topics.map(t=>`<button data-t="${t}">${t}</button>`).join('')}
+      </div>
+    </div>
+    <div class="cards" id="blList"></div>
+  </div></section>`;
+}
+pageBlog.after=function(){
+  const draw=()=>{
+    const kw=$('#bl-search').value.toLowerCase();
+    const t=$('#bl-tabs .on').dataset.t;
+    const list=ARTICLES.filter(a=>(t==='all'||a.topic===t)&&(a.title+a.excerpt).toLowerCase().includes(kw));
+    $('#blList').innerHTML=list.map(a=>`
+      <a class="card pad" href="#/bai-viet?slug=${a.slug}" style="text-decoration:none">
+        <span class="tag">${a.topic}</span>
+        <h3 style="margin:.5em 0 .3em">${a.title}</h3>
+        <p class="muted" style="margin:0">${a.excerpt}</p>
+      </a>`).join('') || '<div class="card pad muted">Không tìm thấy bài viết phù hợp.</div>';
+  };
+  draw();
+  $('#bl-search').addEventListener('input',draw);
+  $$('#bl-tabs button').forEach(b=>b.addEventListener('click',()=>{
+    $$('#bl-tabs button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); draw();
+  }));
+};
+
+function pageArticle(params){
+  const a=ARTICLES.find(x=>x.slug===params.slug);
+  if(!a) return `<section class="section"><div class="container"><div class="card pad">
+    <span class="tag warn">Không tồn tại</span><p class="muted" style="margin-top:10px">Bài viết không tồn tại hoặc đã được gỡ.</p>
+    <a href="#/cam-nang" class="btn ghost">← Về danh sách</a></div></div></section>`;
+  return `<section class="section"><div class="container">
+    <div class="breadcrumb"><a href="#/cam-nang">Cẩm nang</a> / ${a.topic}</div>
+    <article class="article">
+      <span class="tag">${a.topic}</span>
+      <h1>${a.title}</h1>
+      <p class="muted">${a.excerpt}</p>
+      ${a.body}
+      <a href="#/cam-nang" class="btn ghost" style="margin-top:20px">← Về danh sách</a>
+    </article>
+  </div></section>`;
+}
+
+/* ---- UC-SUPP-03 : Liên hệ ---- */
+function pageContact(){
+  const cap = Math.floor(1000+Math.random()*9000);
+  return `<div class="page-head"><div class="container">
+    <div class="breadcrumb"><a href="#/">Trang chủ</a> / Liên hệ</div>
+    <h1>Liên hệ / Gửi yêu cầu tư vấn</h1>
+  </div></div>
+  <section class="section"><div class="container">
+    <div class="layout-2">
+      <form class="card pad" id="ctForm2" novalidate data-cap="${cap}">
+        <div class="form-grid">
+          <div class="field" data-required data-label="Họ tên">
+            <label>Họ tên <span class="req">*</span></label>
+            <input type="text" id="c-name" maxlength="100"><div class="err-msg"></div>
+          </div>
+          <div class="field" data-required data-label="Số điện thoại">
+            <label>Số điện thoại <span class="req">*</span></label>
+            <input type="tel" id="c-phone" data-type="phone" maxlength="10"><div class="err-msg"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="c-email" data-type="email"><div class="err-msg"></div>
+        </div>
+        <div class="field" data-required data-label="Nội dung liên hệ">
+          <label>Nội dung liên hệ <span class="req">*</span></label>
+          <textarea id="c-msg" maxlength="500" placeholder="Tối đa 500 ký tự"></textarea><div class="err-msg"></div>
+        </div>
+        <div class="field" data-required data-label="Mã xác nhận">
+          <label>Mã xác nhận: <strong style="letter-spacing:.2em;background:#eef2f7;padding:2px 8px;border-radius:6px;text-decoration:line-through">${cap}</strong> <span class="req">*</span></label>
+          <input type="text" id="c-cap" maxlength="4" placeholder="Nhập lại 4 số trên"><div class="err-msg"></div>
+        </div>
+        <button class="btn green" type="submit">Gửi yêu cầu</button>
+      </form>
+      <div>
+        <div class="card pad summary-box">
+          <h3>Thông tin hỗ trợ</h3>
+          <p class="muted" style="font-size:.9rem">
+            <strong>Hotline CSKH 24/7</strong><br>1900 54 54 58<br><br>
+            <strong>Hỗ trợ GCN điện tử</strong><br>028 999 66 995 (phím 8)<br><br>
+            <strong>Email</strong><br>cskh@vnptinsurance.com.vn
+          </p>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+}
+pageContact.after=function(){
+  $('#ctForm2').addEventListener('submit',e=>{
+    e.preventDefault();
+    const form=$('#ctForm2');
+    if(!validateForm(form)) return;
+    if($('#c-cap').value.trim()!==form.dataset.cap){ setErr($('#c-cap').closest('.field'),'Mã xác nhận không đúng.'); return; }
+    modal(`<h3>Đã tiếp nhận yêu cầu</h3><p class="muted">Cảm ơn bạn! Yêu cầu liên hệ đã được ghi nhận. Bộ phận CSKH sẽ phản hồi trong thời gian sớm nhất.</p>
+      <div class="modal-actions"><button class="btn green" onclick="closeModal();location.hash='#/'">Đóng</button></div>`);
+  });
+};
+
+/* ---- 404 ---- */
+function page404(){
+  return `<section class="section"><div class="container center" style="max-width:520px">
+    <div style="font-size:3rem">🔍</div>
+    <h1>Không tìm thấy trang</h1>
+    <p class="muted">Nội dung bạn tìm không tồn tại hoặc đã được di chuyển.</p>
+    <a href="#/" class="btn green">Về trang chủ</a>
+  </div></section>`;
+}
+
+/* expose for inline handlers */
+window.toast=toast; window.closeModal=closeModal; window.Auth=Auth;
+</script>
+</body>
+</html>
